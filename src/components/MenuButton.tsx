@@ -5,7 +5,7 @@ interface MenuButtonProps {
 
 export default function MenuButton({ value, onClick }: MenuButtonProps) {
   return (
-    <button onClick={onClick} className="w-20 h-8 bg-lt-bg text-sm">
+    <button onClick={onClick} className={`min-w-24 h-8 text-sm font-bold bg-white hover:bg-gray-300 rounded-md`}>
       {value}
     </button>
   );
