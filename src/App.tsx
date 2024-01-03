@@ -4,10 +4,10 @@ import "./index.css";
 export default function App() {
   return (
     <>
-      <header className="w-full h-[80px] border-b-2 border-solid border-red-500">
+      <header className="w-full h-20 border-b-2 border-solid border-red-500">
         Header
       </header>
-      <main className="flex justify-center items-center w-full h-auto bg-dt-bg">
+      <main className="flex justify-center items-center w-full bg-dt-bg">
         <Keyboard />
       </main>
       <footer>Footer</footer>
