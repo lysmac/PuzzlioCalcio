@@ -1,3 +1,4 @@
+import Board from "./components/Board";
 import Header from "./components/Header";
 import Keyboard from "./components/Keyboard";
 import "./index.css";
@@ -8,7 +9,8 @@ export default function App() {
       <header>
         <Header />
       </header>
-      <main className="flex justify-center items-center w-full bg-dt-bg">
+      <main className="flex flex-col justify-center items-center w-full bg-dt-bg">
+        <Board />
         <Keyboard />
       </main>
       <footer>Footer</footer>

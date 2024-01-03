@@ -16,7 +16,6 @@ export default function Keyboard() {
                 ? "special"
                 : "letter"
             }
-            className="font-bold bg-gray-50 hover:bg-gray-300"
           />
         ))}
       </div>
@@ -32,7 +31,6 @@ export default function Keyboard() {
                 ? "special"
                 : "letter"
             }
-            className="font-bold bg-gray-50 hover:bg-gray-300"
           />
         ))}
       </div>
@@ -48,7 +46,6 @@ export default function Keyboard() {
                 ? "special"
                 : "letter"
             }
-            className="font-bold bg-gray-50 hover:bg-gray-300"
           />
         ))}
       </div>
