@@ -3,18 +3,18 @@ export default function Tile({
   place,
 }: {
   letter?: string;
-  place?: string;
+  place?: "right" | "close" | "wrong" | null;
 }) {
   const background = (place: string) => {
     switch (place) {
       case "right":
         return "bg-pc-green";
       case "wrong":
-        return "";
+        return "bg-gray-50";
       case "close":
         return "bg-pc-yellow";
       default:
-        return "";
+        return "bg-gray-50";
     }
   };
 
