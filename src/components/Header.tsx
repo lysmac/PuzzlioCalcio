@@ -1,5 +1,5 @@
-import Menu from "./Menu";
-import logo from "../../public/PClogo.svg"
+import logo from "../../public/PClogo.svg";
+import Menu from "./menu/Menu";
 
 export default function Header() {
   return (

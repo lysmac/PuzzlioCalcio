@@ -1,4 +1,4 @@
-import { keyboardButtons } from "../data"; // Importing the keyboard buttons data
+import { keyboardButtons } from "../../data"; // Importing the keyboard buttons data
 import KeyboardButton from "./KeyboardButton";
 
 export default function Keyboard() {

@@ -1,6 +1,6 @@
 import Board from "./components/Board";
 import Header from "./components/Header";
-import Keyboard from "./components/Keyboard";
+import Keyboard from "./components/keyboard/Keyboard";
 import "./index.css";
 
 export default function App() {
