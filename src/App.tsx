@@ -1,12 +1,13 @@
 import Board from "./components/Board";
-import Keyboard from "./components/Keyboard";
+import Header from "./components/Header";
+import Keyboard from "./components/keyboard/Keyboard";
 import "./index.css";
 
 export default function App() {
   return (
     <>
-      <header className="w-full h-20 border-b-2 border-solid border-red-500">
-        Header
+      <header>
+        <Header />
       </header>
       <main className="flex flex-col justify-center items-center w-full bg-dt-bg">
         <Board />
