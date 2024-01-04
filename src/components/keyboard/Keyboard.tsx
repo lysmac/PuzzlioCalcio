@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { keyboardButtons } from "../../data"; // Importing the keyboard buttons data
+import { keyboardButtons } from "../../data";
 import KeyboardButton from "./KeyboardButton";
 
 export default function Keyboard() {
@@ -12,11 +12,16 @@ export default function Keyboard() {
 
   useEffect(() => {
     const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
-      setKeyboardInput((prev) => prev + e.key); // Append the latest key directly
+      // Check if the key pressed is a letter
+      if (/[a-zA-Z]/.test(e.key)) {
+        setKeyboardInput((prev) => prev + e.key);
+      } else {
+        // If the key pressed is not a letter, prevent the default action
+        e.preventDefault();
+      }
     };
 
     window.addEventListener("keydown", handlePhysicalKeyboardInput);
-
     return () => {
       window.removeEventListener("keydown", handlePhysicalKeyboardInput);
     };
