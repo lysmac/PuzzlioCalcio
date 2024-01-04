@@ -1,7 +1,40 @@
-import { keyboardButtons } from "../../data"; // Importing the keyboard buttons data
+import { useEffect, useState } from "react";
+import { keyboardButtons } from "../../data";
 import KeyboardButton from "./KeyboardButton";
 
 export default function Keyboard() {
+  const [keyboardInput, setKeyboardInput] = useState("");
+
+  // Rendered keyboard
+  const handleKeyboardInput = (value: string) => {
+    if (value === "Del") {
+      // Remove the last letter if the "del" button is pressed
+      setKeyboardInput((prev) => prev.slice(0, -1));
+    } else {
+      setKeyboardInput((prev) => prev + value);
+    }
+  };
+
+  // Physical keyboard
+  useEffect(() => {
+    const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
+      // Check if the key pressed is a letter
+      if (/^[a-zA-Z]$/.test(e.key)) {
+        setKeyboardInput((prev) => prev + e.key.toUpperCase());
+      } else if (e.key === "Backspace") {
+        // Remove the last letter if the backspace key is pressed
+        setKeyboardInput((prev) => prev.slice(0, -1));
+      } else {
+        // If the key pressed is not a letter, prevent the default action
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("keydown", handlePhysicalKeyboardInput);
+    return () => {
+      window.removeEventListener("keydown", handlePhysicalKeyboardInput);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col my-2.5 gap-1">
       {/* First row of buttons */}
@@ -10,7 +43,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
-            onClick={button.onClick} // Placeholders for the onClick function
+            onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
                 ? "special"
@@ -25,7 +58,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
-            onClick={button.onClick} // Placeholders for the onClick function
+            onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
                 ? "special"
@@ -40,7 +73,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
-            onClick={button.onClick} // Placeholders for the onClick function
+            onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
                 ? "special"
@@ -48,6 +81,9 @@ export default function Keyboard() {
             }
           />
         ))}
+      </div>
+      <div>
+        <p className="text-white">{keyboardInput}</p>
       </div>
     </div>
   );
