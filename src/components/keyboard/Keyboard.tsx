@@ -5,22 +5,30 @@ import KeyboardButton from "./KeyboardButton";
 export default function Keyboard() {
   const [keyboardInput, setKeyboardInput] = useState("");
 
-  // Function to handle the keyboard input
+  // Rendered keyboard
   const handleKeyboardInput = (value: string) => {
-    setKeyboardInput((prev) => prev + value);
+    if (value === "Del") {
+      // Remove the last letter if the "del" button is pressed
+      setKeyboardInput((prev) => prev.slice(0, -1));
+    } else {
+      setKeyboardInput((prev) => prev + value);
+    }
   };
 
+  // Physical keyboard
   useEffect(() => {
     const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
       // Check if the key pressed is a letter
       if (/^[a-zA-Z]$/.test(e.key)) {
         setKeyboardInput((prev) => prev + e.key.toUpperCase());
+      } else if (e.key === "Backspace") {
+        // Remove the last letter if the backspace key is pressed
+        setKeyboardInput((prev) => prev.slice(0, -1));
       } else {
         // If the key pressed is not a letter, prevent the default action
         e.preventDefault();
       }
     };
-
     window.addEventListener("keydown", handlePhysicalKeyboardInput);
     return () => {
       window.removeEventListener("keydown", handlePhysicalKeyboardInput);
