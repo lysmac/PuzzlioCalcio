@@ -1,7 +1,27 @@
+import { useEffect, useState } from "react";
 import { keyboardButtons } from "../../data"; // Importing the keyboard buttons data
 import KeyboardButton from "./KeyboardButton";
 
 export default function Keyboard() {
+  const [keyboardInput, setKeyboardInput] = useState("");
+
+  // Function to handle the keyboard input
+  const handleKeyboardInput = (value: string) => {
+    setKeyboardInput((prev) => prev + value);
+  };
+
+  useEffect(() => {
+    const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
+      setKeyboardInput((prev) => prev + e.key); // Append the latest key directly
+    };
+
+    window.addEventListener("keydown", handlePhysicalKeyboardInput);
+
+    return () => {
+      window.removeEventListener("keydown", handlePhysicalKeyboardInput);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col my-2.5 gap-1">
       {/* First row of buttons */}
@@ -10,7 +30,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
-            onClick={button.onClick} // Placeholders for the onClick function
+            onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
                 ? "special"
@@ -25,7 +45,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
-            onClick={button.onClick} // Placeholders for the onClick function
+            onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
                 ? "special"
@@ -40,7 +60,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
-            onClick={button.onClick} // Placeholders for the onClick function
+            onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
                 ? "special"
@@ -48,6 +68,9 @@ export default function Keyboard() {
             }
           />
         ))}
+      </div>
+      <div>
+        <p className="text-white">{keyboardInput}</p>
       </div>
     </div>
   );
