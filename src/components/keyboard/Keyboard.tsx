@@ -13,8 +13,8 @@ export default function Keyboard() {
   useEffect(() => {
     const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
       // Check if the key pressed is a letter
-      if (/[a-zA-Z]/.test(e.key)) {
-        setKeyboardInput((prev) => prev + e.key);
+      if (/^[a-zA-Z]$/.test(e.key)) {
+        setKeyboardInput((prev) => prev + e.key.toUpperCase());
       } else {
         // If the key pressed is not a letter, prevent the default action
         e.preventDefault();
