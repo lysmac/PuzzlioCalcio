@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Tile from "./Tile";
 
 export default function Board() {
@@ -38,19 +39,37 @@ export default function Board() {
     }
   });
 
+  const [allGuesses, setAllGuesses] = useState<string[]>([]);
+  const guessAmount = 5;
+
+  useEffect(() => {
+    setAllGuesses([]);
+    for (let i = 0; i < guessAmount; i++) {
+      setAllGuesses((allGuesses) => [...allGuesses, "empty"]);
+    }
+  }, []);
+
+  console.log(allGuesses);
   return (
     <>
       Board:
-      <div className="justify-center items-center flex gap-2 flex-col">
+      <div className="justify-center items-center flex gap-1 flex-col">
         <div className="flex w-full justify-center gap-1">
           {nameArray.map((letter, index) => (
             <Tile key={index} letter={letter} />
           ))}
         </div>{" "}
-        <div className="flex w-full gap-1">
-          {guessArray.map((letter, index) => (
-            <Tile key={index} letter={letter} place={results[index]} />
+        <div className="flex w-full gap-1 flex-col">
+          {allGuesses.map((guess, index) => (
+            <div key={index} className="flex gap-1">
+              {guess.split("").map((letter, letterIndex) => (
+                <Tile key={letterIndex} letter={letter} />
+              ))}
+            </div>
           ))}
+          {/* {guessArray.map((letter, index) => (
+            <Tile key={index} letter={letter} place={results[index]} />
+          ))} */}
         </div>
       </div>
     </>

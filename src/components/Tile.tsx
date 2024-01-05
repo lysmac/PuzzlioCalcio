@@ -20,7 +20,7 @@ export default function Tile({
 
   return (
     <div
-      className={` aspect-square w-8 sm:min-w-12  sm:text-3xl flex items-center justify-center font-bold text-2xl font-mono text-lt-text ${background(
+      className={` uppercase aspect-square w-8 sm:min-w-12  sm:text-3xl flex items-center justify-center font-bold text-2xl font-mono text-lt-text ${background(
         place || ""
       )}`}
     >
