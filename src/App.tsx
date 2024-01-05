@@ -13,7 +13,7 @@ export default function App() {
         <Board />
         <Keyboard />
       </main>
-      <footer className="bg-lt-bg dark:bg-dt-bg">Footer</footer>
+      <footer>Footer</footer>
     </>
   );
 }
