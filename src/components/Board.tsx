@@ -1,55 +1,62 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Tile from "./Tile";
 
 export default function Board() {
   const name = "KLOPP";
   const nameArray = name.split("");
 
-  const guess = "KPPKP";
-  const guessArray = guess.split("");
+  function colorWord(word: string) {
+    const guessArray = word.split("");
 
-  const nameLetterCount = new Map<string, number>();
-  nameArray.forEach((letter) => {
-    nameLetterCount.set(letter, (nameLetterCount.get(letter) || 0) + 1);
-  });
+    const nameLetterCount = new Map<string, number>();
+    nameArray.forEach((letter) => {
+      nameLetterCount.set(letter, (nameLetterCount.get(letter) || 0) + 1);
+    });
 
-  const decrementingMap = new Map(nameLetterCount);
+    const decrementingMap = new Map(nameLetterCount);
 
-  const results: ("right" | "close" | "wrong" | null)[] = guessArray.map(
-    (letter, index) => {
-      if (nameArray[index] === letter) {
-        decrementingMap.set(letter, (decrementingMap.get(letter) || 0) - 1);
-        return "right";
+    const results: ("right" | "close" | "wrong" | null)[] = guessArray.map(
+      (letter, index) => {
+        if (nameArray[index] === letter) {
+          decrementingMap.set(letter, (decrementingMap.get(letter) || 0) - 1);
+          return "right";
+        }
+        return null;
       }
-      return null;
-    }
-  );
+    );
 
-  guessArray.forEach((letter, index) => {
-    if (results[index] === null) {
-      if (
-        nameArray.includes(letter) &&
-        (decrementingMap.get(letter) || 0) > 0
-      ) {
-        decrementingMap.set(letter, (decrementingMap.get(letter) || 0) - 1);
-        results[index] = "close";
-      } else {
-        results[index] = "wrong";
+    guessArray.forEach((letter, index) => {
+      if (results[index] === null) {
+        if (
+          nameArray.includes(letter) &&
+          (decrementingMap.get(letter) || 0) > 0
+        ) {
+          decrementingMap.set(letter, (decrementingMap.get(letter) || 0) - 1);
+          results[index] = "close";
+        } else {
+          results[index] = "wrong";
+        }
       }
-    }
-  });
+    });
+    return results;
+  }
 
-  const [allGuesses, setAllGuesses] = useState<string[]>([]);
+  const [allGuesses, setAllGuesses] = useState<string[]>([
+    "KNOPP",
+    "OSTEN",
+    "TJOHO",
+    "LIPAS",
+    "UKPIO",
+  ]);
   const guessAmount = 5;
 
-  useEffect(() => {
-    setAllGuesses([]);
-    for (let i = 0; i < guessAmount; i++) {
-      setAllGuesses((allGuesses) => [...allGuesses, "empty"]);
-    }
-  }, []);
+  // useEffect(() => {
+  //   setAllGuesses([]);
+  //   for (let i = 0; i < guessAmount; i++) {
+  //     setAllGuesses((allGuesses) => [...allGuesses, "klokk"]);
+  //   }
+  // }, []);
 
-  console.log(allGuesses);
   return (
     <>
       Board:
@@ -60,16 +67,29 @@ export default function Board() {
           ))}
         </div>{" "}
         <div className="flex w-full gap-1 flex-col">
-          {allGuesses.map((guess, index) => (
-            <div key={index} className="flex gap-1">
-              {guess.split("").map((letter, letterIndex) => (
-                <Tile key={letterIndex} letter={letter} />
-              ))}
-            </div>
-          ))}
-          {/* {guessArray.map((letter, index) => (
-            <Tile key={index} letter={letter} place={results[index]} />
-          ))} */}
+          {allGuesses.map(
+            (guess, index) => (
+              console.log("my guess:", guess),
+              (
+                <div key={index} className="flex gap-1">
+                  {guess === "empty"
+                    ? Array.from({ length: guessAmount }, (_, i) => (
+                        <Tile key={i} letter="" />
+                      ))
+                    : guess
+                        .split("")
+                        .map((letter, letterIndex) => (
+                          <Tile
+                            key={letterIndex}
+                            letter={letter}
+                            place={colorWord(guess)[letterIndex]}
+                          />
+                        ))}
+                </div>
+              )
+            )
+          )}
+          <div className="flex gap-1"></div>
         </div>
       </div>
     </>
