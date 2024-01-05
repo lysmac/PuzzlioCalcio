@@ -17,7 +17,7 @@ export default function KeyboardButton({
   return (
     <button
       onClick={onClick}
-      className={`font-bold bg-gray-50 hover:bg-gray-300 sm:text-xl${buttonClass}`}
+      className={`font-bold text-lt-text bg-gray-50 hover:bg-gray-300 sm:text-xl${buttonClass}`}
     >
       {" "}
       {value}

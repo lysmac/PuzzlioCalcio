@@ -9,11 +9,11 @@ export default function App() {
       <header>
         <Header />
       </header>
-      <main className="flex flex-col justify-center items-center w-full dark:bg-dt-bg">
+      <main className="flex flex-col justify-center items-center w-full">
         <Board />
         <Keyboard />
       </main>
-      <footer>Footer</footer>
+      <footer className="bg-lt-bg dark:bg-dt-bg">Footer</footer>
     </>
   );
 }
