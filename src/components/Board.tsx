@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tile from "./Tile";
 
 export default function Board() {
   const name = "KLOPP";
-  const nameArray = name.split("");
+  const nameArray = name.toLowerCase().split("");
 
   function colorWord(word: string) {
-    const guessArray = word.split("");
+    const guessArray = word.toLowerCase().split("");
 
     const nameLetterCount = new Map<string, number>();
     nameArray.forEach((letter) => {
@@ -50,12 +50,12 @@ export default function Board() {
   ]);
   const guessAmount = 5;
 
-  // useEffect(() => {
-  //   setAllGuesses([]);
-  //   for (let i = 0; i < guessAmount; i++) {
-  //     setAllGuesses((allGuesses) => [...allGuesses, "klokk"]);
-  //   }
-  // }, []);
+  useEffect(() => {
+    setAllGuesses([]);
+    for (let i = 0; i < guessAmount; i++) {
+      setAllGuesses((allGuesses) => [...allGuesses, "empty"]);
+    }
+  }, []);
 
   return (
     <>
@@ -67,28 +67,26 @@ export default function Board() {
           ))}
         </div>{" "}
         <div className="flex w-full gap-1 flex-col">
-          {allGuesses.map(
-            (guess, index) => (
-              console.log("my guess:", guess),
-              (
-                <div key={index} className="flex gap-1">
-                  {guess === "empty"
-                    ? Array.from({ length: guessAmount }, (_, i) => (
-                        <Tile key={i} letter="" />
-                      ))
-                    : guess
-                        .split("")
-                        .map((letter, letterIndex) => (
-                          <Tile
-                            key={letterIndex}
-                            letter={letter}
-                            place={colorWord(guess)[letterIndex]}
-                          />
-                        ))}
-                </div>
-              )
-            )
-          )}
+          {allGuesses.map((guess, index) => {
+            const results = colorWord(guess);
+            return (
+              <div key={index} className="flex gap-1">
+                {guess === "empty"
+                  ? Array.from({ length: guessAmount }, (_, i) => (
+                      <Tile key={i} letter="" />
+                    ))
+                  : guess
+                      .split("")
+                      .map((letter, letterIndex) => (
+                        <Tile
+                          key={letterIndex}
+                          letter={letter}
+                          place={results[letterIndex]}
+                        />
+                      ))}
+              </div>
+            );
+          })}
           <div className="flex gap-1"></div>
         </div>
       </div>
