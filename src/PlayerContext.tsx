@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { competitionIds } from "./data";
+import { clubIds } from "./data";
 
 type Player = {
   id: number;
@@ -25,40 +25,32 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const fetchPlayer = async () => {
     try {
-      const randomCompetitionId =
-        competitionIds[Math.floor(Math.random() * competitionIds.length)];
-      const response = await fetch(
-        `/transfermarkt/competitions/${randomCompetitionId.id}/clubs`
+      // Pick a random competition from the clubIds array
+      const randomCompetition =
+        clubIds[Math.floor(Math.random() * clubIds.length)];
+
+      // Pick a random club from the clubs array of the random competition
+      const randomClub =
+        randomCompetition.clubs[
+          Math.floor(Math.random() * randomCompetition.clubs.length)
+        ];
+      console.log(randomClub);
+
+      // Fetch the players from the random club
+      const playersResponse = await fetch(
+        `/transfermarkt/clubs/${randomClub.id}/players`
       );
-      if (response.ok) {
-        const fetchedCompetition = await response.json();
-        console.log(fetchedCompetition);
-
-        // Pick a random club
-        const randomClub =
-          fetchedCompetition.clubs[
-            Math.floor(Math.random() * fetchedCompetition.clubs.length)
+      if (playersResponse.ok) {
+        const playersData = await playersResponse.json();
+        // Access the players array and pick a random player
+        const randomPlayer =
+          playersData.players[
+            Math.floor(Math.random() * playersData.players.length)
           ];
-        console.log(randomClub);
-
-        // Fetch the players from the random club
-        const playersResponse = await fetch(
-          `/transfermarkt/clubs/${randomClub.id}/players`
-        );
-        if (playersResponse.ok) {
-          const playersData = await playersResponse.json();
-          // Access the players array and pick a random player
-          const randomPlayer =
-            playersData.players[
-              Math.floor(Math.random() * playersData.players.length)
-            ];
-          setPlayer(randomPlayer);
-          console.log(randomPlayer);
-        } else {
-          throw new Error("Could not fetch players");
-        }
+        setPlayer(randomPlayer);
+        console.log(randomPlayer);
       } else {
-        throw new Error("Something went wrong");
+        throw new Error("Could not fetch players");
       }
     } catch (error) {
       console.log(error);
