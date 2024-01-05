@@ -41,15 +41,12 @@ export default function Board() {
     return results;
   }
 
-  const [allGuesses, setAllGuesses] = useState<string[]>([
-    "KNOPP",
-    "OSTEN",
-    "TJOHO",
-    "LIPAS",
-    "UKPIO",
-  ]);
+  const [allGuesses, setAllGuesses] = useState<string[]>([]);
   const guessAmount = 5;
 
+  // Will move these two later, just here for testing purposes
+
+  // Renders the board with empty tiles
   useEffect(() => {
     setAllGuesses([]);
     for (let i = 0; i < guessAmount; i++) {
@@ -57,11 +54,20 @@ export default function Board() {
     }
   }, []);
 
+  // Renders the board with the first guess
+  useEffect(() => {
+    setAllGuesses((allGuesses) => {
+      const newGuesses = [...allGuesses];
+      newGuesses[0] = "salah";
+      return newGuesses;
+    });
+  }, []);
+
   return (
     <>
       Board:
       <div className="justify-center items-center flex gap-1 flex-col">
-        <div className="flex w-full justify-center gap-1">
+        <div className="flex w-full justify-center gap-1 border-b-2 border-red-500">
           {nameArray.map((letter, index) => (
             <Tile key={index} letter={letter} />
           ))}
