@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import "./index.css";
 import TailwindColors from "./pages/TailwindColors.tsx";
 import Test from "./pages/Test.tsx";
+import PlayerProvider from "./PlayerContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <PlayerProvider>
+      <RouterProvider router={router} />
+    </PlayerProvider>
   </React.StrictMode>
 );
