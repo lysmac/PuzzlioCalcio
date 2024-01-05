@@ -65,7 +65,6 @@ export default function Board() {
 
   return (
     <>
-      Board:
       <div className="justify-center items-center flex gap-1 flex-col">
         <div className="flex w-full justify-center gap-1 border-b-2 border-red-500">
           {nameArray.map((letter, index) => (
