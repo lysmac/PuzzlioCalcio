@@ -1,4 +1,5 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useState } from "react";
+import { competitionIds } from "./data";
 
 type Player = {
   id: number;
@@ -6,40 +7,56 @@ type Player = {
 };
 
 interface PlayerContextValue {
-  player: Player;
   fetchPlayer: () => void;
+  player: Player | null;
 }
+
+export const PlayerContext = createContext<PlayerContextValue>({
+  fetchPlayer: () => {},
+  player: null,
+});
 
 export interface ProviderProps {
   children: React.ReactNode;
 }
 
-export const PlayerContext = createContext<PlayerContextValue>({
-  player: {
-    id: 0,
-    name: "",
-  },
-  fetchPlayer: () => {},
-});
+export default function PlayerProvider({ children }: ProviderProps) {
+  const [player, setPlayer] = useState<Player | null>(null);
 
-export default function PlayerProfileProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<Player>({ id: 0, name: "" });
-
-  // Function to generate a random 6-digit number
-  const getRandomPlayerId = () => {
-    return Math.floor(100000 + Math.random() * 900000);
-  };
-
-  const fetchPlayer = useCallback(async () => {
+  const fetchPlayer = async () => {
     try {
-      const playerId = getRandomPlayerId();
+      const randomCompetitionId =
+        competitionIds[Math.floor(Math.random() * competitionIds.length)];
       const response = await fetch(
-        `/transfermarkt/players/${playerId}/profile`
+        `/transfermarkt/competitions/${randomCompetitionId.id}/clubs`
       );
       if (response.ok) {
-        const data = await response.json();
-        setPlayer({ id: data.id, name: data.name });
-        console.log(data.name, data.id);
+        const fetchedCompetition = await response.json();
+        console.log(fetchedCompetition);
+
+        // Pick a random club
+        const randomClub =
+          fetchedCompetition.clubs[
+            Math.floor(Math.random() * fetchedCompetition.clubs.length)
+          ];
+        console.log(randomClub);
+
+        // Fetch the players from the random club
+        const playersResponse = await fetch(
+          `/transfermarkt/clubs/${randomClub.id}/players`
+        );
+        if (playersResponse.ok) {
+          const playersData = await playersResponse.json();
+          // Access the players array and pick a random player
+          const randomPlayer =
+            playersData.players[
+              Math.floor(Math.random() * playersData.players.length)
+            ];
+          setPlayer(randomPlayer);
+          console.log(randomPlayer);
+        } else {
+          throw new Error("Could not fetch players");
+        }
       } else {
         throw new Error("Something went wrong");
       }
@@ -49,17 +66,11 @@ export default function PlayerProfileProvider({ children }: ProviderProps) {
         console.log(error.message);
       }
     }
-  }, []);
-
-  useEffect(() => {
-    fetchPlayer();
-  }, [fetchPlayer]);
+  };
 
   return (
-    <PlayerContext.Provider value={{ player, fetchPlayer }}>
+    <PlayerContext.Provider value={{ fetchPlayer, player }}>
       {children}
     </PlayerContext.Provider>
   );
 }
-
-//https://transfermarkt-api.vercel.app/players/123456/profile
