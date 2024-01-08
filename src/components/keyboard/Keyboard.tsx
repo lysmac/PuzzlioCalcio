@@ -1,36 +1,71 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { PlayerContext } from "../../PlayerContext";
 import { keyboardButtons } from "../../data";
 import KeyboardButton from "./KeyboardButton";
 
 export default function Keyboard() {
-  const [keyboardInput, setKeyboardInput] = useState("");
+  const {
+    setKeyboardInput,
+    keyboardInput,
+    guessNumber,
+    setAllGuesses,
+    allGuesses,
+  } = useContext(PlayerContext);
 
   // Rendered keyboard
   const handleKeyboardInput = (value: string) => {
-    if (value === "Del") {
-      // Remove the last letter if the "del" button is pressed
-      setKeyboardInput((prev) => prev.slice(0, -1));
-    } else {
-      setKeyboardInput((prev) => prev + value);
-    }
+    setAllGuesses((prevGuesses) => {
+      // Copy the previous guesses
+      const newGuesses = [...prevGuesses];
+
+      // Get the current guess object
+      const currentGuess = newGuesses[guessNumber];
+
+      if (value === "Del") {
+        // Remove the last letter if the "del" button is pressed
+        currentGuess.guess = currentGuess.guess.slice(0, -1);
+      } else {
+        // Add the new value to the current guess
+        currentGuess.guess += value;
+      }
+
+      // Replace the guess object in the array
+      newGuesses[guessNumber] = currentGuess;
+
+      return newGuesses;
+    });
   };
 
   // Physical keyboard
   useEffect(() => {
     const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
-      // Check if the key pressed is a letter
-      if (/^[a-zA-Z]$/.test(e.key)) {
-        setKeyboardInput((prev) => prev + e.key.toUpperCase());
-      } else if (e.key === "Backspace") {
-        // Remove the last letter if the backspace key is pressed
-        setKeyboardInput((prev) => prev.slice(0, -1));
-      }
+      setAllGuesses((prevGuesses) => {
+        // Copy the previous guesses
+        const newGuesses = [...prevGuesses];
+
+        // Get the current guess object
+        const currentGuess = newGuesses[guessNumber];
+
+        if (/^[a-zA-Z]$/.test(e.key)) {
+          // Add the new value to the current guess
+          currentGuess.guess += e.key.toUpperCase();
+        } else if (e.key === "Backspace") {
+          // Remove the last letter if the backspace key is pressed
+          currentGuess.guess = currentGuess.guess.slice(0, -1);
+        }
+
+        // Replace the guess object in the array
+        newGuesses[guessNumber] = currentGuess;
+
+        return newGuesses;
+      });
     };
+
     window.addEventListener("keydown", handlePhysicalKeyboardInput);
     return () => {
       window.removeEventListener("keydown", handlePhysicalKeyboardInput);
     };
-  }, []);
+  }); // Add guessNumber to the dependency array
 
   return (
     <div className="flex flex-col my-2.5 gap-1">

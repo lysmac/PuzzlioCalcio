@@ -18,6 +18,10 @@ interface PlayerContextValue {
   setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
   guessAmount: number;
   setGuessAmount: React.Dispatch<React.SetStateAction<number>>;
+  keyboardInput: string;
+  setKeyboardInput: React.Dispatch<React.SetStateAction<string>>;
+  guessNumber: number;
+  setGuessNumber: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -27,6 +31,10 @@ export const PlayerContext = createContext<PlayerContextValue>({
   setAllGuesses: () => {},
   guessAmount: 0,
   setGuessAmount: () => {},
+  keyboardInput: "",
+  setKeyboardInput: () => {},
+  guessNumber: 0,
+  setGuessNumber: () => {},
 });
 
 export interface ProviderProps {
@@ -36,9 +44,12 @@ export interface ProviderProps {
 export default function PlayerProvider({ children }: ProviderProps) {
   const [player, setPlayer] = useState<Player | null>(null);
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
+  const [keyboardInput, setKeyboardInput] = useState("");
 
   // Hardcoded for now, will be changed later with the new game function
   const [guessAmount, setGuessAmount] = useState(5);
+
+  const [guessNumber, setGuessNumber] = useState(0);
 
   const fetchPlayer = async () => {
     try {
@@ -86,6 +97,10 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setAllGuesses,
         guessAmount,
         setGuessAmount,
+        keyboardInput,
+        setKeyboardInput,
+        guessNumber,
+        setGuessNumber,
       }}
     >
       {children}
