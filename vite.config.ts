@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/transfermarkt": {
-        target: "https://transfermarkt-api.vercel.app/",
+        target: "https://transfermarkt-api-psi.vercel.app/",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/transfermarkt/, ""),
