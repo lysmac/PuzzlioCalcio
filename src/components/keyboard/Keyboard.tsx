@@ -24,9 +24,6 @@ export default function Keyboard() {
       } else if (e.key === "Backspace") {
         // Remove the last letter if the backspace key is pressed
         setKeyboardInput((prev) => prev.slice(0, -1));
-      } else {
-        // If the key pressed is not a letter, prevent the default action
-        e.preventDefault();
       }
     };
     window.addEventListener("keydown", handlePhysicalKeyboardInput);
