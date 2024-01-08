@@ -41,7 +41,11 @@ export default function Board() {
     return results;
   }
 
-  const [allGuesses, setAllGuesses] = useState<string[]>([]);
+  interface Guess {
+    guess: string;
+    submitted: boolean;
+  }
+  const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const guessAmount = 5;
 
   // Will move these two later, just here for testing purposes
@@ -50,7 +54,10 @@ export default function Board() {
   useEffect(() => {
     setAllGuesses([]);
     for (let i = 0; i < guessAmount; i++) {
-      setAllGuesses((allGuesses) => [...allGuesses, "empty"]);
+      setAllGuesses((prevGuesses) => [
+        ...prevGuesses,
+        { guess: "empty", submitted: false },
+      ]);
     }
   }, []);
 
@@ -58,7 +65,13 @@ export default function Board() {
   useEffect(() => {
     setAllGuesses((allGuesses) => {
       const newGuesses = [...allGuesses];
-      newGuesses[0] = "salah";
+
+      // How you render out when typing
+      newGuesses[0].guess = "salah";
+
+      // How you render out when submitted
+      newGuesses[1].guess = "lopus";
+      newGuesses[1].submitted = true;
       return newGuesses;
     });
   }, []);
@@ -73,20 +86,22 @@ export default function Board() {
         </div>{" "}
         <div className="flex w-full gap-1 flex-col">
           {allGuesses.map((guess, index) => {
-            const results = colorWord(guess);
+            const results = colorWord(guess.guess);
             return (
               <div key={index} className="flex gap-1">
-                {guess === "empty"
+                {guess.guess === "empty"
                   ? Array.from({ length: guessAmount }, (_, i) => (
                       <Tile key={i} letter="" />
                     ))
-                  : guess
+                  : guess.guess
                       .split("")
                       .map((letter, letterIndex) => (
                         <Tile
                           key={letterIndex}
                           letter={letter}
-                          place={results[letterIndex]}
+                          place={
+                            guess.submitted ? results[letterIndex] : undefined
+                          }
                         />
                       ))}
               </div>
