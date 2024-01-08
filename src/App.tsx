@@ -9,7 +9,7 @@ export default function App() {
       <header>
         <Header />
       </header>
-      <main className="flex flex-col justify-center items-center w-full bg-dt-bg">
+      <main className="flex flex-col justify-center items-center w-full">
         <Board />
         <Keyboard />
       </main>

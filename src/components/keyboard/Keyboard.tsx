@@ -83,7 +83,7 @@ export default function Keyboard() {
         ))}
       </div>
       <div>
-        <p className="text-white">{keyboardInput}</p>
+        <p className="">{keyboardInput}</p>
       </div>
     </div>
   );
