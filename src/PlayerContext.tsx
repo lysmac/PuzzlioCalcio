@@ -6,14 +6,27 @@ type Player = {
   name: string;
 };
 
+interface Guess {
+  guess: string;
+  submitted: boolean;
+}
+
 interface PlayerContextValue {
   fetchPlayer: () => void;
   player: Player | null;
+  allGuesses: Guess[];
+  setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
+  guessAmount: number;
+  setGuessAmount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
   fetchPlayer: () => {},
   player: null,
+  allGuesses: [],
+  setAllGuesses: () => {},
+  guessAmount: 0,
+  setGuessAmount: () => {},
 });
 
 export interface ProviderProps {
@@ -22,6 +35,10 @@ export interface ProviderProps {
 
 export default function PlayerProvider({ children }: ProviderProps) {
   const [player, setPlayer] = useState<Player | null>(null);
+  const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
+
+  // Hardcoded for now, will be changed later with the new game function
+  const [guessAmount, setGuessAmount] = useState(5);
 
   const fetchPlayer = async () => {
     try {
@@ -61,7 +78,16 @@ export default function PlayerProvider({ children }: ProviderProps) {
   };
 
   return (
-    <PlayerContext.Provider value={{ fetchPlayer, player }}>
+    <PlayerContext.Provider
+      value={{
+        fetchPlayer,
+        player,
+        allGuesses,
+        setAllGuesses,
+        guessAmount,
+        setGuessAmount,
+      }}
+    >
       {children}
     </PlayerContext.Provider>
   );

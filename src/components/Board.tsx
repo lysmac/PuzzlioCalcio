@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { PlayerContext } from "../PlayerContext";
 import Tile from "./Tile";
 
 export default function Board() {
+  const { player, allGuesses, setAllGuesses, guessAmount } =
+    useContext(PlayerContext);
+
   const name = "KLOPP";
   const nameArray = name.toLowerCase().split("");
 
@@ -41,13 +45,6 @@ export default function Board() {
     return results;
   }
 
-  interface Guess {
-    guess: string;
-    submitted: boolean;
-  }
-  const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
-  const guessAmount = 5;
-
   // Will move these two later, just here for testing purposes
 
   // Renders the board with empty tiles
@@ -79,6 +76,7 @@ export default function Board() {
   return (
     <>
       <div className="justify-center items-center flex gap-1 flex-col">
+        {player?.name}
         <div className="flex w-full justify-center gap-1 border-b-2 border-red-500">
           {nameArray.map((letter, index) => (
             <Tile key={index} letter={letter} />
