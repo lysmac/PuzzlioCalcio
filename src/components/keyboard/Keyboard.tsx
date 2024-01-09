@@ -71,6 +71,8 @@ export default function Keyboard() {
         handleKeyboardInput("Del");
       } else if (/^[a-zA-Z]$/.test(e.key)) {
         handleKeyboardInput(e.key);
+      } else if (e.key === "Enter") {
+        handleKeyboardInput("Enter");
       }
     };
 

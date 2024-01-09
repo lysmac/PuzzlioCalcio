@@ -53,6 +53,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const [guessNumber, setGuessNumber] = useState(0);
 
+  const [fotmobBlocked, setFotmobBlocked] = useState(false);
+
   const fetchPlayer = async () => {
     try {
       // Pick a random competition from the clubIds array
@@ -91,6 +93,9 @@ export default function PlayerProvider({ children }: ProviderProps) {
   };
 
   const searchPlayer = async (name: string) => {
+    if (fotmobBlocked) {
+      return false;
+    }
     try {
       const response = await fetch(`/fotmob${name}&fetchMore=squadMember`, {
         method: "GET",
@@ -117,6 +122,10 @@ export default function PlayerProvider({ children }: ProviderProps) {
         },
       });
       if (response.ok) {
+        setFotmobBlocked(true);
+        setTimeout(() => {
+          setFotmobBlocked(false);
+        }, 1000);
         const data = await response.json();
 
         let allNames: string[] = [];
