@@ -11,6 +11,7 @@ export default function Keyboard() {
     setGuessNumber,
     setAllGuesses,
     allGuesses,
+    player,
   } = useContext(PlayerContext);
 
   // Rendered keyboard
@@ -30,7 +31,10 @@ export default function Keyboard() {
         currentGuess.guess = currentGuess.guess.slice(0, -1);
       } else {
         // Add the new value to the current guess
-        currentGuess.guess += value;
+
+        if (player && currentGuess.guess.length < player.name.length) {
+          currentGuess.guess += value;
+        }
       }
 
       // Replace the guess object in the array
@@ -58,7 +62,10 @@ export default function Keyboard() {
 
         if (/^[a-zA-Z]$/.test(e.key)) {
           // Add the new value to the current guess
-          currentGuess.guess += e.key.toUpperCase();
+
+          if (player && currentGuess.guess.length < player.name.length) {
+            currentGuess.guess += e.key;
+          }
         } else if (e.key === "Backspace") {
           // Remove the last letter if the backspace key is pressed
           currentGuess.guess = currentGuess.guess.slice(0, -1);

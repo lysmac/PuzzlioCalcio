@@ -44,7 +44,7 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<Player | null>(null);
+  const [player, setPlayer] = useState<Player | null>({ id: 0, name: "klopp" });
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
 
