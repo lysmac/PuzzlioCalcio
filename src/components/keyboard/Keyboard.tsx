@@ -11,6 +11,7 @@ export default function Keyboard() {
     setAllGuesses,
     allGuesses,
     player,
+    searchPlayer,
   } = useContext(PlayerContext);
 
   // Rendered keyboard
@@ -21,6 +22,21 @@ export default function Keyboard() {
       if (guessNumber > allGuesses.length - 1) {
         return prevGuesses;
       }
+
+      const checkPlayerName = async () => {
+        const validPlayerName = await searchPlayer(currentGuess.guess);
+
+        if (validPlayerName) {
+          currentGuess.submitted = true;
+          setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+          if (currentGuess.guess === player?.name) {
+            // Add a win condition here
+            console.log("YOU WON!");
+          }
+        } else {
+          console.log("Not a valid name");
+        }
+      };
       // Copy the previous guesses
       const newGuesses = [...prevGuesses];
 
@@ -28,15 +44,7 @@ export default function Keyboard() {
       const currentGuess = newGuesses[guessNumber];
       if (value === "Enter") {
         if (player && currentGuess.guess.length === player.name.length) {
-          // Move to the next guess
-          currentGuess.submitted = true;
-          setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
-          if (currentGuess.guess === player.name) {
-            // Add a win condition here
-            console.log("YOU WON!");
-          }
-        } else {
-          console.log("You need to guess the whole name!");
+          checkPlayerName();
         }
       } else if (value === "Del") {
         // Remove the last letter if the "del" button is pressed

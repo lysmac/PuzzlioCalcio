@@ -12,7 +12,7 @@ interface Guess {
 }
 
 interface PlayerContextValue {
-  searchPlayer: (name: string) => void;
+  searchPlayer: (name: string) => Promise<boolean>;
   fetchPlayer: () => void;
   player: Player | null;
   allGuesses: Guess[];
@@ -26,7 +26,7 @@ interface PlayerContextValue {
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
-  searchPlayer: () => {},
+  searchPlayer: () => new Promise(() => {}),
   fetchPlayer: () => {},
   player: null,
   allGuesses: [],
@@ -118,20 +118,29 @@ export default function PlayerProvider({ children }: ProviderProps) {
       });
       if (response.ok) {
         const data = await response.json();
-        if (data.squad && data.squad.dataset) {
-          data.squad.dataset.forEach((player: Player) => {
-            console.log({ id: player.id, name: player.name });
-          });
+
+        let allNames: string[] = [];
+
+        data.squad.dataset.forEach((player: Player) => {
+          const names = player.name.toLowerCase().split(" ");
+          allNames = allNames.concat(names);
+        });
+        allNames = [...new Set(allNames)];
+
+        if (allNames.includes(name.toLowerCase())) {
+          return true;
+        } else {
+          return false;
         }
       } else {
         throw new Error("Could not fetch player");
       }
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        console.log(error.message);
+        return false;
       }
     }
+    return false;
   };
 
   return (
