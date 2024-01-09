@@ -84,6 +84,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
+        cleanGuesses();
       } else {
         throw new Error("Could not fetch players");
       }
@@ -92,6 +93,17 @@ export default function PlayerProvider({ children }: ProviderProps) {
       if (error instanceof Error) {
         console.log(error.message);
       }
+    }
+  };
+
+  const cleanGuesses = () => {
+    setAllGuesses([]);
+    setGuessNumber(0);
+    for (let i = 0; i < guessAmount; i++) {
+      setAllGuesses((prevGuesses) => [
+        ...prevGuesses,
+        { guess: "", submitted: false },
+      ]);
     }
   };
 
