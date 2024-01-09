@@ -26,9 +26,13 @@ export default function Keyboard() {
       // Get the current guess object
       const currentGuess = newGuesses[guessNumber];
       if (value === "Enter") {
+        if (player && currentGuess.guess.length === player.name.length) {
+          // Move to the next guess
+          console.log("Enter");
+          setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+        }
         // Move to the next guess
-        console.log("Enter");
-        setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+        console.log("You need to guess the whole name!");
       } else if (value === "Del") {
         // Remove the last letter if the "del" button is pressed
         currentGuess.guess = currentGuess.guess.slice(0, -1);
@@ -62,9 +66,13 @@ export default function Keyboard() {
         const currentGuess = newGuesses[guessNumber];
 
         if (e.key === "Enter") {
+          if (player && currentGuess.guess.length === player.name.length) {
+            // Move to the next guess
+            console.log("Enter");
+            setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+          }
           // Move to the next guess
-          console.log("Enter");
-          setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+          console.log("You need to guess the whole name!");
         }
 
         if (/^[a-zA-Z]$/.test(e.key)) {
