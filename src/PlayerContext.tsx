@@ -84,7 +84,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
-        console.log(randomPlayer);
       } else {
         throw new Error("Could not fetch players");
       }
@@ -97,7 +96,9 @@ export default function PlayerProvider({ children }: ProviderProps) {
   };
 
   const cleanName = (player: Player) => {
-    const cleanedName = player.name
+    const lastName = player.name.split(" ").slice(-1)[0];
+
+    const cleanedName = lastName
       .normalize("NFD") // Decompose into base characters and diacritics
       .replace(/[\u0300-\u036f]/g, "") // Remove diacritic marks
       .toLowerCase()
