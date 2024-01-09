@@ -6,7 +6,7 @@ export default function Board() {
   const { player, allGuesses, setAllGuesses, guessAmount } =
     useContext(PlayerContext);
 
-  const nameArray = player?.name.toLowerCase().split("");
+  const nameArray = player?.toLowerCase().split("");
 
   function colorWord(word: string) {
     const guessArray = word.toLowerCase().split("");
@@ -73,7 +73,7 @@ export default function Board() {
   return (
     <>
       <div className="justify-center items-center flex gap-1 flex-col">
-        {player?.name}
+        {player}
 
         <div className="flex w-full gap-1 flex-col">
           {allGuesses.map((guess, index) => {
@@ -81,7 +81,7 @@ export default function Board() {
             return (
               <div key={index} className="flex gap-1">
                 {Array.from(
-                  { length: player?.name.length || 0 },
+                  { length: player?.length || 0 },
                   (_, letterIndex) => {
                     const letter = guess.guess[letterIndex] || "";
                     return (

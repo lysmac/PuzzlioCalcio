@@ -14,7 +14,7 @@ interface Guess {
 interface PlayerContextValue {
   searchPlayer: (name: string) => Promise<boolean>;
   fetchPlayer: () => void;
-  player: Player | null;
+  player: string | null;
   allGuesses: Guess[];
   setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
   guessAmount: number;
@@ -44,7 +44,7 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<Player | null>({ id: 0, name: "klopp" });
+  const [player, setPlayer] = useState<string | null>("klopp");
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
 
@@ -81,7 +81,9 @@ export default function PlayerProvider({ children }: ProviderProps) {
           playersData.players[
             Math.floor(Math.random() * playersData.players.length)
           ];
-        setPlayer(randomPlayer);
+
+        const clean = cleanName(randomPlayer);
+        setPlayer(clean);
         console.log(randomPlayer);
       } else {
         throw new Error("Could not fetch players");
@@ -92,6 +94,18 @@ export default function PlayerProvider({ children }: ProviderProps) {
         console.log(error.message);
       }
     }
+  };
+
+  const cleanName = (player: Player) => {
+    const cleanedName = player.name
+      .normalize("NFD") // Decompose into base characters and diacritics
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritic marks
+      .toLowerCase()
+      .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
+      .replace(/\s+/g, " ")
+      .trim();
+
+    return cleanedName;
   };
 
   const searchPlayer = async (name: string) => {

@@ -29,7 +29,7 @@ export default function Keyboard() {
         if (validPlayerName) {
           currentGuess.submitted = true;
           setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
-          if (currentGuess.guess === player?.name) {
+          if (currentGuess.guess === player) {
             // Add a win condition here
             console.log("YOU WON!");
           }
@@ -43,7 +43,7 @@ export default function Keyboard() {
       // Get the current guess object
       const currentGuess = newGuesses[guessNumber];
       if (value === "Enter") {
-        if (player && currentGuess.guess.length === player.name.length) {
+        if (player && currentGuess.guess.length === player?.length) {
           checkPlayerName();
         }
       } else if (value === "Del") {
@@ -52,7 +52,7 @@ export default function Keyboard() {
       } else {
         // Add the new value to the current guess
 
-        if (player && currentGuess.guess.length < player.name.length) {
+        if (player && currentGuess.guess.length < player?.length) {
           currentGuess.guess += value;
         }
       }
