@@ -66,12 +66,6 @@ export default function Board() {
     setAllGuesses((allGuesses) => {
       const newGuesses = [...allGuesses];
 
-      // // How you render out when typing
-      // newGuesses[0].guess = "salah";
-
-      // // How you render out when submitted
-      // newGuesses[1].guess = "lopus";
-      // newGuesses[1].submitted = true;
       return newGuesses;
     });
   }, []);
