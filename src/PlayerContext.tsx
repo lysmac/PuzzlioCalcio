@@ -53,6 +53,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const [guessNumber, setGuessNumber] = useState(0);
 
+  // This variable is used to prevent the fotmob api from being spammed.
+  // It will be set to true when the api is called, and then set to false after a 1 second timeout.
   const [fotmobBlocked, setFotmobBlocked] = useState(false);
 
   const fetchPlayer = async () => {
