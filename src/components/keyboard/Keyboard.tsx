@@ -55,45 +55,11 @@ export default function Keyboard() {
   // Physical keyboard
   useEffect(() => {
     const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
-      setAllGuesses((prevGuesses) => {
-        if (guessNumber > allGuesses.length - 1) {
-          return prevGuesses;
-        }
-
-        // Copy the previous guesses
-        const newGuesses = [...prevGuesses];
-
-        // Get the current guess object
-        const currentGuess = newGuesses[guessNumber];
-
-        if (e.key === "Enter") {
-          if (player && currentGuess.guess.length === player.name.length) {
-            // Move to the next guess
-            currentGuess.submitted = true;
-
-            console.log("Enter");
-            setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
-          }
-          // Move to the next guess
-          console.log("You need to guess the whole name!");
-        }
-
-        if (/^[a-zA-Z]$/.test(e.key)) {
-          // Add the new value to the current guess
-
-          if (player && currentGuess.guess.length < player.name.length) {
-            currentGuess.guess += e.key;
-          }
-        } else if (e.key === "Backspace") {
-          // Remove the last letter if the backspace key is pressed
-          currentGuess.guess = currentGuess.guess.slice(0, -1);
-        }
-
-        // Replace the guess object in the array
-        newGuesses[guessNumber] = currentGuess;
-
-        return newGuesses;
-      });
+      if (e.key === "Backspace") {
+        handleKeyboardInput("Del");
+      } else {
+        handleKeyboardInput(e.key);
+      }
     };
 
     window.addEventListener("keydown", handlePhysicalKeyboardInput);
