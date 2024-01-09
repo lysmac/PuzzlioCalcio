@@ -53,7 +53,7 @@ export default function Board() {
     for (let i = 0; i < guessAmount; i++) {
       setAllGuesses((prevGuesses) => [
         ...prevGuesses,
-        { guess: "empty", submitted: false },
+        { guess: "", submitted: false },
       ]);
     }
   }, []);
@@ -87,26 +87,25 @@ export default function Board() {
             const results = colorWord(guess.guess);
             return (
               <div key={index} className="flex gap-1">
-                {guess.guess === "empty"
-                  ? Array.from({ length: guessAmount }, (_, i) => (
-                      <Tile key={i} letter="" />
-                    ))
-                  : guess.guess
-                      .split("")
-                      .map((letter, letterIndex) => (
-                        <Tile
-                          key={letterIndex}
-                          letter={letter}
-                          place={
-                            guess.submitted ? results[letterIndex] : undefined
-                          }
-                        />
-                      ))}
+                {Array.from({ length: name.length }, (_, letterIndex) => {
+                  const letter = guess.guess[letterIndex] || "";
+                  return (
+                    <Tile
+                      key={letterIndex}
+                      letter={letter}
+                      place={
+                        guess.submitted && letter
+                          ? results[letterIndex]
+                          : undefined
+                      }
+                    />
+                  );
+                })}
               </div>
             );
           })}
-          <div className="flex gap-1"></div>
         </div>
+        <div className="flex gap-1"></div>
       </div>
     </>
   );
