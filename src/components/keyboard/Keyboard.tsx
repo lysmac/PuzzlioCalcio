@@ -28,6 +28,7 @@ export default function Keyboard() {
       if (value === "Enter") {
         if (player && currentGuess.guess.length === player.name.length) {
           // Move to the next guess
+          currentGuess.submitted = true;
           console.log("Enter");
           setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
         }
@@ -68,6 +69,8 @@ export default function Keyboard() {
         if (e.key === "Enter") {
           if (player && currentGuess.guess.length === player.name.length) {
             // Move to the next guess
+            currentGuess.submitted = true;
+
             console.log("Enter");
             setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
           }
