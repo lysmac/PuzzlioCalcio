@@ -29,11 +29,14 @@ export default function Keyboard() {
         if (player && currentGuess.guess.length === player.name.length) {
           // Move to the next guess
           currentGuess.submitted = true;
-          console.log("Enter");
           setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+          if (currentGuess.guess === player.name) {
+            // Add a win condition here
+            console.log("YOU WON!");
+          }
+        } else {
+          console.log("You need to guess the whole name!");
         }
-        // Move to the next guess
-        console.log("You need to guess the whole name!");
       } else if (value === "Del") {
         // Remove the last letter if the "del" button is pressed
         currentGuess.guess = currentGuess.guess.slice(0, -1);
