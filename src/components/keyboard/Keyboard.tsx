@@ -5,7 +5,6 @@ import KeyboardButton from "./KeyboardButton";
 
 export default function Keyboard() {
   const {
-    setKeyboardInput,
     keyboardInput,
     guessNumber,
     setGuessNumber,
@@ -16,6 +15,8 @@ export default function Keyboard() {
 
   // Rendered keyboard
   const handleKeyboardInput = (value: string) => {
+    // Set a guard here so if the game is won or lost, the keyboard doesn't work
+
     setAllGuesses((prevGuesses) => {
       if (guessNumber > allGuesses.length - 1) {
         return prevGuesses;
