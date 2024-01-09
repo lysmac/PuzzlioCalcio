@@ -1,21 +1,42 @@
 import { createContext, useState } from "react";
 import { clubIds } from "./data";
 
-interface Player  {
+interface Player {
   id: number;
   name: string;
+}
+
+interface Guess {
+  guess: string;
+  submitted: boolean;
 }
 
 interface PlayerContextValue {
   searchPlayer: (name: string) => void;
   fetchPlayer: () => void;
   player: Player | null;
+  allGuesses: Guess[];
+  setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
+  guessAmount: number;
+  setGuessAmount: React.Dispatch<React.SetStateAction<number>>;
+  keyboardInput: string;
+  setKeyboardInput: React.Dispatch<React.SetStateAction<string>>;
+  guessNumber: number;
+  setGuessNumber: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
   searchPlayer: () => {},
   fetchPlayer: () => {},
   player: null,
+  allGuesses: [],
+  setAllGuesses: () => {},
+  guessAmount: 0,
+  setGuessAmount: () => {},
+  keyboardInput: "",
+  setKeyboardInput: () => {},
+  guessNumber: 0,
+  setGuessNumber: () => {},
 });
 
 export interface ProviderProps {
@@ -23,7 +44,14 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<Player | null>(null);
+  const [player, setPlayer] = useState<Player | null>({ id: 0, name: "klopp" });
+  const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
+  const [keyboardInput, setKeyboardInput] = useState("");
+
+  // Hardcoded for now, will be changed later with the new game function
+  const [guessAmount, setGuessAmount] = useState(5);
+
+  const [guessNumber, setGuessNumber] = useState(0);
 
   const fetchPlayer = async () => {
     try {
@@ -92,7 +120,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         const data = await response.json();
         if (data.squad && data.squad.dataset) {
           data.squad.dataset.forEach((player: Player) => {
-            console.log({ id: player.id, name: player.name }); 
+            console.log({ id: player.id, name: player.name });
           });
         }
       } else {
@@ -107,7 +135,21 @@ export default function PlayerProvider({ children }: ProviderProps) {
   };
 
   return (
-    <PlayerContext.Provider value={{ searchPlayer, fetchPlayer, player }}>
+    <PlayerContext.Provider
+      value={{
+        searchPlayer,
+        fetchPlayer,
+        player,
+        allGuesses,
+        setAllGuesses,
+        guessAmount,
+        setGuessAmount,
+        keyboardInput,
+        setKeyboardInput,
+        guessNumber,
+        setGuessNumber,
+      }}
+    >
       {children}
     </PlayerContext.Provider>
   );
