@@ -69,7 +69,7 @@ export default function Keyboard() {
     const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
       if (e.key === "Backspace") {
         handleKeyboardInput("Del");
-      } else {
+      } else if (/^[a-zA-Z]$/.test(e.key)) {
         handleKeyboardInput(e.key);
       }
     };
