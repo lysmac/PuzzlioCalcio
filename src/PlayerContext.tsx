@@ -23,6 +23,8 @@ interface PlayerContextValue {
   setKeyboardInput: React.Dispatch<React.SetStateAction<string>>;
   guessNumber: number;
   setGuessNumber: React.Dispatch<React.SetStateAction<number>>;
+  winGame: () => void;
+  isGameWon: boolean;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -37,6 +39,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   setKeyboardInput: () => {},
   guessNumber: 0,
   setGuessNumber: () => {},
+  winGame: () => {},
+  isGameWon: false,
 });
 
 export interface ProviderProps {
@@ -47,6 +51,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [player, setPlayer] = useState<string | null>("klopp");
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
+  const [isGameWon, setIsGameWon] = useState(false);
 
   // Hardcoded for now, will be changed later with the new game function
   const [guessAmount, setGuessAmount] = useState(5);
@@ -56,6 +61,12 @@ export default function PlayerProvider({ children }: ProviderProps) {
   // This variable is used to prevent the fotmob api from being spammed.
   // It will be set to true when the api is called, and then set to false after a 1 second timeout.
   const [fotmobBlocked, setFotmobBlocked] = useState(false);
+
+  const winGame = () => {
+    console.log("You won the game!!");
+
+    setIsGameWon(true);
+  };
 
   const fetchPlayer = async () => {
     try {
@@ -195,6 +206,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setKeyboardInput,
         guessNumber,
         setGuessNumber,
+        winGame,
+        isGameWon,
       }}
     >
       {children}

@@ -12,12 +12,17 @@ export default function Keyboard() {
     allGuesses,
     player,
     searchPlayer,
+    isGameWon,
+    winGame,
   } = useContext(PlayerContext);
 
   // Rendered keyboard
   const handleKeyboardInput = (value: string) => {
     // Set a guard here so if the game is won or lost, the keyboard doesn't work
 
+    if (isGameWon) {
+      return;
+    }
     setAllGuesses((prevGuesses) => {
       if (guessNumber > allGuesses.length - 1) {
         return prevGuesses;
@@ -30,8 +35,7 @@ export default function Keyboard() {
           currentGuess.submitted = true;
           setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
           if (currentGuess.guess === player) {
-            // Add a win condition here
-            console.log("YOU WON!");
+            winGame();
           }
         } else {
           console.log("Not a valid name");
