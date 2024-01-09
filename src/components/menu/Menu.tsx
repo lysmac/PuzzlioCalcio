@@ -1,6 +1,5 @@
-import { useContext } from "react";
-import {PlayerContext} from "../../PlayerContext";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { PlayerContext } from "../../PlayerContext";
 import MenuButton from "./MenuButton";
 
 export default function Menu() {

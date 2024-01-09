@@ -6,10 +6,16 @@ export default defineConfig({
   server: {
     proxy: {
       "/transfermarkt": {
-        target: "https://transfermarkt-api.vercel.app/",
+        target: "https://transfermarkt-api-psi.vercel.app/",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/transfermarkt/, ""),
+      },
+      "/fotmob": {
+        target: "https://www.fotmob.com/api/search/searchData?term=",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/fotmob/, ""),
       },
     },
   },
