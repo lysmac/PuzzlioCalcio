@@ -17,6 +17,9 @@ export default function Keyboard() {
   // Rendered keyboard
   const handleKeyboardInput = (value: string) => {
     setAllGuesses((prevGuesses) => {
+      if (guessNumber > allGuesses.length - 1) {
+        return prevGuesses;
+      }
       // Copy the previous guesses
       const newGuesses = [...prevGuesses];
 
@@ -48,6 +51,10 @@ export default function Keyboard() {
   useEffect(() => {
     const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
       setAllGuesses((prevGuesses) => {
+        if (guessNumber > allGuesses.length - 1) {
+          return prevGuesses;
+        }
+
         // Copy the previous guesses
         const newGuesses = [...prevGuesses];
 

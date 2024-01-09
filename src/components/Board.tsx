@@ -6,13 +6,16 @@ export default function Board() {
   const { player, allGuesses, setAllGuesses, guessAmount } =
     useContext(PlayerContext);
 
-  const name = "KLOPP";
-  const nameArray = name.toLowerCase().split("");
+  const nameArray = player?.name.toLowerCase().split("");
 
   function colorWord(word: string) {
     const guessArray = word.toLowerCase().split("");
 
     const nameLetterCount = new Map<string, number>();
+
+    if (!nameArray) {
+      return [];
+    }
     nameArray.forEach((letter) => {
       nameLetterCount.set(letter, (nameLetterCount.get(letter) || 0) + 1);
     });
@@ -63,12 +66,12 @@ export default function Board() {
     setAllGuesses((allGuesses) => {
       const newGuesses = [...allGuesses];
 
-      // How you render out when typing
-      newGuesses[0].guess = "salah";
+      // // How you render out when typing
+      // newGuesses[0].guess = "salah";
 
-      // How you render out when submitted
-      newGuesses[1].guess = "lopus";
-      newGuesses[1].submitted = true;
+      // // How you render out when submitted
+      // newGuesses[1].guess = "lopus";
+      // newGuesses[1].submitted = true;
       return newGuesses;
     });
   }, []);
@@ -77,30 +80,29 @@ export default function Board() {
     <>
       <div className="justify-center items-center flex gap-1 flex-col">
         {player?.name}
-        <div className="flex w-full justify-center gap-1 border-b-2 border-red-500">
-          {nameArray.map((letter, index) => (
-            <Tile key={index} letter={letter} />
-          ))}
-        </div>{" "}
+
         <div className="flex w-full gap-1 flex-col">
           {allGuesses.map((guess, index) => {
             const results = colorWord(guess.guess);
             return (
               <div key={index} className="flex gap-1">
-                {Array.from({ length: name.length }, (_, letterIndex) => {
-                  const letter = guess.guess[letterIndex] || "";
-                  return (
-                    <Tile
-                      key={letterIndex}
-                      letter={letter}
-                      place={
-                        guess.submitted && letter
-                          ? results[letterIndex]
-                          : undefined
-                      }
-                    />
-                  );
-                })}
+                {Array.from(
+                  { length: player?.name.length || 0 },
+                  (_, letterIndex) => {
+                    const letter = guess.guess[letterIndex] || "";
+                    return (
+                      <Tile
+                        key={letterIndex}
+                        letter={letter}
+                        place={
+                          guess.submitted && letter
+                            ? results[letterIndex]
+                            : undefined
+                        }
+                      />
+                    );
+                  }
+                )}
               </div>
             );
           })}
