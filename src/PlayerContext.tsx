@@ -69,6 +69,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   };
 
   const fetchPlayer = async () => {
+    setIsGameWon(false);
     try {
       // Pick a random competition from the clubIds array
       const randomCompetition =
