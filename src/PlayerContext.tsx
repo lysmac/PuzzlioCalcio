@@ -64,7 +64,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const winGame = () => {
     console.log("You won the game!!");
-
     setIsGameWon(true);
   };
 
