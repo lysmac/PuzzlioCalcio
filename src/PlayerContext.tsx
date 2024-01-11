@@ -137,10 +137,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
       return false;
     }
     try {
-      const response = await fetch(
-        `/.netlify/functions/fotmob-proxy?name=${encodeURIComponent(name)}`
-      );
-
+      const response = await fetch(`/fotmob${name}&fetchMore=squadMember`);
       if (response.ok) {
         setFotmobBlocked(true);
         setTimeout(() => {
