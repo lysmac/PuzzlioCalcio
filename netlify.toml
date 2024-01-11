@@ -4,7 +4,7 @@
   status = 200
   force = true
   headers = {X-From = "Netlify"}
-[[redirects]]
+
   from = "/fotmob/*"
   to = "https://www.fotmob.com/api/search/searchData?term=:splat"
   status = 200
