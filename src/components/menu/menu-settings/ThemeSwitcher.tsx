@@ -1,5 +1,5 @@
 // ThemeSwitcher.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./ThemeSwitcher.css";
 
 interface Label {
@@ -31,20 +31,41 @@ export default function ThemeSwitcher({
 
   const getSwitchAnimation = (value: string) => {
     const animations: { [key: string]: string | undefined } = {
-      "centerleft": "left-to-center",
-      "rightcenter": "center-to-right",
-      "centerright": "right-to-center",
-      "leftcenter": "center-to-left",
-      "rightleft": "left-to-right",
-      "leftright": "right-to-left",
+      centerleft: "left-to-center",
+      rightcenter: "center-to-right",
+      centerright: "right-to-center",
+      leftcenter: "center-to-left",
+      rightleft: "left-to-right",
+      leftright: "right-to-left",
     };
-  
+
     const newAnimation = animations[value + switchPosition] || null;
-  
+
     onChange(value);
     setSwitchPosition(value);
     setAnimation(newAnimation);
   };
+
+  useEffect(() => {
+    switch (switchPosition) {
+      case "left":
+        document.documentElement.classList.remove("dark", "gazzetta");
+        localStorage.theme = "light";
+        break;
+      case "center":
+        document.documentElement.classList.add("dark");
+        document.documentElement.classList.remove("gazzetta");
+        localStorage.theme = "dark";
+        break;
+      case "right":
+        document.documentElement.classList.add("gazzetta");
+        document.documentElement.classList.remove("dark");
+        localStorage.theme = "gazzetta";
+        break;
+      default:
+        break;
+    }
+  }, [switchPosition]);
 
   return (
     <div className="w-[250px] h-[50px] rounded-[40px] relative bg-transparent border border-black">
@@ -59,7 +80,9 @@ export default function ThemeSwitcher({
         value="left"
       />
       <label
-        className={`absolute cursor-pointer z-10 ${switchPosition === "left" && "text-white"}`}
+        className={`absolute cursor-pointer z-10 ${
+          switchPosition === "left" && "text-white"
+        }`}
         htmlFor="left"
       >
         <p className="font-bold">{labels.left.title}</p>
@@ -91,7 +114,9 @@ export default function ThemeSwitcher({
         value="right"
       />
       <label
-        className={`absolute right-[2px] cursor-pointer z-10 ${switchPosition === "right" && "text-white"}`}
+        className={`absolute right-[2px] cursor-pointer z-10 ${
+          switchPosition === "right" && "text-white"
+        }`}
         htmlFor="right"
       >
         <p className="font-bold">{labels.right.title}</p>

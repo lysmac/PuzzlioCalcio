@@ -1,10 +1,10 @@
-
   .switch {
     height: 44px;
     width: 80px;
     background-color: #120A2E;
     border-radius: 100px;
     position: absolute;
+    z-index: 10;
     left: 3px;
     top: 3px;
     transition: ease-in;
@@ -75,6 +75,7 @@
   
   .switch.center-position {
     left: 85px;
+    top: 2px;
   }
   
   #center + label {
@@ -90,8 +91,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50px;
-    width: 80px;
     border-radius: 100px;
   }
   

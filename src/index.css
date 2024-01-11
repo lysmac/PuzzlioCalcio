@@ -2,7 +2,13 @@
 @tailwind base;
 @layer base {
   body {
-    @apply font-pc-text text-lt-text dark:text-dt-text bg-lt-bg dark:bg-dt-bg;
+    @apply font-pc-text text-lt-text bg-lt-bg;
+  }
+  .dark body {
+    @apply text-dt-text bg-dt-bg;
+  }
+  .gazzetta body {
+    @apply text-gt-text bg-gt-bg;
   }
   h1 {
     @apply text-3xl font-extrabold;
