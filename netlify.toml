@@ -1,0 +1,7 @@
+## This rule redirects to an external API, signing requests with a secret
+[[redirects]]
+  from = "/transfermakt"
+  to = "https://transfermarkt-api-psi.vercel.app/"
+  status = 200
+  force = true # COMMENT: ensure that we always redirect
+  headers = {X-From = "Netlify"}
