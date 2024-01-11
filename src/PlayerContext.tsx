@@ -137,17 +137,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
       return false;
     }
     try {
-      const response = await fetch(`/fotmob${name}&fetchMore=squadMember`, {
-        method: "GET",
-        headers: {
-          "sec-ch-ua":
-            '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-          "sec-ch-ua-mobile": "?0",
-          "sec-ch-ua-platform": '"macOS"',
-          "x-fm-req":
-            "eyJib2R5Ijp7ImNvZGUiOjE3MDQ5OTUxNjA0ODZ9LCJzaWduYXR1cmUiOiI2MjAyNkI3MjkxMkExN0UyOUVBRUY0QkMyNTU4MEIxRiJ9",
-        },
-      });
+      const response = await fetch(`/fotmob${name}&fetchMore=squadMember`);
       if (response.ok) {
         setFotmobBlocked(true);
         setTimeout(() => {
