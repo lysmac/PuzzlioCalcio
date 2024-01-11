@@ -1,22 +1,14 @@
 [[redirects]]
+  from = "/fotmob/*"
+  to = "https://www.fotmob.com/api/search/searchData?term=:splat"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
+[[redirects]]
   from = "/transfermarkt/*"
   to = "https://transfermarkt-api-psi.vercel.app/:splat"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
-[[redirects]]
-  from = "/fotmob/*"
-  to = "https://www.fotmob.com/api/search/searchData?term=:splat"
-  status = 200
-  force = true
-  headers = {
-          "sec-ch-ua":
-            '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-          "sec-ch-ua-mobile": "?0",
-          "sec-ch-ua-platform": '"macOS"',
-          "x-fm-req":
-            "eyJib2R5Ijp7ImNvZGUiOjE3MDQ5OTUxNjA0ODZ9LCJzaWduYXR1cmUiOiI2MjAyNkI3MjkxMkExN0UyOUVBRUY0QkMyNTU4MEIxRiJ9",
-        }
 
-[build]
-  functions = "netlify/functions"
+
