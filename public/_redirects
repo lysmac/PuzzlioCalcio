@@ -1,3 +1,2 @@
 /transfermarkt/_ https://transfermarkt-api-psi.vercel.app/:splat 200
 /fotmob_ https://www.fotmob.com/api/search/searchData?term=:splat 200
-/fotmob/\_ https://www.fotmob.com/api/search/searchData?term=:splat 200
