@@ -138,9 +138,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     }
     try {
       const response = await fetch(
-        `/.netlify/functions/fotmob-proxy?name=${encodeURIComponent(
-          name
-        )}&fetchMore=squadMember`
+        `/.netlify/functions/fotmob-proxy?name=${encodeURIComponent(name)}`
       );
 
       if (response.ok) {

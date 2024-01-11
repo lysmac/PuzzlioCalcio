@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 export async function handler(event) {
   const name = event.queryStringParameters.name; // or adjust to capture the necessary data from the request
   const fotmobUrl = `https://www.fotmob.com/api/search/searchData?term=${name}&fetchMore=squadMember`;
+
   console.log(name);
   try {
     const response = await fetch(fotmobUrl, {
