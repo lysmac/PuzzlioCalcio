@@ -1,11 +1,17 @@
+import { useContext } from "react";
+import { PlayerContext } from "./PlayerContext";
 import Board from "./components/Board";
+import Confetti from "./components/Confetti";
 import Header from "./components/Header";
 import Keyboard from "./components/keyboard/Keyboard";
 import "./index.css";
 
 export default function App() {
+  const { isGameWon } = useContext(PlayerContext);
+
   return (
     <>
+      {isGameWon && <Confetti />}
       <header>
         <Header />
       </header>
@@ -13,7 +19,7 @@ export default function App() {
         <Board />
         <Keyboard />
       </main>
-      <footer>Footer</footer>
+      <footer>footer</footer>
     </>
   );
 }

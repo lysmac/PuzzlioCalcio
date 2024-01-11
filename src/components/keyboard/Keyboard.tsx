@@ -11,32 +11,44 @@ export default function Keyboard() {
     setAllGuesses,
     allGuesses,
     player,
+    searchPlayer,
+    isGameWon,
+    winGame,
   } = useContext(PlayerContext);
 
   // Rendered keyboard
   const handleKeyboardInput = (value: string) => {
     // Set a guard here so if the game is won or lost, the keyboard doesn't work
 
+    if (isGameWon) {
+      return;
+    }
     setAllGuesses((prevGuesses) => {
       if (guessNumber > allGuesses.length - 1) {
         return prevGuesses;
       }
+
+      const checkPlayerName = async () => {
+        const validPlayerName = await searchPlayer(currentGuess.guess);
+
+        if (validPlayerName) {
+          currentGuess.submitted = true;
+          setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+          if (currentGuess.guess === player) {
+            winGame();
+          }
+        } else {
+          console.log("Not a valid name");
+        }
+      };
       // Copy the previous guesses
       const newGuesses = [...prevGuesses];
 
       // Get the current guess object
       const currentGuess = newGuesses[guessNumber];
       if (value === "Enter") {
-        if (player && currentGuess.guess.length === player.name.length) {
-          // Move to the next guess
-          currentGuess.submitted = true;
-          setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
-          if (currentGuess.guess === player.name) {
-            // Add a win condition here
-            console.log("YOU WON!");
-          }
-        } else {
-          console.log("You need to guess the whole name!");
+        if (player && currentGuess.guess.length === player?.length) {
+          checkPlayerName();
         }
       } else if (value === "Del") {
         // Remove the last letter if the "del" button is pressed
@@ -44,7 +56,7 @@ export default function Keyboard() {
       } else {
         // Add the new value to the current guess
 
-        if (player && currentGuess.guess.length < player.name.length) {
+        if (player && currentGuess.guess.length < player?.length) {
           currentGuess.guess += value;
         }
       }
@@ -61,8 +73,10 @@ export default function Keyboard() {
     const handlePhysicalKeyboardInput = (e: KeyboardEvent) => {
       if (e.key === "Backspace") {
         handleKeyboardInput("Del");
-      } else {
+      } else if (/^[a-zA-Z]$/.test(e.key)) {
         handleKeyboardInput(e.key);
+      } else if (e.key === "Enter") {
+        handleKeyboardInput("Enter");
       }
     };
 

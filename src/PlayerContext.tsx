@@ -12,9 +12,9 @@ interface Guess {
 }
 
 interface PlayerContextValue {
-  searchPlayer: (name: string) => void;
+  searchPlayer: (name: string) => Promise<boolean>;
   fetchPlayer: () => void;
-  player: Player | null;
+  player: string | null;
   allGuesses: Guess[];
   setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
   guessAmount: number;
@@ -23,10 +23,12 @@ interface PlayerContextValue {
   setKeyboardInput: React.Dispatch<React.SetStateAction<string>>;
   guessNumber: number;
   setGuessNumber: React.Dispatch<React.SetStateAction<number>>;
+  winGame: () => void;
+  isGameWon: boolean;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
-  searchPlayer: () => {},
+  searchPlayer: () => new Promise(() => {}),
   fetchPlayer: () => {},
   player: null,
   allGuesses: [],
@@ -37,6 +39,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   setKeyboardInput: () => {},
   guessNumber: 0,
   setGuessNumber: () => {},
+  winGame: () => {},
+  isGameWon: false,
 });
 
 export interface ProviderProps {
@@ -44,16 +48,27 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<Player | null>({ id: 0, name: "klopp" });
+  const [player, setPlayer] = useState<string | null>("klopp");
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
+  const [isGameWon, setIsGameWon] = useState(false);
 
   // Hardcoded for now, will be changed later with the new game function
   const [guessAmount, setGuessAmount] = useState(5);
 
   const [guessNumber, setGuessNumber] = useState(0);
 
+  // This variable is used to prevent the fotmob api from being spammed.
+  // It will be set to true when the api is called, and then set to false after a 1 second timeout.
+  const [fotmobBlocked, setFotmobBlocked] = useState(false);
+
+  const winGame = () => {
+    console.log("You won the game!!");
+    setIsGameWon(true);
+  };
+
   const fetchPlayer = async () => {
+    setIsGameWon(false);
     try {
       // Pick a random competition from the clubIds array
       const randomCompetition =
@@ -77,8 +92,10 @@ export default function PlayerProvider({ children }: ProviderProps) {
           playersData.players[
             Math.floor(Math.random() * playersData.players.length)
           ];
-        setPlayer(randomPlayer);
-        console.log(randomPlayer);
+
+        const clean = cleanName(randomPlayer);
+        setPlayer(clean);
+        cleanGuesses();
       } else {
         throw new Error("Could not fetch players");
       }
@@ -90,7 +107,35 @@ export default function PlayerProvider({ children }: ProviderProps) {
     }
   };
 
+  const cleanGuesses = () => {
+    setAllGuesses([]);
+    setGuessNumber(0);
+    for (let i = 0; i < guessAmount; i++) {
+      setAllGuesses((prevGuesses) => [
+        ...prevGuesses,
+        { guess: "", submitted: false },
+      ]);
+    }
+  };
+
+  const cleanName = (player: Player) => {
+    const lastName = player.name.split(" ").slice(-1)[0];
+
+    const cleanedName = lastName
+      .normalize("NFD") // Decompose into base characters and diacritics
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritic marks
+      .toLowerCase()
+      .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
+      .replace(/\s+/g, " ")
+      .trim();
+
+    return cleanedName;
+  };
+
   const searchPlayer = async (name: string) => {
+    if (fotmobBlocked) {
+      return false;
+    }
     try {
       const response = await fetch(`/fotmob${name}&fetchMore=squadMember`, {
         method: "GET",
@@ -117,21 +162,34 @@ export default function PlayerProvider({ children }: ProviderProps) {
         },
       });
       if (response.ok) {
+        setFotmobBlocked(true);
+        setTimeout(() => {
+          setFotmobBlocked(false);
+        }, 1000);
         const data = await response.json();
-        if (data.squad && data.squad.dataset) {
-          data.squad.dataset.forEach((player: Player) => {
-            console.log({ id: player.id, name: player.name });
-          });
+
+        let allNames: string[] = [];
+
+        data.squad.dataset.forEach((player: Player) => {
+          const names = player.name.toLowerCase().split(" ");
+          allNames = allNames.concat(names);
+        });
+        allNames = [...new Set(allNames)];
+
+        if (allNames.includes(name.toLowerCase())) {
+          return true;
+        } else {
+          return false;
         }
       } else {
         throw new Error("Could not fetch player");
       }
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        console.log(error.message);
+        return false;
       }
     }
+    return false;
   };
 
   return (
@@ -148,6 +206,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setKeyboardInput,
         guessNumber,
         setGuessNumber,
+        winGame,
+        isGameWon,
       }}
     >
       {children}
