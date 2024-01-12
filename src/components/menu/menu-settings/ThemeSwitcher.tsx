@@ -68,7 +68,7 @@ export default function ThemeSwitcher({
   }, [switchPosition]);
 
   return (
-    <div className="w-[250px] h-[50px] rounded-[40px] relative bg-transparent border border-black">
+    <div className={`w-[250px] h-[50px] rounded-[40px] relative bg-transparent border ${switchPosition === 'center' ? 'border-white' : 'border-black'}`}>
       <div className={`switch ${animation} ${switchPosition}-position`}></div>
       <input
         defaultChecked
@@ -98,7 +98,7 @@ export default function ThemeSwitcher({
       />
       <label
         className={`absolute left-[85px] cursor-pointer z-10 ${
-          switchPosition === "center" && "text-white"
+          switchPosition === "center" && "text-black"
         }`}
         htmlFor="center"
       >

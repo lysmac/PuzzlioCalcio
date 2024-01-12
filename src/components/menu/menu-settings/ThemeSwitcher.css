@@ -9,6 +9,10 @@
     top: 3px;
     transition: ease-in;
   }
+
+  .dark .switch {
+    background-color: #EDF1FD; 
+  }
   
   /*---------------- LEFT ------------------- */
   .switch.left-to-center {
