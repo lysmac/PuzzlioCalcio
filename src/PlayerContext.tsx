@@ -48,7 +48,7 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<string | null>("klopp");
+  const [player, setPlayer] = useState<string | null>("lindelof");
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
@@ -128,7 +128,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
       .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
       .replace(/\s+/g, " ")
       .trim();
-
     return cleanedName;
   };
 
@@ -173,6 +172,10 @@ export default function PlayerProvider({ children }: ProviderProps) {
         data.squad.dataset.forEach((player: Player) => {
           const names = player.name.toLowerCase().split(" ");
           allNames = allNames.concat(names);
+        });
+
+        allNames = allNames.map((name) => {
+          return cleanName({ id: 0, name: name });
         });
         allNames = [...new Set(allNames)];
 
