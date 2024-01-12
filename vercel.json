@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    {
+      "source": "/fotmob(.*)",
+      "destination": "https://www.fotmob.com/api/search/searchData?term=$1",
+      "statusCode": 200
+    },
+    {
+      "source": "/transfermarkt/(.*)",
+      "destination": "https://transfermarkt-api-psi.vercel.app/$1"
+    }
+  ]
+}

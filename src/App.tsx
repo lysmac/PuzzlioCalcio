@@ -19,7 +19,7 @@ export default function App() {
         <Board />
         <Keyboard />
       </main>
-      <footer>footer</footer>
+      <footer>footer test</footer>
     </>
   );
 }
