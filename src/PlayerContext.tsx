@@ -13,7 +13,7 @@ interface Guess {
 
 interface PlayerContextValue {
   searchPlayer: (name: string) => Promise<boolean>;
-  fetchPlayer: () => void;
+  newGame: () => void;
   player: string | null;
   allGuesses: Guess[];
   setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
@@ -31,7 +31,7 @@ interface PlayerContextValue {
 
 export const PlayerContext = createContext<PlayerContextValue>({
   searchPlayer: () => new Promise(() => {}),
-  fetchPlayer: () => {},
+  newGame: () => {},
   player: null,
   allGuesses: [],
   setAllGuesses: () => {},
@@ -73,6 +73,11 @@ export default function PlayerProvider({ children }: ProviderProps) {
     setIsGameWon(true);
   };
 
+  const newGame = () => {
+    cleanGuesses();
+    setKeyboardKeys(keyboardButtons);
+    fetchPlayer();
+  };
   const fetchPlayer = async () => {
     setIsGameWon(false);
     try {
@@ -101,7 +106,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
-        cleanGuesses();
       } else {
         throw new Error("Could not fetch players");
       }
@@ -182,7 +186,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     <PlayerContext.Provider
       value={{
         searchPlayer,
-        fetchPlayer,
+        newGame,
         player,
         allGuesses,
         setAllGuesses,

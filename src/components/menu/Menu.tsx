@@ -26,11 +26,11 @@ export default function Menu() {
     }
   }, []);
 
-  const { fetchPlayer } = useContext(PlayerContext);
+  const { newGame } = useContext(PlayerContext);
 
   return (
     <div className="flex flex-row gap-4">
-      <MenuButton value="New game" onClick={fetchPlayer} />
+      <MenuButton value="New game" onClick={newGame} />
       <MenuButton value="Settings" onClick={() => console.log("Settings")} />
       <MenuButton value="Highscore" onClick={() => console.log("Highscore")} />
       <MenuButton value="Darkmode" onClick={() => darkModeToggle()} />
