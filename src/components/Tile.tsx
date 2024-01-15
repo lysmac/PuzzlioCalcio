@@ -25,9 +25,21 @@ export default function Tile({
 
   function setKeyboardKeyColor(letter: string, place: string) {
     setKeyboardKeys((prevKeyboardKeys) => {
-      return prevKeyboardKeys.map((key) =>
-        key.value === letter ? { ...key, color: place } : key
-      );
+      return prevKeyboardKeys.map((key) => {
+        if (key.value !== letter) {
+          return key;
+        }
+
+        if (key.color === "right") {
+          return key;
+        }
+
+        if (key.color === "close" && place !== "right") {
+          return key;
+        }
+
+        return { ...key, color: place };
+      });
     });
   }
   useEffect(() => {
