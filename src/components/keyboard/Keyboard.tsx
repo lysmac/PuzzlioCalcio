@@ -94,6 +94,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
+            color={button.color}
             onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
@@ -109,6 +110,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
+            color={button.color}
             onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
@@ -124,6 +126,7 @@ export default function Keyboard() {
           <KeyboardButton
             key={button.value}
             value={button.value}
+            color={button.color}
             onClick={() => handleKeyboardInput(button.value)}
             size={
               button.value === "Del" || button.value === "Enter"
