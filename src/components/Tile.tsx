@@ -8,7 +8,7 @@ export default function Tile({
   letter?: string;
   place?: "right" | "close" | "wrong" | null;
 }) {
-  const { keyboardKeys, setKeyboardKeys } = useContext(PlayerContext);
+  const { setKeyboardKeys } = useContext(PlayerContext);
 
   const background = (place: string) => {
     switch (place) {
