@@ -33,6 +33,11 @@ export default function SelectLetters() {
         onChange={handleChange}
         displayEmpty
         className="w-[150px] h-8"
+        sx={{
+          ".MuiSelect-icon": {
+            color: "red", // Change color
+          },
+        }}
       >
         <MenuItem value="4-6">4-6</MenuItem>
         <MenuItem value="7-8">7-8</MenuItem>

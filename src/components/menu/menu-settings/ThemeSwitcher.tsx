@@ -15,7 +15,6 @@ interface Labels {
 
 interface TripleToggleSwitchProps {
   labels?: Labels;
-  onChange: (value: string | number | boolean) => void;
 }
 
 export default function ThemeSwitcher({
@@ -24,7 +23,6 @@ export default function ThemeSwitcher({
     center: { title: "Dark", value: "center" },
     right: { title: "Gazzetta", value: "right" },
   },
-  onChange,
 }: TripleToggleSwitchProps) {
   const [switchPosition, setSwitchPosition] = useState<string>("left");
   const [animation, setAnimation] = useState<string | null>(null);
@@ -41,7 +39,6 @@ export default function ThemeSwitcher({
 
     const newAnimation = animations[value + switchPosition] || null;
 
-    onChange(value);
     setSwitchPosition(value);
     setAnimation(newAnimation);
   };
@@ -68,7 +65,11 @@ export default function ThemeSwitcher({
   }, [switchPosition]);
 
   return (
-    <div className={`w-[250px] h-[50px] rounded-[40px] relative bg-transparent border ${switchPosition === 'center' ? 'border-white' : 'border-black'}`}>
+    <div
+      className={`w-[250px] h-[50px] rounded-[40px] relative bg-transparent border ${
+        switchPosition === "center" ? "border-white" : "border-black"
+      }`}
+    >
       <div className={`switch ${animation} ${switchPosition}-position`}></div>
       <input
         defaultChecked
