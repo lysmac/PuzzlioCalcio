@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { clubIds } from "./data";
+import { clubIds, keyboardButton, keyboardButtons } from "./data";
 
 interface Player {
   id: number;
@@ -25,6 +25,8 @@ interface PlayerContextValue {
   setGuessNumber: React.Dispatch<React.SetStateAction<number>>;
   winGame: () => void;
   isGameWon: boolean;
+  keyboardKeys: keyboardButton[];
+  setKeyboardKeys: React.Dispatch<React.SetStateAction<keyboardButton[]>>;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -41,6 +43,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   setGuessNumber: () => {},
   winGame: () => {},
   isGameWon: false,
+  keyboardKeys: [],
+  setKeyboardKeys: () => {},
 });
 
 export interface ProviderProps {
@@ -61,6 +65,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
   // This variable is used to prevent the fotmob api from being spammed.
   // It will be set to true when the api is called, and then set to false after a 1 second timeout.
   const [fotmobBlocked, setFotmobBlocked] = useState(false);
+
+  const [keyboardKeys, setKeyboardKeys] = useState(keyboardButtons);
 
   const winGame = () => {
     console.log("You won the game!!");
@@ -188,6 +194,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setGuessNumber,
         winGame,
         isGameWon,
+        keyboardKeys,
+        setKeyboardKeys,
       }}
     >
       {children}

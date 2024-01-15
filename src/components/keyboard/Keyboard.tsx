@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react";
 import { PlayerContext } from "../../PlayerContext";
-import { keyboardButtons } from "../../data";
 import KeyboardButton from "./KeyboardButton";
 
 export default function Keyboard() {
@@ -14,6 +13,7 @@ export default function Keyboard() {
     searchPlayer,
     isGameWon,
     winGame,
+    keyboardKeys,
   } = useContext(PlayerContext);
 
   // Rendered keyboard
@@ -90,7 +90,7 @@ export default function Keyboard() {
     <div className="flex flex-col my-2.5 gap-1">
       {/* First row of buttons */}
       <div className="flex gap-1">
-        {keyboardButtons.slice(0, 10).map((button) => (
+        {keyboardKeys.slice(0, 10).map((button) => (
           <KeyboardButton
             key={button.value}
             value={button.value}
@@ -106,7 +106,7 @@ export default function Keyboard() {
       </div>
       {/* Second row of buttons */}
       <div className="flex gap-1">
-        {keyboardButtons.slice(10, 19).map((button) => (
+        {keyboardKeys.slice(10, 19).map((button) => (
           <KeyboardButton
             key={button.value}
             value={button.value}
@@ -122,7 +122,7 @@ export default function Keyboard() {
       </div>
       {/* Third row of buttons */}
       <div className="flex gap-1">
-        {keyboardButtons.slice(19, 28).map((button) => (
+        {keyboardKeys.slice(19, 28).map((button) => (
           <KeyboardButton
             key={button.value}
             value={button.value}
