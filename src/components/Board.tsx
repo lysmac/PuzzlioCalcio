@@ -26,7 +26,6 @@ export default function Board() {
       (letter, index) => {
         if (nameArray[index] === letter) {
           decrementingMap.set(letter, (decrementingMap.get(letter) || 0) - 1);
-
           return "right";
         }
         return null;

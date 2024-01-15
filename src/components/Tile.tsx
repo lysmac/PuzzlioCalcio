@@ -1,3 +1,6 @@
+import { useContext, useEffect } from "react";
+import { PlayerContext } from "../PlayerContext";
+
 export default function Tile({
   letter,
   place,
@@ -5,6 +8,8 @@ export default function Tile({
   letter?: string;
   place?: "right" | "close" | "wrong" | null;
 }) {
+  const { keyboardKeys, setKeyboardKeys } = useContext(PlayerContext);
+
   const background = (place: string) => {
     switch (place) {
       case "right":
@@ -18,6 +23,19 @@ export default function Tile({
     }
   };
 
+  function setKeyboardKeyColor(letter: string, place: string) {
+    setKeyboardKeys((prevKeyboardKeys) => {
+      return prevKeyboardKeys.map((key) =>
+        key.value === letter ? { ...key, color: place } : key
+      );
+    });
+  }
+  useEffect(() => {
+    if (letter && place) {
+      console.log("useeffect", letter, place);
+      setKeyboardKeyColor(letter, place);
+    }
+  }, [letter, place]);
   return (
     <div
       className={` uppercase aspect-square w-8 sm:min-w-12  sm:text-3xl flex items-center justify-center font-bold text-2xl font-mono text-lt-text ${background(
