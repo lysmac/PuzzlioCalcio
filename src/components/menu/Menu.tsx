@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { PlayerContext } from "../../PlayerContext";
 import MenuButton from "./MenuButton";
-import SettingsModal from "./SettingsModal";
+import SettingsModal from "./menu-settings/SettingsModal";
 
 export default function Menu() {
   const { fetchPlayer } = useContext(PlayerContext);
@@ -16,7 +16,10 @@ export default function Menu() {
       <MenuButton value="New game" onClick={fetchPlayer} />
       <MenuButton value="Settings" onClick={handleSettingsClick} />
       <MenuButton value="Highscore" onClick={() => console.log("Highscore")} />
-      <SettingsModal open={isSettingsModalOpen} onClose={() => setIsSettingsModalOpen(false)} />
+      <SettingsModal
+        open={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+      />
     </div>
   );
 }

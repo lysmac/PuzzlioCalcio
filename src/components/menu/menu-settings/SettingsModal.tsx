@@ -1,6 +1,7 @@
 import { Modal } from "@mui/material";
 import { IoClose } from "react-icons/io5";
-import ThemeSwitcher from "./menu-settings/ThemeSwitcher";
+import SelectLetters from "./SelectLetters";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 interface SettingsModalProps {
   open: boolean;
@@ -28,16 +29,16 @@ export default function SettingsModal({ open, onClose }: SettingsModalProps) {
               <IoClose size={30} />
             </button>
           </div>
-          <div className="flex flex-col gap-4 w-full sm:w-[360px] sm:m-auto px-3 py-1  bg-green-100">
+          <div className="flex flex-col gap-8 w-full sm:w-[360px] sm:m-auto px-3 py-1  bg-green-100">
             <div className="flex flex-col mt-2">
               <p>Theme</p>
               <div className="flex justify-center">
                 <ThemeSwitcher onChange={handleThemeChange} />
               </div>
             </div>
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-between items-center">
               <p>Number of letters</p>
-              <p>Dropdown menu</p>
+              <SelectLetters />
             </div>
             <div className="flex flex-row justify-between">
               <p>Placement of delete</p>
