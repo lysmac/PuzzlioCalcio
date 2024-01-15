@@ -21,20 +21,33 @@ export default function SettingsModal({ open, onClose }: SettingsModalProps) {
       hideBackdrop
     >
       <div className="absolute bg-white top-60 left-1/2 transform -translate-x-1/2 border border-black h-[350px] w-full sm:max-w-lg md:max-w-lg">
-        <div className="flex flex-col justify-center gap-4">
+        <div className="flex flex-col justify-center">
           <div className="flex flex-row justify-center items-center relative p-1 bg-yellow-300">
             <p className="text-lg font-bold">Settings</p>
             <button onClick={onClose} className="bg-gray-200 absolute right-1">
               <IoClose size={30} />
             </button>
           </div>
-          <div className="flex justify-center">
-            <ThemeSwitcher onChange={handleThemeChange} />
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center p-1">
-            <button onClick={onClose} className="font-bold">
-              Close
-            </button>
+          <div className="flex flex-col gap-4 w-full sm:w-[360px] sm:m-auto px-3 py-1  bg-green-100">
+            <div className="flex flex-col mt-2">
+              <p>Theme</p>
+              <div className="flex justify-center">
+                <ThemeSwitcher onChange={handleThemeChange} />
+              </div>
+            </div>
+            <div className="flex flex-row justify-between">
+              <p>Number of letters</p>
+              <p>Dropdown menu</p>
+            </div>
+            <div className="flex flex-row justify-between">
+              <p>Placement of delete</p>
+              <p>Toggle for delete</p>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center p-1">
+              <button onClick={onClose} className="font-bold">
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
