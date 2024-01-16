@@ -1,3 +1,4 @@
+import "animate.css";
 import { useContext, useEffect } from "react";
 import { PlayerContext } from "../PlayerContext";
 import Tile from "./Tile";
@@ -72,10 +73,13 @@ export default function Board() {
 
   return (
     <>
-      <div className="justify-center items-center flex gap-1 flex-col">
+      <div
+        className="justify-center items-center flex gap-1 flex-col"
+        id="mainBoard"
+      >
         {player}
 
-        <div className="flex w-full gap-1 flex-col">
+        <div className="flex w-full gap-1 flex-col ">
           {allGuesses.map((guess, index) => {
             const results = colorWord(guess.guess);
             return (
