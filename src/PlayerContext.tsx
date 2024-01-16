@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { clubIds } from "./data";
+import { clubIds, keyboardButton, keyboardButtons } from "./data";
 
 interface Player {
   id: number;
@@ -13,7 +13,7 @@ interface Guess {
 
 interface PlayerContextValue {
   searchPlayer: (name: string) => Promise<boolean>;
-  fetchPlayer: () => void;
+  newGame: () => void;
   player: string | null;
   allGuesses: Guess[];
   setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
@@ -25,11 +25,13 @@ interface PlayerContextValue {
   setGuessNumber: React.Dispatch<React.SetStateAction<number>>;
   winGame: () => void;
   isGameWon: boolean;
+  keyboardKeys: keyboardButton[];
+  setKeyboardKeys: React.Dispatch<React.SetStateAction<keyboardButton[]>>;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
   searchPlayer: () => new Promise(() => {}),
-  fetchPlayer: () => {},
+  newGame: () => {},
   player: null,
   allGuesses: [],
   setAllGuesses: () => {},
@@ -41,6 +43,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   setGuessNumber: () => {},
   winGame: () => {},
   isGameWon: false,
+  keyboardKeys: [],
+  setKeyboardKeys: () => {},
 });
 
 export interface ProviderProps {
@@ -62,11 +66,18 @@ export default function PlayerProvider({ children }: ProviderProps) {
   // It will be set to true when the api is called, and then set to false after a 1 second timeout.
   const [fotmobBlocked, setFotmobBlocked] = useState(false);
 
+  const [keyboardKeys, setKeyboardKeys] = useState(keyboardButtons);
+
   const winGame = () => {
     console.log("You won the game!!");
     setIsGameWon(true);
   };
 
+  const newGame = () => {
+    cleanGuesses();
+    setKeyboardKeys(keyboardButtons);
+    fetchPlayer();
+  };
   const fetchPlayer = async () => {
     setIsGameWon(false);
     try {
@@ -95,7 +106,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
-        cleanGuesses();
       } else {
         throw new Error("Could not fetch players");
       }
@@ -176,7 +186,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     <PlayerContext.Provider
       value={{
         searchPlayer,
-        fetchPlayer,
+        newGame,
         player,
         allGuesses,
         setAllGuesses,
@@ -188,6 +198,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setGuessNumber,
         winGame,
         isGameWon,
+        keyboardKeys,
+        setKeyboardKeys,
       }}
     >
       {children}
