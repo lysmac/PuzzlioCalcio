@@ -1,4 +1,3 @@
-// ThemeSwitcher.tsx
 import { useEffect, useState } from "react";
 import "./ThemeSwitcher.css";
 
@@ -8,9 +7,9 @@ interface Label {
 }
 
 interface Labels {
-  left: Label;
-  center: Label;
-  right: Label;
+  light: Label;
+  dark: Label;
+  gazzetta: Label;
 }
 
 interface TripleToggleSwitchProps {
@@ -19,108 +18,95 @@ interface TripleToggleSwitchProps {
 
 export default function ThemeSwitcher({
   labels = {
-    left: { title: "Light", value: "left" },
-    center: { title: "Dark", value: "center" },
-    right: { title: "Gazzetta", value: "right" },
+    light: { title: "Light", value: "light" },
+    dark: { title: "Dark", value: "dark" },
+    gazzetta: { title: "Gazzetta", value: "gazzetta" },
   },
 }: TripleToggleSwitchProps) {
-  const [switchPosition, setSwitchPosition] = useState<string>("left");
+  const initialTheme = localStorage.getItem("theme") || "light";
+  const [selectedTheme, setselectedTheme] = useState<string>(initialTheme);
   const [animation, setAnimation] = useState<string | null>(null);
 
   const getSwitchAnimation = (value: string) => {
     const animations: { [key: string]: string | undefined } = {
-      centerleft: "left-to-center",
-      rightcenter: "center-to-right",
-      centerright: "right-to-center",
-      leftcenter: "center-to-left",
-      rightleft: "left-to-right",
-      leftright: "right-to-left",
+      lightDark: "left-to-center",
+      darkGazzetta: "center-to-right",
+      gazzettaDark: "right-to-center",
+      darkLight: "center-to-left",
+      gazzettaLight: "right-to-left",
+      lightGazzetta: "left-to-right",
     };
 
-    const newAnimation = animations[value + switchPosition] || null;
+    const newAnimation = animations[selectedTheme + value] || null;
 
-    setSwitchPosition(value);
+    setselectedTheme(value);
     setAnimation(newAnimation);
   };
 
   useEffect(() => {
-    switch (switchPosition) {
-      case "left":
-        document.documentElement.classList.remove("dark", "gazzetta");
-        localStorage.theme = "light";
-        break;
-      case "center":
-        document.documentElement.classList.add("dark");
-        document.documentElement.classList.remove("gazzetta");
-        localStorage.theme = "dark";
-        break;
-      case "right":
-        document.documentElement.classList.add("gazzetta");
-        document.documentElement.classList.remove("dark");
-        localStorage.theme = "gazzetta";
-        break;
-      default:
-        break;
-    }
-  }, [switchPosition]);
+    document.documentElement.classList.remove("light", "dark", "gazzetta");
+    document.documentElement.classList.add(selectedTheme);
+    localStorage.theme = selectedTheme;
+  }, [selectedTheme]);
+
+  const positionClass = {
+    light: "left-position",
+    dark: "center-position",
+    gazzetta: "right-position",
+  }[selectedTheme];
 
   return (
-    <div
-      className={`w-[250px] h-[50px] rounded-[40px] relative bg-transparent border ${
-        switchPosition === "center" ? "border-white" : "border-black"
-      }`}
-    >
-      <div className={`switch ${animation} ${switchPosition}-position`}></div>
+    <div className="relative w-[250px] h-[50px] border border-black dark:border-white rounded-full overflow-hidden">
+      <div className={`switch ${animation} ${positionClass}`}></div>
       <input
-        defaultChecked
         onChange={(e) => getSwitchAnimation(e.target.value)}
         name="map-switch"
-        id="left"
+        id="light"
         type="radio"
         className="hidden"
-        value="left"
+        value="light"
       />
       <label
         className={`absolute cursor-pointer z-10 ${
-          switchPosition === "left" && "text-white"
+          selectedTheme === "light" && "text-white"
         }`}
-        htmlFor="left"
+        htmlFor="light"
       >
-        <p className="font-bold">{labels.left.title}</p>
+        <p className="font-bold">{labels.light.title}</p>
       </label>
 
       <input
         onChange={(e) => getSwitchAnimation(e.target.value)}
         name="map-switch"
-        id="center"
+        id="dark"
         type="radio"
         className="hidden"
-        value="center"
+        value="dark"
       />
       <label
         className={`absolute left-[85px] cursor-pointer z-10 ${
-          switchPosition === "center" && "text-black"
+          selectedTheme === "dark" && "text-black"
         }`}
-        htmlFor="center"
+        htmlFor="dark"
       >
-        <p className="font-bold">{labels.center.title}</p>
+        <p className="font-bold">{labels.dark.title}</p>
       </label>
 
       <input
         onChange={(e) => getSwitchAnimation(e.target.value)}
         name="map-switch"
-        id="right"
+        id="gazzetta"
         type="radio"
         className="hidden"
-        value="right"
+        value="gazzetta"
       />
       <label
         className={`absolute right-[2px] cursor-pointer z-10 ${
-          switchPosition === "right" && "text-white"
+          selectedTheme === "gazzetta" && "text-white"
         }`}
-        htmlFor="right"
+        htmlFor="gazzetta"
       >
-        <p className="font-bold">{labels.right.title}</p>
+        <p className="font-bold">{labels.gazzetta.title}</p>
       </label>
     </div>
   );

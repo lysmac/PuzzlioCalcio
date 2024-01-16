@@ -11,19 +11,22 @@ export default function SelectLetters() {
   const handleChange = (event: SelectChangeEvent) => {
     setNumberOfLetters(event.target.value);
   };
+  const isDarkTheme = document.documentElement.classList.contains("dark");
+  const borderColor = isDarkTheme ? "white" : "black";
+  
   return (
     <FormControl
       variant="outlined"
       sx={{
         ".MuiOutlinedInput-root": {
           "& fieldset": {
-            borderColor: "red", // Change color
+            borderColor,
           },
           "&:hover fieldset": {
-            borderColor: "red", // Change color
+            borderColor,
           },
           "&.Mui-focused fieldset": {
-            borderColor: "red", // Change color
+            borderColor,
           },
         },
       }}
@@ -35,7 +38,7 @@ export default function SelectLetters() {
         className="w-[150px] h-8"
         sx={{
           ".MuiSelect-icon": {
-            color: "red", // Change color
+            color: "black",
           },
         }}
       >
