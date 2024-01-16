@@ -34,13 +34,14 @@ export default function Keyboard() {
 
         if (validPlayerName) {
           if (currentGuess.guess === player) {
-            currentGuess.submitted = true;
             setTimeout(() => {
               winGame();
             }, 500);
             const winRow = document?.querySelector(`#guess-${guessNumber}`);
 
             winRow?.classList.add("animate__animated", "animate__tada");
+            currentGuess.submitted = true;
+
             setTimeout(() => {
               winRow?.classList.remove("animate__animated", "animate__tada");
             }, 1000);
