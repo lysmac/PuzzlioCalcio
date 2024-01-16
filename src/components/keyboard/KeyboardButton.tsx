@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 interface KeyboardButtonProps {
   value: string;
   onClick: () => void;
@@ -29,12 +31,22 @@ export default function KeyboardButton({
     }
   };
 
+  const [animationClasses, setAnimationClasses] = useState("");
+
+  useEffect(() => {
+    setAnimationClasses("animate__animated animate__fadeIn animate__faster");
+
+    setTimeout(() => {
+      setAnimationClasses("");
+    }, 1000);
+  }, [color]);
+
   return (
     <button
       onClick={onClick}
       className={`font-bold text-lt-text hover:bg-gray-300 sm:text-xl${buttonClass} ${background(
         color
-      )}`}
+      )} ${animationClasses}`}
     >
       {" "}
       {value}
