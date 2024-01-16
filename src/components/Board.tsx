@@ -91,7 +91,8 @@ export default function Board() {
           {allGuesses.map((guess, index) => {
             const results = colorWord(guess.guess);
             return (
-              <div key={index} className="flex gap-1">
+              <div key={index} className="flex gap-1" id={`guess-${index}`}>
+                {" "}
                 {Array.from(
                   { length: player?.length || 0 },
                   (_, letterIndex) => {
