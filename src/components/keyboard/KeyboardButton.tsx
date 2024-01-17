@@ -23,7 +23,7 @@ export default function KeyboardButton({
       case "right":
         return "bg-pc-green";
       case "wrong":
-        return "bg-gray-50";
+        return "bg-gray-400";
       case "close":
         return "bg-pc-yellow";
       default:
