@@ -73,9 +73,9 @@ export default function Board() {
 
   useEffect(() => {
     const element = document.querySelector("#mainBoard");
-    element?.classList.add("animate__animated", "animate__flipInY");
+    element?.classList.add("animate__animated", "animate__fadeIn");
     setTimeout(() => {
-      element?.classList.remove("animate__animated", "animate__flipInY");
+      element?.classList.remove("animate__animated", "animate__fadeIn");
     }, 1000);
   }, [player]);
 
