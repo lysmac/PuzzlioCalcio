@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../../../ThemeContext";
 import "./ThemeSwitcher.css";
 
 interface Label {
@@ -12,7 +13,7 @@ interface Labels {
   gazzetta: Label;
 }
 
-interface TripleToggleSwitchProps {
+interface ThemeSwitcherProps {
   labels?: Labels;
 }
 
@@ -22,12 +23,12 @@ export default function ThemeSwitcher({
     dark: { title: "Dark", value: "dark" },
     gazzetta: { title: "Gazzetta", value: "gazzetta" },
   },
-}: TripleToggleSwitchProps) {
-  const initialTheme = localStorage.getItem("theme") || "light";
-  const [selectedTheme, setselectedTheme] = useState<string>(initialTheme);
-  const [animation, setAnimation] = useState<string | null>(null);
+}: ThemeSwitcherProps) {
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   const getSwitchAnimation = (value: string) => {
+    toggleTheme();
+
     const animations: { [key: string]: string | undefined } = {
       lightDark: "left-to-center",
       darkGazzetta: "center-to-right",
@@ -37,29 +38,24 @@ export default function ThemeSwitcher({
       lightGazzetta: "left-to-right",
     };
 
-    const newAnimation = animations[selectedTheme + value] || null;
+    const newAnimation = animations[theme + value] || null;
 
-    setselectedTheme(value);
-    setAnimation(newAnimation);
+    return newAnimation;
   };
-
-  useEffect(() => {
-    document.documentElement.classList.remove("light", "dark", "gazzetta");
-    document.documentElement.classList.add(selectedTheme);
-    localStorage.theme = selectedTheme;
-  }, [selectedTheme]);
 
   const positionClass = {
     light: "left-position",
     dark: "center-position",
     gazzetta: "right-position",
-  }[selectedTheme];
+  }[theme];
 
   return (
     <div className="relative w-[250px] h-[50px] border border-black dark:border-white rounded-full overflow-hidden">
-      <div className={`switch ${animation} ${positionClass}`}></div>
+      <div
+        className={`switch ${getSwitchAnimation(theme)} ${positionClass}`}
+      ></div>
       <input
-        onChange={(e) => getSwitchAnimation(e.target.value)}
+        onChange={() => toggleTheme()}
         name="map-switch"
         id="light"
         type="radio"
@@ -68,7 +64,7 @@ export default function ThemeSwitcher({
       />
       <label
         className={`absolute cursor-pointer z-10 ${
-          selectedTheme === "light" && "text-white"
+          theme === "light" && "text-white"
         }`}
         htmlFor="light"
       >
@@ -76,7 +72,7 @@ export default function ThemeSwitcher({
       </label>
 
       <input
-        onChange={(e) => getSwitchAnimation(e.target.value)}
+        onChange={() => toggleTheme()}
         name="map-switch"
         id="dark"
         type="radio"
@@ -85,7 +81,7 @@ export default function ThemeSwitcher({
       />
       <label
         className={`absolute left-[85px] cursor-pointer z-10 ${
-          selectedTheme === "dark" && "text-black"
+          theme === "dark" && "text-black"
         }`}
         htmlFor="dark"
       >
@@ -93,7 +89,7 @@ export default function ThemeSwitcher({
       </label>
 
       <input
-        onChange={(e) => getSwitchAnimation(e.target.value)}
+        onChange={() => toggleTheme()}
         name="map-switch"
         id="gazzetta"
         type="radio"
@@ -102,7 +98,7 @@ export default function ThemeSwitcher({
       />
       <label
         className={`absolute right-[2px] cursor-pointer z-10 ${
-          selectedTheme === "gazzetta" && "text-white"
+          theme === "gazzetta" && "text-white"
         }`}
         htmlFor="gazzetta"
       >
