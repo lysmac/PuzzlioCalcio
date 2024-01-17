@@ -1,9 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
 
 interface ThemeContextValue {
-  theme: string;
-  toggleTheme: () => void;
+  theme: Theme;
+  toggleTheme: (newTheme: Theme) => void;
 }
+
+export type Theme = "light" | "dark" | "gazzetta";
 
 export const ThemeContext = createContext<ThemeContextValue>({
   theme: "light",
@@ -15,27 +17,16 @@ export interface ThemeProviderProps {
 }
 
 export default function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState<Theme>(localStorage.getItem('theme') as Theme || 'light');
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => {
-      switch (prevTheme) {
-        case "light":
-          return "dark";
-        case "dark":
-          return "gazzetta";
-        case "gazzetta":
-          return "light";
-        default:
-          return "light";
-      }
-    });
+  const toggleTheme = (newTheme: Theme) => {
+    setTheme(newTheme);
   };
-
+  
   useEffect(() => {
-    document.documentElement.classList.remove("light", "dark", "gazzetta");
+    document.documentElement.classList.remove('light', 'dark', 'gazzetta');
     document.documentElement.classList.add(theme);
-    localStorage.theme = theme;
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
   return (

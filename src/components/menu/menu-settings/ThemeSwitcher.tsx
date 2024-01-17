@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { ThemeContext } from "../../../ThemeContext";
+import { useContext, useState } from "react";
+import { Theme, ThemeContext } from "../../../ThemeContext";
 import "./ThemeSwitcher.css";
 
 interface Label {
@@ -25,10 +25,9 @@ export default function ThemeSwitcher({
   },
 }: ThemeSwitcherProps) {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [animation, setAnimation] = useState<string | null>(null);
 
   const getSwitchAnimation = (value: string) => {
-    toggleTheme();
-
     const animations: { [key: string]: string | undefined } = {
       lightDark: "left-to-center",
       darkGazzetta: "center-to-right",
@@ -40,7 +39,8 @@ export default function ThemeSwitcher({
 
     const newAnimation = animations[theme + value] || null;
 
-    return newAnimation;
+    setAnimation(newAnimation);
+    toggleTheme(value as Theme);
   };
 
   const positionClass = {
@@ -51,11 +51,9 @@ export default function ThemeSwitcher({
 
   return (
     <div className="relative w-[250px] h-[50px] border border-black dark:border-white rounded-full overflow-hidden">
-      <div
-        className={`switch ${getSwitchAnimation(theme)} ${positionClass}`}
-      ></div>
+      <div className={`switch ${animation} ${positionClass}`}></div>
       <input
-        onChange={() => toggleTheme()}
+        onChange={(e) => getSwitchAnimation(e.target.value)}
         name="map-switch"
         id="light"
         type="radio"
@@ -72,7 +70,7 @@ export default function ThemeSwitcher({
       </label>
 
       <input
-        onChange={() => toggleTheme()}
+        onChange={(e) => getSwitchAnimation(e.target.value)}
         name="map-switch"
         id="dark"
         type="radio"
@@ -89,7 +87,7 @@ export default function ThemeSwitcher({
       </label>
 
       <input
-        onChange={() => toggleTheme()}
+        onChange={(e) => getSwitchAnimation(e.target.value)}
         name="map-switch"
         id="gazzetta"
         type="radio"
