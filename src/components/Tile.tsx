@@ -44,7 +44,6 @@ export default function Tile({
   }
   useEffect(() => {
     if (letter && place) {
-      console.log("useeffect", letter, place);
       setKeyboardKeyColor(letter, place);
     }
   }, [letter, place]);

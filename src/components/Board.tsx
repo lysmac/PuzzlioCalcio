@@ -1,3 +1,4 @@
+import "animate.css";
 import { useContext, useEffect } from "react";
 import { PlayerContext } from "../PlayerContext";
 import Tile from "./Tile";
@@ -70,16 +71,28 @@ export default function Board() {
     });
   }, []);
 
+  useEffect(() => {
+    const element = document.querySelector("#mainBoard");
+    element?.classList.add("animate__animated", "animate__fadeIn");
+    setTimeout(() => {
+      element?.classList.remove("animate__animated", "animate__fadeIn");
+    }, 1000);
+  }, [player]);
+
   return (
     <>
-      <div className="justify-center items-center flex gap-1 flex-col">
+      <div
+        className="justify-center items-center flex gap-1 flex-col"
+        id="mainBoard"
+      >
         {player}
 
-        <div className="flex w-full gap-1 flex-col">
+        <div className="flex w-full gap-1 flex-col ">
           {allGuesses.map((guess, index) => {
             const results = colorWord(guess.guess);
             return (
-              <div key={index} className="flex gap-1">
+              <div key={index} className="flex gap-1" id={`guess-${index}`}>
+                {" "}
                 {Array.from(
                   { length: player?.length || 0 },
                   (_, letterIndex) => {

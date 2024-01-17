@@ -30,15 +30,48 @@ export default function Keyboard() {
 
       const checkPlayerName = async () => {
         const validPlayerName = await searchPlayer(currentGuess.guess);
+        const guessRow = document?.querySelector(`#guess-${guessNumber}`);
 
         if (validPlayerName) {
-          currentGuess.submitted = true;
-          setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
           if (currentGuess.guess === player) {
-            winGame();
+            setTimeout(() => {
+              winGame();
+            }, 500);
+            const winRow = document?.querySelector(`#guess-${guessNumber}`);
+
+            winRow?.classList.add("animate__animated", "animate__tada");
+            currentGuess.submitted = true;
+
+            setTimeout(() => {
+              winRow?.classList.remove("animate__animated", "animate__tada");
+            }, 1000);
+          } else {
+            currentGuess.submitted = true;
+            setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+            const validGuessRow = document?.querySelector(
+              `#guess-${guessNumber}`
+            );
+
+            validGuessRow?.classList.add(
+              "animate__animated",
+              "animate__flipInX"
+            );
+            setTimeout(() => {
+              validGuessRow?.classList.remove(
+                "animate__animated",
+                "animate__flipInX"
+              );
+            }, 1000);
           }
         } else {
           console.log("Not a valid name");
+          guessRow?.classList.add("animate__animated", "animate__headShake");
+          setTimeout(() => {
+            guessRow?.classList.remove(
+              "animate__animated",
+              "animate__headShake"
+            );
+          }, 1000);
         }
       };
       // Copy the previous guesses

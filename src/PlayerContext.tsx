@@ -103,7 +103,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
           playersData.players[
             Math.floor(Math.random() * playersData.players.length)
           ];
-
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
       } else {
@@ -134,6 +133,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
     const cleanedName = lastName
       .normalize("NFD") // Decompose into base characters and diacritics
       .replace(/[\u0300-\u036f]/g, "") // Remove diacritic marks
+      .replace(/ı/g, "i") // Replace 'ı' with 'i'
+      .replace(/ğ/g, "g") // Replace 'ğ' with 'g'
       .toLowerCase()
       .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
       .replace(/\s+/g, " ")
