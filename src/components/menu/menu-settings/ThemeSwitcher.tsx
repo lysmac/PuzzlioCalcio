@@ -2,19 +2,19 @@ import { useContext, useState } from "react";
 import { Theme, ThemeContext } from "../../../ThemeContext";
 import "./ThemeSwitcher.css";
 
-interface Label {
+interface ThemeLabel {
   title: string;
   value: string | number | boolean;
 }
 
-interface Labels {
-  light: Label;
-  dark: Label;
-  gazzetta: Label;
+interface ThemeLabels {
+  light: ThemeLabel;
+  dark: ThemeLabel;
+  gazzetta: ThemeLabel;
 }
 
 interface ThemeSwitcherProps {
-  labels?: Labels;
+  labels?: ThemeLabels;
 }
 
 export default function ThemeSwitcher({
@@ -50,7 +50,7 @@ export default function ThemeSwitcher({
   }[theme];
 
   return (
-    <div className="relative w-[250px] h-[50px] border border-black dark:border-white rounded-full overflow-hidden">
+    <div className="relative w-[250px] h-[50px] border border-primary-contrast rounded-full overflow-hidden">
       <div className={`switch ${animation} ${positionClass}`}></div>
       <input
         onChange={(e) => getSwitchAnimation(e.target.value)}

@@ -17,7 +17,7 @@ export default function SettingsModal({ open, onClose }: SettingsModalProps) {
       aria-describedby="Settings modal"
       hideBackdrop
     >
-      <div className="absolute light:bg-primary-bg dark:bg-primary-bg gazzetta:bg-primary-bg top-60 left-1/2 transform -translate-x-1/2 border border-black dark:border-white h-[350px] w-full sm:max-w-lg md:max-w-lg">
+      <div className="absolute bg-primary-bg top-60 left-1/2 transform -translate-x-1/2 border border-primary-contrast h-[350px] w-full sm:max-w-lg md:max-w-lg">
         <div className="flex flex-col justify-center">
           <div className="flex flex-row justify-center items-center relative p-1">
             <p className="text-lg font-bold">Settings</p>

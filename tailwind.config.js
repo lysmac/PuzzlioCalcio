@@ -26,14 +26,17 @@ export default {
       light: {
         "primary-bg": "#EDF1FD",
         "primary-text": "#1B1537",
+        "primary-contrast": "#120A2E",
       },
       dark: {
         "primary-bg": "#120A2E",
         "primary-text": "#FAFAFF",
+        "primary-contrast": "#EDF1FD",
       },
       gazzetta: {
         "primary-bg": "#FDE9EB",
         "primary-text": "#251C34",
+        "primary-contrast": "#120A2E",
       },
     }),
   ],
