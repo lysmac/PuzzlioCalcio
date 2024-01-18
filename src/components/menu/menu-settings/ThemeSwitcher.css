@@ -27,8 +27,8 @@
 }
 
 .switch.left-position {
-  left: 2px;
-  top: 2px;
+  left: 3px;
+  top: 2.5px;
 }
 
 #light + label {
@@ -80,7 +80,7 @@
 
 .switch.center-position {
   left: 85px;
-  top: 2px;
+  top: 2.5px;
 }
 
 #dark + label {
@@ -104,7 +104,7 @@
     left: 85px;
   }
   to {
-    left: 2px;
+    left: 3px;
   }
 }
 
@@ -130,7 +130,7 @@
 
 .switch.right-position {
   left: 166px;
-  top: 2px;
+  top: 2.5px;
 }
 
 #gazzetta + label {
@@ -156,13 +156,13 @@
     left: 166px;
   }
   to {
-    left: 2px;
+    left: 3px;
   }
 }
 
 @keyframes rightToCenter {
   from {
-    left: 166px;
+    left: 167px;
   }
   to {
     left: 85px;
