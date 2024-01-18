@@ -41,9 +41,6 @@ export default function SelectLetters() {
             borderColor: color,
           },
         },
-        ".MuiMenuItem-root": {
-          color: color,
-        },
       }}
     >
       <Select
@@ -55,6 +52,7 @@ export default function SelectLetters() {
           ".MuiSelect-icon": {
             color: color,
           },
+          color: color,
         }}
       >
         {letterOptions.map((option) => (
