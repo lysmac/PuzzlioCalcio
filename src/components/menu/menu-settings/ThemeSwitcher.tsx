@@ -29,19 +29,26 @@ export default function ThemeSwitcher({
 
   const getSwitchAnimation = (value: string) => {
     const animations: { [key: string]: string | undefined } = {
-      lightDark: "left-to-center",
+      lightDark: "light-to-dark",
       darkGazzetta: "center-to-right",
       gazzettaDark: "right-to-center",
       darkLight: "center-to-left",
       gazzettaLight: "right-to-left",
       lightGazzetta: "left-to-right",
     };
-
-    const newAnimation = animations[theme + value] || null;
-
+  
+    console.log("value:", value);
+    console.log("theme:", theme);
+  
+    const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+    const newAnimation = animations[theme + capitalizedValue] || null;
+  
+    console.log("newAnimation:", newAnimation);
+  
     setAnimation(newAnimation);
     toggleTheme(value as Theme);
   };
+  
 
   const positionClass = {
     light: "left-position",

@@ -7,7 +7,7 @@
   position: absolute;
   z-index: 10;
   left: 3px;
-  top: 3px;
+  top: 2.5px;
   transition: ease-in;
 }
 
@@ -15,7 +15,6 @@
   background-color: #edf1fd;
 }
 
-/*---------------- LEFT ------------------- */
 .switch.left-to-center {
   animation-name: leftToCenter;
   animation-duration: 0.5s;
@@ -67,7 +66,6 @@
   }
 }
 
-/* -------------------- center ------------------ */
 .switch.center-to-left {
   animation-name: centerToLeft;
   animation-duration: 0.5s;
@@ -117,7 +115,6 @@
   }
 }
 
-/* ------------------- RIGHT ------------------- */
 .switch.right-to-left {
   animation-name: rightToLeft;
   animation-duration: 0.5s;
