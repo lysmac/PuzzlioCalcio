@@ -4,15 +4,17 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../../../ThemeContext";
 
 export default function SelectLetters() {
+  const { theme } = useContext(ThemeContext);
   const initialNumberOfLetters =
     localStorage.getItem("numberOfLetters") || "4-6";
   const [numberOfLetters, setNumberOfLetters] = useState(
     initialNumberOfLetters
   );
-  
+
   const handleChange = (event: SelectChangeEvent) => {
     setNumberOfLetters(event.target.value);
   };
@@ -22,20 +24,25 @@ export default function SelectLetters() {
     localStorage.setItem("numberOfLetters", numberOfLetters);
   }, [numberOfLetters]);
 
+  const color = theme === "dark" ? "#EDF1FD" : "#120A2E";
+
   return (
     <FormControl
       variant="outlined"
       sx={{
         ".MuiOutlinedInput-root": {
           "& fieldset": {
-            color: "white",
+            borderColor: color,
           },
           "&:hover fieldset": {
-            color: "white",
+            borderColor: color,
           },
           "&.Mui-focused fieldset": {
-            color: "white",
+            borderColor: color,
           },
+        },
+        ".MuiMenuItem-root": {
+          color: color,
         },
       }}
     >
@@ -46,7 +53,7 @@ export default function SelectLetters() {
         className="w-32 h-8"
         sx={{
           ".MuiSelect-icon": {
-            color: "black",
+            color: color,
           },
         }}
       >
