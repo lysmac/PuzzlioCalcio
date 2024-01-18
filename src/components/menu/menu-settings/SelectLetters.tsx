@@ -35,7 +35,7 @@ export default function SelectLetters() {
         value={numberOfLetters}
         onChange={handleChange}
         displayEmpty
-        className="w-[150px] h-8"
+        className="w-32 h-8"
         sx={{
           ".MuiSelect-icon": {
             color: "black",
