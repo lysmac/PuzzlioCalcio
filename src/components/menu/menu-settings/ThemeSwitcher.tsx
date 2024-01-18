@@ -29,7 +29,7 @@ export default function ThemeSwitcher({
 
   const getSwitchAnimation = (value: string) => {
     const animations: { [key: string]: string | undefined } = {
-      lightDark: "light-to-dark",
+      lightDark: "left-to-center",
       darkGazzetta: "center-to-right",
       gazzettaDark: "right-to-center",
       darkLight: "center-to-left",
