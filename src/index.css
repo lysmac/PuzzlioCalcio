@@ -2,7 +2,9 @@
 @tailwind base;
 @layer base {
   body {
-    @apply font-pc-text text-lt-text dark:text-dt-text bg-lt-bg dark:bg-dt-bg;
+    @apply font-pc-text;
+    color: theme("colors.primary-text");
+    background-color: theme("colors.primary-bg");
   }
   h1 {
     @apply text-3xl font-extrabold;

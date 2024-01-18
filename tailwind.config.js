@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import { createThemes } from "tw-colors";
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -20,5 +21,23 @@ export default {
   },
   darkMode: "class",
 
-  plugins: [],
+  plugins: [
+    createThemes({
+      light: {
+        "primary-bg": "#EDF1FD",
+        "primary-text": "#1B1537",
+        "primary-contrast": "#120A2E",
+      },
+      dark: {
+        "primary-bg": "#120A2E",
+        "primary-text": "#FAFAFF",
+        "primary-contrast": "#EDF1FD",
+      },
+      gazzetta: {
+        "primary-bg": "#FDE9EB",
+        "primary-text": "#251C34",
+        "primary-contrast": "#120A2E",
+      },
+    }),
+  ],
 };

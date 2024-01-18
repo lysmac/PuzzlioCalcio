@@ -1,7 +1,7 @@
 export default function Logo() {
   const cls1 = "fill-current text-pc-green"; // This applies the 'pc-green' color
   const cls2 = "fill-none";
-  const cls3 = "fill-current text-lt-text dark:text-dt-text";
+  const cls3 = "fill-current primary-text";
 
   return (
     <svg
