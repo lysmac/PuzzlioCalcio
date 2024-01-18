@@ -4,29 +4,37 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SelectLetters() {
-  const [numberOfLetters, setNumberOfLetters] = useState("4-6");
+  const initialNumberOfLetters =
+    localStorage.getItem("numberOfLetters") || "4-6";
+  const [numberOfLetters, setNumberOfLetters] = useState(
+    initialNumberOfLetters
+  );
+  
   const handleChange = (event: SelectChangeEvent) => {
     setNumberOfLetters(event.target.value);
   };
-  const isDarkTheme = document.documentElement.classList.contains("dark");
-  const borderColor = isDarkTheme ? "white" : "black";
-  
+
+  const letterOptions = ["4-6", "7-8", "9-10"];
+  useEffect(() => {
+    localStorage.setItem("numberOfLetters", numberOfLetters);
+  }, [numberOfLetters]);
+
   return (
     <FormControl
       variant="outlined"
       sx={{
         ".MuiOutlinedInput-root": {
           "& fieldset": {
-            borderColor,
+            color: "white",
           },
           "&:hover fieldset": {
-            borderColor,
+            color: "white",
           },
           "&.Mui-focused fieldset": {
-            borderColor,
+            color: "white",
           },
         },
       }}
@@ -42,9 +50,11 @@ export default function SelectLetters() {
           },
         }}
       >
-        <MenuItem value="4-6">4-6</MenuItem>
-        <MenuItem value="7-8">7-8</MenuItem>
-        <MenuItem value="9-10">9-10</MenuItem>
+        {letterOptions.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
