@@ -131,14 +131,17 @@ export default function PlayerProvider({ children }: ProviderProps) {
     const lastName = player.name.split(" ").slice(-1)[0];
 
     const cleanedName = lastName
+      .toLowerCase()
       .normalize("NFD") // Decompose into base characters and diacritics
       .replace(/[\u0300-\u036f]/g, "") // Remove diacritic marks
       .replace(/ı/g, "i") // Replace 'ı' with 'i'
       .replace(/ğ/g, "g") // Replace 'ğ' with 'g'
-      .toLowerCase()
+      .replace(/ø/g, "o") // Replace 'ø' with 'o'
+      .replace(/ß/g, "ss") // Replace 'ß' with 'ss'
       .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
       .replace(/\s+/g, " ")
       .trim();
+
     return cleanedName;
   };
 
