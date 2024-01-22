@@ -27,6 +27,7 @@ interface PlayerContextValue {
   isGameWon: boolean;
   keyboardKeys: keyboardButton[];
   setKeyboardKeys: React.Dispatch<React.SetStateAction<keyboardButton[]>>;
+  loadingPlayer: boolean;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -45,6 +46,7 @@ export const PlayerContext = createContext<PlayerContextValue>({
   isGameWon: false,
   keyboardKeys: [],
   setKeyboardKeys: () => {},
+  loadingPlayer: false,
 });
 
 export interface ProviderProps {
@@ -52,7 +54,7 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<string | null>("lindelof");
+  const [player, setPlayer] = useState<string | null>("");
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
@@ -68,6 +70,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const [keyboardKeys, setKeyboardKeys] = useState(keyboardButtons);
 
+  const [loadingPlayer, setLoadingPlayer] = useState(true);
+
   const winGame = () => {
     console.log("You won the game!!");
     setIsGameWon(true);
@@ -80,6 +84,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   };
   const fetchPlayer = async () => {
     setIsGameWon(false);
+    setLoadingPlayer(true);
     try {
       // Pick a random competition from the clubIds array
       const randomCompetition =
@@ -105,6 +110,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
           ];
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
+        setLoadingPlayer(false);
       } else {
         throw new Error("Could not fetch players");
       }
@@ -201,6 +207,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         isGameWon,
         keyboardKeys,
         setKeyboardKeys,
+        loadingPlayer,
       }}
     >
       {children}

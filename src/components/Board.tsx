@@ -4,7 +4,7 @@ import { PlayerContext } from "../PlayerContext";
 import Tile from "./Tile";
 
 export default function Board() {
-  const { player, allGuesses, setAllGuesses, guessAmount } =
+  const { player, allGuesses, setAllGuesses, guessAmount, loadingPlayer } =
     useContext(PlayerContext);
 
   const nameArray = player?.toLowerCase().split("");
@@ -72,22 +72,36 @@ export default function Board() {
   }, []);
 
   useEffect(() => {
-    const element = document.querySelector("#mainBoard");
-    element?.classList.add("animate__animated", "animate__fadeIn");
-    setTimeout(() => {
-      element?.classList.remove("animate__animated", "animate__fadeIn");
-    }, 1000);
-  }, [player]);
+    // const mainBoard = document.querySelector("#mainBoard");
+    // const tiles = document.querySelector("#tiles");
+    const cover = document.querySelector("#cover");
+
+    if (loadingPlayer) {
+      console.log("loading");
+      cover?.classList.add("animate__animated", "animate__fadeIn");
+    }
+    if (!loadingPlayer) {
+      cover?.classList.add("animate__animated", "animate__fadeOut");
+      setTimeout(() => {
+        cover?.classList.remove("animate__animated", "animate__fadeOut");
+        cover?.classList.add("hidden");
+      }, 1000);
+    }
+  }, [loadingPlayer]);
 
   return (
     <>
       <div
-        className="justify-center items-center flex gap-1 flex-col"
+        className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80"
         id="mainBoard"
       >
-        {player}
-
-        <div className="flex w-full gap-1 flex-col ">
+        <div id="cover" className="bg-yellow-500 absolute w-full h-full">
+          HELLO
+        </div>
+        <div
+          id="tiles"
+          className=" w-full gap-1 flex-col items-center justify-center flex"
+        >
           {allGuesses.map((guess, index) => {
             const results = colorWord(guess.guess);
             return (
@@ -114,8 +128,8 @@ export default function Board() {
             );
           })}
         </div>
-        <div className="flex gap-1"></div>
       </div>
+      {player}
     </>
   );
 }
