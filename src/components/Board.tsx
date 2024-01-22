@@ -77,13 +77,21 @@ export default function Board() {
     const cover = document.querySelector("#cover");
 
     if (loadingPlayer) {
-      console.log("loading");
+      console.log("loading", loadingPlayer);
+      cover?.classList.remove("hidden");
+
       cover?.classList.add("animate__animated", "animate__fadeIn");
     }
     if (!loadingPlayer) {
+      console.log("loading", loadingPlayer);
+
       cover?.classList.add("animate__animated", "animate__fadeOut");
       setTimeout(() => {
-        cover?.classList.remove("animate__animated", "animate__fadeOut");
+        cover?.classList.remove(
+          "animate__animated",
+          "animate__fadeOut",
+          "animate__fadeIn"
+        );
         cover?.classList.add("hidden");
       }, 1000);
     }
