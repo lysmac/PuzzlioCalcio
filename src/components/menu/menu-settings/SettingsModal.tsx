@@ -1,5 +1,6 @@
 import { Modal } from "@mui/material";
 import { IoClose } from "react-icons/io5";
+import SelectLeague from "./SelectLeague";
 import SelectLetters from "./SelectLetters";
 import ThemeSwitcher from "./ThemeSwitcher";
 
@@ -35,6 +36,10 @@ export default function SettingsModal({ open, onClose }: SettingsModalProps) {
             <div className="flex flex-row justify-between items-center">
               <p className="font-bold">Number of letters</p>
               <SelectLetters />
+            </div>
+            <div className="flex flex-row justify-between items-center">
+              <p className="font-bold">Select league</p>
+              <SelectLeague />
             </div>
             <div className="flex flex-row justify-between">
               <p className="font-bold">Placement of delete</p>

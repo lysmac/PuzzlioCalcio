@@ -29,6 +29,8 @@ interface PlayerContextValue {
   setKeyboardKeys: React.Dispatch<React.SetStateAction<keyboardButton[]>>;
   numberOfLetters: string;
   setNumberOfLetters: React.Dispatch<React.SetStateAction<string>>;
+  league: string;
+  setLeague: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -49,6 +51,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   setKeyboardKeys: () => {},
   numberOfLetters: "",
   setNumberOfLetters: () => {},
+  league: "",
+  setLeague: () => {},
 });
 
 export interface ProviderProps {
@@ -62,16 +66,25 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [isGameWon, setIsGameWon] = useState(false);
 
   //Settings
+
+  // Number of letters
   const initialNumberOfLetters =
     localStorage.getItem("numberOfLetters") || "4-6";
   const [numberOfLetters, setNumberOfLetters] = useState(
     initialNumberOfLetters
   );
-
   useEffect(() => {
     localStorage.setItem("numberOfLetters", numberOfLetters);
     console.log("Number of letters: " + numberOfLetters);
   }, [numberOfLetters]);
+
+  // League
+  const initialLeague = localStorage.getItem("league") || "All leagues";
+  const [league, setLeague] = useState(initialLeague);
+  useEffect(() => {
+    localStorage.setItem("league", league);
+    console.log("League: " + league);
+  }, [league]);
 
   // Hardcoded for now, will be changed later with the new game function
   const [guessAmount, setGuessAmount] = useState(5);
@@ -235,6 +248,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setKeyboardKeys,
         numberOfLetters,
         setNumberOfLetters,
+        league,
+        setLeague,
       }}
     >
       {children}
