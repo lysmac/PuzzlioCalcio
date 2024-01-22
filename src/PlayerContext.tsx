@@ -70,7 +70,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   useEffect(() => {
     localStorage.setItem("numberOfLetters", numberOfLetters);
-    console.log("Number of letters: " + numberOfLetters)
+    console.log("Number of letters: " + numberOfLetters);
   }, [numberOfLetters]);
 
   // Hardcoded for now, will be changed later with the new game function
@@ -94,7 +94,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     setKeyboardKeys(keyboardButtons);
     fetchPlayer();
   };
-  const fetchPlayer = async () => {
+  const fetchPlayer = async (): Promise<void> => {
     setIsGameWon(false);
     try {
       // Pick a random competition from the clubIds array
@@ -114,16 +114,20 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-        console.log(playersData.players)
+        console.log(playersData.players);
         const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
         const filteredPlayers = playersData.players.filter((player: Player) => {
-          const lastName = player.name.split(" ").slice(-1)[0]; 
-          const nameLength = lastName.length; 
-          console.log("Name length:" + nameLength)
+          const splitName = player.name.split(" ");
+          if (splitName.length === 3) {
+            return false;
+          }
+          const lastName = player.name.split(" ").slice(-1)[0];
+          const nameLength = lastName.length;
+          console.log("Name length:" + nameLength);
           return nameLength >= minLength && nameLength <= maxLength;
         });
         if (filteredPlayers.length === 0) {
-          throw new Error("No players match the selected number of letters");
+          return fetchPlayer();
         }
 
         // Pick a random player from the filtered players
@@ -165,8 +169,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
       .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
       .replace(/\s+/g, " ")
       .trim();
-      console.log("Cleaned name length: " + cleanedName.length)
-      console.log("Cleaned name: " + cleanedName)
+    console.log("Cleaned name length: " + cleanedName.length);
+    console.log("Cleaned name: " + cleanedName);
     return cleanedName;
   };
 
