@@ -144,6 +144,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setLoadingPlayer(false);
       } else {
         setLoadingPlayer(false);
+        setPlayer(null);
         throw new Error("Could not fetch players");
       }
     } catch (error) {
