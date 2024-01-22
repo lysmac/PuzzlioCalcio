@@ -4,25 +4,19 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
+import {PlayerContext} from "../../../PlayerContext";
 import { ThemeContext } from "../../../ThemeContext";
 
 export default function SelectLetters() {
   const { theme } = useContext(ThemeContext);
-  const initialNumberOfLetters =
-    localStorage.getItem("numberOfLetters") || "4-6";
-  const [numberOfLetters, setNumberOfLetters] = useState(
-    initialNumberOfLetters
-  );
+  const { numberOfLetters, setNumberOfLetters } = useContext(PlayerContext);
 
   const handleChange = (event: SelectChangeEvent) => {
     setNumberOfLetters(event.target.value);
   };
 
   const letterOptions = ["4-6", "7-8", "9-10"];
-  useEffect(() => {
-    localStorage.setItem("numberOfLetters", numberOfLetters);
-  }, [numberOfLetters]);
 
   const color = theme === "dark" ? "#EDF1FD" : "#120A2E";
 
