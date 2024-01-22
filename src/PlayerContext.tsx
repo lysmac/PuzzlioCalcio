@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { clubIds, keyboardButton, keyboardButtons } from "./data";
 
 interface Player {
@@ -27,6 +27,8 @@ interface PlayerContextValue {
   isGameWon: boolean;
   keyboardKeys: keyboardButton[];
   setKeyboardKeys: React.Dispatch<React.SetStateAction<keyboardButton[]>>;
+  numberOfLetters: string;
+  setNumberOfLetters: React.Dispatch<React.SetStateAction<string>>;
   loadingPlayer: boolean;
 }
 
@@ -46,6 +48,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   isGameWon: false,
   keyboardKeys: [],
   setKeyboardKeys: () => {},
+  numberOfLetters: "",
+  setNumberOfLetters: () => {},
   loadingPlayer: true,
 });
 
@@ -58,6 +62,18 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
+
+  //Settings
+  const initialNumberOfLetters =
+    localStorage.getItem("numberOfLetters") || "4-6";
+  const [numberOfLetters, setNumberOfLetters] = useState(
+    initialNumberOfLetters
+  );
+
+  useEffect(() => {
+    localStorage.setItem("numberOfLetters", numberOfLetters);
+    console.log("Number of letters: " + numberOfLetters);
+  }, [numberOfLetters]);
 
   // Hardcoded for now, will be changed later with the new game function
   const [guessAmount, setGuessAmount] = useState(5);
@@ -82,7 +98,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     setKeyboardKeys(keyboardButtons);
     fetchPlayer();
   };
-  const fetchPlayer = async () => {
+  const fetchPlayer = async (): Promise<void> => {
     setIsGameWon(false);
     setLoadingPlayer(true);
     setPlayer("");
@@ -104,11 +120,25 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-        // Access the players array and pick a random player
+        console.log(playersData.players);
+        const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
+        const filteredPlayers = playersData.players.filter((player: Player) => {
+          const splitName = player.name.split(" ");
+          if (splitName.length === 3) {
+            return false;
+          }
+          const lastName = player.name.split(" ").slice(-1)[0];
+          const nameLength = lastName.length;
+          console.log("Name length:" + nameLength);
+          return nameLength >= minLength && nameLength <= maxLength;
+        });
+        if (filteredPlayers.length === 0) {
+          return fetchPlayer();
+        }
+
+        // Pick a random player from the filtered players
         const randomPlayer =
-          playersData.players[
-            Math.floor(Math.random() * playersData.players.length)
-          ];
+          filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
         setLoadingPlayer(false);
@@ -138,11 +168,13 @@ export default function PlayerProvider({ children }: ProviderProps) {
     const lastName = player.name.split(" ").slice(-1)[0];
 
     const cleanedName = lastName
+      .toLowerCase()
       .normalize("NFD") // Decompose into base characters and diacritics
       .replace(/[\u0300-\u036f]/g, "") // Remove diacritic marks
       .replace(/ı/g, "i") // Replace 'ı' with 'i'
       .replace(/ğ/g, "g") // Replace 'ğ' with 'g'
-      .toLowerCase()
+      .replace(/ø/g, "o") // Replace 'ø' with 'o'
+      .replace(/ß/g, "ss") // Replace 'ß' with 'ss'
       .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
       .replace(/\s+/g, " ")
       .trim();
@@ -208,6 +240,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         isGameWon,
         keyboardKeys,
         setKeyboardKeys,
+        numberOfLetters,
+        setNumberOfLetters,
         loadingPlayer,
       }}
     >
