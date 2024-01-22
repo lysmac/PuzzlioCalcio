@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { clubIds, keyboardButton, keyboardButtons } from "./data";
+import { competitions, keyboardButton, keyboardButtons } from "./data";
 
 interface Player {
   id: number;
@@ -110,14 +110,26 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const fetchPlayer = async (): Promise<void> => {
     setIsGameWon(false);
     try {
-      // Pick a random competition from the clubIds array
-      const randomCompetition =
-        clubIds[Math.floor(Math.random() * clubIds.length)];
+      let selectedLeague;
+      // Pick a random league from the competitions array
+      if (league === "All leagues") {
+        selectedLeague =
+          competitions[Math.floor(Math.random() * competitions.length)];
+      } else {
+        // If a league is selected, pick that league
+        selectedLeague = competitions.find(
+          (competition) => competition.name === league
+        );
+        // If the league is not found, throw an error
+        if (!selectedLeague) {
+          throw new Error(`Could not find league: ${league}`);
+        }
+      }
 
       // Pick a random club from the clubs array of the random competition
       const randomClub =
-        randomCompetition.clubs[
-          Math.floor(Math.random() * randomCompetition.clubs.length)
+        selectedLeague.clubs[
+          Math.floor(Math.random() * selectedLeague.clubs.length)
         ];
       console.log(randomClub);
 
@@ -136,20 +148,18 @@ export default function PlayerProvider({ children }: ProviderProps) {
           }
           const lastName = player.name.split(" ").slice(-1)[0];
           const nameLength = lastName.length;
-          console.log("Name length:" + nameLength);
           return nameLength >= minLength && nameLength <= maxLength;
         });
         if (filteredPlayers.length === 0) {
           return fetchPlayer();
         }
-
         // Pick a random player from the filtered players
         const randomPlayer =
           filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
       } else {
-        throw new Error("Could not fetch players");
+        throw new Error("Could not fetch player");
       }
     } catch (error) {
       console.log(error);

@@ -18,7 +18,7 @@ export default function SelectLeague() {
   const leagueOptions = [
     "All leagues",
     "Premier League",
-    "La Liga",
+    "LaLiga",
     "Bundesliga",
     "Serie A",
     "Ligue 1",
