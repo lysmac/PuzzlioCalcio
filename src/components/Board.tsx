@@ -2,6 +2,7 @@ import "animate.css";
 import { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../PlayerContext";
 import Tile from "./Tile";
+import MenuButton from "./menu/MenuButton";
 
 export default function Board() {
   const {
@@ -11,6 +12,7 @@ export default function Board() {
     guessAmount,
     loadingPlayer,
     apiError,
+    newGame,
   } = useContext(PlayerContext);
 
   const nameArray = player?.toLowerCase().split("");
@@ -123,7 +125,7 @@ export default function Board() {
               <p className="text-2xl font-bold text-white">
                 Something went wrong 🤕
               </p>
-              <span className="text-sm  text-white">Please try again</span>
+              <MenuButton value="Try again!" onClick={newGame} />
             </>
           ) : (
             <></>
