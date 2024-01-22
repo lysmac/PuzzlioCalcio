@@ -103,7 +103,7 @@ export default function Board() {
       >
         <div
           id="cover"
-          className=" w-full h-full min-h-60 sm:min-h-72 border-2 flex align-middle items-center  bg-primary-bg absolute flex-col justify-center gap-2"
+          className=" w-full h-full min-h-60 sm:min-h-72 flex align-middle items-center  bg-primary-bg absolute flex-col justify-center gap-2"
         >
           {player === null ? (
             <>
