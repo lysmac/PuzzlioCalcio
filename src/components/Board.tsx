@@ -122,7 +122,7 @@ export default function Board() {
         >
           {error ? (
             <>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-lg sm:text-2xl font-bold text-white">
                 Something went wrong 🤕
               </p>
               <MenuButton value="Try again!" onClick={newGame} />
@@ -142,13 +142,13 @@ export default function Board() {
           ) : (
             <></>
           )}
-          {loadingPlayer && !error ? (
-            <>
+          {loadingPlayer && !error && player !== null ? (
+            <div className="flex flex-col gap-6 items-center">
               <span className="text-2xl font-bold text-white">
                 Searching for player
               </span>
               <span className="loader"></span>
-            </>
+            </div>
           ) : (
             <></>
           )}
