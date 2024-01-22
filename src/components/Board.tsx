@@ -1,11 +1,17 @@
 import "animate.css";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../PlayerContext";
 import Tile from "./Tile";
 
 export default function Board() {
-  const { player, allGuesses, setAllGuesses, guessAmount, loadingPlayer } =
-    useContext(PlayerContext);
+  const {
+    player,
+    allGuesses,
+    setAllGuesses,
+    guessAmount,
+    loadingPlayer,
+    apiError,
+  } = useContext(PlayerContext);
 
   const nameArray = player?.toLowerCase().split("");
 
@@ -74,15 +80,21 @@ export default function Board() {
   useEffect(() => {
     const cover = document.querySelector("#cover");
 
+    if (apiError) {
+      cover?.classList.remove("hidden");
+      cover?.classList.add("animate__animated", "animate__fadeIn");
+      setError(true);
+
+      return;
+    }
+    setError(false);
+
     if (loadingPlayer) {
-      console.log("loading", loadingPlayer);
       cover?.classList.remove("hidden");
 
       cover?.classList.add("animate__animated", "animate__fadeIn");
     }
     if (!loadingPlayer) {
-      console.log("loading", loadingPlayer);
-
       cover?.classList.add("animate__animated", "animate__fadeOut");
       setTimeout(() => {
         cover?.classList.remove(
@@ -93,8 +105,9 @@ export default function Board() {
         cover?.classList.add("hidden");
       }, 1000);
     }
-  }, [loadingPlayer]);
+  }, [loadingPlayer, apiError]);
 
+  const [error, setError] = useState(false);
   return (
     <>
       <div
@@ -105,7 +118,17 @@ export default function Board() {
           id="cover"
           className=" w-full h-full min-h-60 sm:min-h-72 flex align-middle items-center  bg-primary-bg absolute flex-col justify-center gap-2"
         >
-          {player === null ? (
+          {error ? (
+            <>
+              <p className="text-2xl font-bold text-white">
+                Something went wrong 🤕
+              </p>
+              <span className="text-sm  text-white">Please try again</span>
+            </>
+          ) : (
+            <></>
+          )}
+          {player === null && !error ? (
             <>
               <div>
                 <p className="text-2xl font-bold text-white">PUZZLIO CALCIO</p>
@@ -115,12 +138,17 @@ export default function Board() {
               </div>
             </>
           ) : (
+            <></>
+          )}
+          {loadingPlayer && !error ? (
             <>
               <span className="text-2xl font-bold text-white">
                 Searching for player
               </span>
               <span className="loader"></span>
             </>
+          ) : (
+            <></>
           )}
         </div>
         <div

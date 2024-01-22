@@ -30,6 +30,7 @@ interface PlayerContextValue {
   numberOfLetters: string;
   setNumberOfLetters: React.Dispatch<React.SetStateAction<string>>;
   loadingPlayer: boolean;
+  apiError: boolean;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -51,6 +52,7 @@ export const PlayerContext = createContext<PlayerContextValue>({
   numberOfLetters: "",
   setNumberOfLetters: () => {},
   loadingPlayer: true,
+  apiError: false,
 });
 
 export interface ProviderProps {
@@ -87,6 +89,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [keyboardKeys, setKeyboardKeys] = useState(keyboardButtons);
 
   const [loadingPlayer, setLoadingPlayer] = useState(true);
+  const [apiError, setApiError] = useState(false);
 
   const winGame = () => {
     console.log("You won the game!!");
@@ -97,6 +100,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     cleanGuesses();
     setKeyboardKeys(keyboardButtons);
     fetchPlayer();
+    setApiError(false);
   };
   const fetchPlayer = async (): Promise<void> => {
     setIsGameWon(false);
@@ -145,6 +149,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
       } else {
         setLoadingPlayer(false);
         setPlayer(null);
+        setApiError(true);
         throw new Error("Could not fetch players");
       }
     } catch (error) {
@@ -245,6 +250,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         numberOfLetters,
         setNumberOfLetters,
         loadingPlayer,
+        apiError,
       }}
     >
       {children}
