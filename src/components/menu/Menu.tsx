@@ -9,7 +9,7 @@ export default function Menu() {
   const { newGame, player, loadingPlayer } = useContext(PlayerContext);
 
   useEffect(() => {
-    if (player === "") {
+    if (player === null) {
       setDisableNewGame(false);
     } else {
       setDisableNewGame(loadingPlayer);

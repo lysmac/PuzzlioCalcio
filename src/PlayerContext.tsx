@@ -54,7 +54,7 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<string | null>("");
+  const [player, setPlayer] = useState<string | null>(null);
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
@@ -85,6 +85,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const fetchPlayer = async () => {
     setIsGameWon(false);
     setLoadingPlayer(true);
+    setPlayer("");
     try {
       // Pick a random competition from the clubIds array
       const randomCompetition =

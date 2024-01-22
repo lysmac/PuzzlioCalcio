@@ -72,8 +72,6 @@ export default function Board() {
   }, []);
 
   useEffect(() => {
-    // const mainBoard = document.querySelector("#mainBoard");
-    // const tiles = document.querySelector("#tiles");
     const cover = document.querySelector("#cover");
 
     if (loadingPlayer) {
@@ -103,8 +101,27 @@ export default function Board() {
         className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80"
         id="mainBoard"
       >
-        <div id="cover" className="bg-yellow-500 absolute w-full h-full">
-          HELLO
+        <div
+          id="cover"
+          className=" w-full h-full min-h-60 sm:min-h-72 border-2 flex align-middle items-center  bg-primary-bg absolute flex-col justify-center gap-2"
+        >
+          {player === null ? (
+            <>
+              <div>
+                <p className="text-2xl font-bold text-white">PUZZLIO CALCIO</p>
+                <span className="text-sm  text-white">
+                  Guess the footballer in as few tries as possible
+                </span>
+              </div>
+            </>
+          ) : (
+            <>
+              <span className="text-2xl font-bold text-white">
+                Searching for player
+              </span>
+              <span className="loader"></span>
+            </>
+          )}
         </div>
         <div
           id="tiles"
@@ -137,7 +154,7 @@ export default function Board() {
           })}
         </div>
       </div>
-      {player}
+      {/* {player} */}
     </>
   );
 }
