@@ -5,7 +5,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useContext } from "react";
-import {PlayerContext} from "../../../PlayerContext";
+import { PlayerContext } from "../../../PlayerContext";
 import { ThemeContext } from "../../../ThemeContext";
 
 export default function SelectLetters() {
@@ -47,10 +47,27 @@ export default function SelectLetters() {
             color: color,
           },
           color: color,
+          textAlign: "center",
+        }}
+        MenuProps={{
+          PaperProps: {
+            style: {
+              marginTop: "2px",
+              width: "150px",
+            },
+          },
         }}
       >
         {letterOptions.map((option) => (
-          <MenuItem key={option} value={option}>
+          <MenuItem
+            key={option}
+            value={option}
+            sx={{
+              padding: "0px",
+              justifyContent: "center",
+
+            }}
+          >
             {option}
           </MenuItem>
         ))}

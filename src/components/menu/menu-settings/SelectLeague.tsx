@@ -53,10 +53,26 @@ export default function SelectLeague() {
             color: color,
           },
           color: color,
+          textAlign: "center",
+        }}
+        MenuProps={{
+          PaperProps: {
+            style: {
+              marginTop: "2px",
+              width: "150px",
+            },
+          },
         }}
       >
         {leagueOptions.map((option) => (
-          <MenuItem key={option} value={option}>
+          <MenuItem
+            key={option}
+            value={option}
+            sx={{
+              padding: "0px",
+              justifyContent: "center",
+            }}
+          >
             {option}
           </MenuItem>
         ))}
