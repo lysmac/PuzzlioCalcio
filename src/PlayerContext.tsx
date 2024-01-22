@@ -46,7 +46,7 @@ export const PlayerContext = createContext<PlayerContextValue>({
   isGameWon: false,
   keyboardKeys: [],
   setKeyboardKeys: () => {},
-  loadingPlayer: false,
+  loadingPlayer: true,
 });
 
 export interface ProviderProps {
