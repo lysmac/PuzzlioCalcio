@@ -121,10 +121,10 @@ export default function PlayerProvider({ children }: ProviderProps) {
     setPlayer({ id: 0, name: "", cleanedName: "" });
     fetchPlayer();
     setApiError(false);
-    randomPlayer();
+    randomPlayerGenerator();
   };
 
-  const randomPlayer = () => {
+  const randomPlayerGenerator = () => {
     // Filtrera liga
 
     const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
@@ -143,13 +143,15 @@ export default function PlayerProvider({ children }: ProviderProps) {
       fetchPlayer();
       setTimeout(() => {
         setLoadingPlayer(false);
+        randomPlayerGenerator();
       }, 2000);
       return;
     }
     const randomPlayer =
       filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
-    console.log(randomPlayer);
-
+    console.log(randomPlayer, "random player");
+    console.log(filteredPlayers, "filtered players");
+    console.log(playerVault, "player vault");
     const clean = cleanName(randomPlayer);
     setPlayer(clean);
     setLoadingPlayer(false);
