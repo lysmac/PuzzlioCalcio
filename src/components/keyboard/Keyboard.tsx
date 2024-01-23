@@ -33,7 +33,7 @@ export default function Keyboard() {
         const guessRow = document?.querySelector(`#guess-${guessNumber}`);
 
         if (validPlayerName) {
-          if (currentGuess.guess === player) {
+          if (currentGuess.guess === player?.cleanedName) {
             setTimeout(() => {
               winGame();
             }, 500);
@@ -80,7 +80,10 @@ export default function Keyboard() {
       // Get the current guess object
       const currentGuess = newGuesses[guessNumber];
       if (value === "Enter") {
-        if (player && currentGuess.guess.length === player?.length) {
+        if (
+          player &&
+          currentGuess.guess.length === player?.cleanedName?.length
+        ) {
           checkPlayerName();
         }
       } else if (value === "Del") {
@@ -89,7 +92,7 @@ export default function Keyboard() {
       } else {
         // Add the new value to the current guess
 
-        if (player && currentGuess.guess.length < player?.length) {
+        if (player && currentGuess.guess.length < player?.cleanedName?.length) {
           currentGuess.guess += value;
         }
       }
