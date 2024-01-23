@@ -2,6 +2,7 @@ import { Modal } from "@mui/material";
 import { useContext } from "react";
 import { IoClose } from "react-icons/io5";
 import { PlayerContext } from "../../../PlayerContext";
+import {leagueFlags} from "../../../data";
 
 interface HighScoreModalProps {
   open: boolean;
@@ -34,9 +35,12 @@ export default function HighScoreModal({ open, onClose }: HighScoreModalProps) {
               <p>League statistics</p>
               <div className="flex flex-col gap-1">
                 {Object.entries(leagueScores).map(([league, score]) => (
-                  <p key={league}>
+                  <div key={league} className="flex items-center gap-2">
+                  <img src={leagueFlags[league]} alt={`${league} flag`} />
+                  <p>
                     {league}: {score}
                   </p>
+                </div>
                 ))}
               </div>
             </div>
