@@ -112,13 +112,13 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const newGame = () => {
     cleanGuesses();
     setKeyboardKeys(keyboardButtons);
+    setIsGameWon(false);
+    setLoadingPlayer(true);
+    setPlayer("");
     fetchPlayer();
     setApiError(false);
   };
   const fetchPlayer = async (): Promise<void> => {
-    setIsGameWon(false);
-    setLoadingPlayer(true);
-    setPlayer("");
     try {
       let selectedLeague;
       // Pick a random league from the competitions array
