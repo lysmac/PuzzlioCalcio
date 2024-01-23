@@ -91,6 +91,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [league, setLeague] = useState(initialLeague);
   useEffect(() => {
     localStorage.setItem("league", league);
+    fetchPlayer();
+
     console.log("League: " + league);
   }, [league]);
 
@@ -129,7 +131,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
     let playersInSelectedLeague = playerVault;
 
     if (league !== "All leagues" || undefined) {
-      console.log("specifik liga");
       // Use the selected league to find the league in the competitions array
       playersInSelectedLeague = playerVault.filter(
         (player: Player) => player.league === league
