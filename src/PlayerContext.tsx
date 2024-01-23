@@ -4,6 +4,7 @@ import { competitions, keyboardButton, keyboardButtons } from "./data";
 interface Player {
   id: number;
   name: string;
+  cleanedName?: string;
 }
 
 interface Guess {
@@ -14,7 +15,7 @@ interface Guess {
 interface PlayerContextValue {
   searchPlayer: (name: string) => Promise<boolean>;
   newGame: () => void;
-  player: string | null;
+  player: Player | null;
   allGuesses: Guess[];
   setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
   guessAmount: number;
@@ -66,7 +67,7 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<string | null>(null);
+  const [player, setPlayer] = useState<Player | null>(null);
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
@@ -118,7 +119,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     setKeyboardKeys(keyboardButtons);
     setIsGameWon(false);
     setLoadingPlayer(true);
-    setPlayer("");
+    setPlayer({ id: 0, name: "", cleanedName: "" });
     fetchPlayer();
     setApiError(false);
     randomPlayer();
@@ -144,8 +145,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
       filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
     console.log(randomPlayer);
 
-    // const clean = cleanName(randomPlayer);
-    // setPlayer(clean);
+    const clean = cleanName(randomPlayer);
+    setPlayer(clean);
     // setLoadingPlayer(false);
   };
 
@@ -225,7 +226,9 @@ export default function PlayerProvider({ children }: ProviderProps) {
       .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
       .replace(/\s+/g, " ")
       .trim();
-    return cleanedName;
+
+    const completePlayer = { ...player, cleanedName: cleanedName };
+    return completePlayer;
   };
 
   const searchPlayer = async (name: string) => {

@@ -15,7 +15,7 @@ export default function Board() {
     newGame,
   } = useContext(PlayerContext);
 
-  const nameArray = player?.toLowerCase().split("");
+  const nameArray = player?.cleanedName?.toLowerCase().split("");
 
   function colorWord(word: string) {
     const guessArray = word.toLowerCase().split("");
@@ -163,7 +163,7 @@ export default function Board() {
               <div key={index} className="flex gap-1" id={`guess-${index}`}>
                 {" "}
                 {Array.from(
-                  { length: player?.length || 0 },
+                  { length: player?.cleanedName?.length || 0 },
                   (_, letterIndex) => {
                     const letter = guess.guess[letterIndex] || "";
                     return (
@@ -184,7 +184,7 @@ export default function Board() {
           })}
         </div>
       </div>
-      {/* {player} */}
+      {player?.cleanedName}
     </>
   );
 }
