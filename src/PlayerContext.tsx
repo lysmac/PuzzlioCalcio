@@ -118,7 +118,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
     cleanGuesses();
     setKeyboardKeys(keyboardButtons);
     setIsGameWon(false);
-    setLoadingPlayer(true);
     setPlayer({ id: 0, name: "", cleanedName: "" });
     fetchPlayer();
     setApiError(false);
@@ -139,7 +138,13 @@ export default function PlayerProvider({ children }: ProviderProps) {
       return nameLength >= minLength && nameLength <= maxLength;
     });
     if (filteredPlayers.length === 0) {
-      return console.log("did not find any match"), fetchPlayer();
+      setLoadingPlayer(true);
+      console.log("did not find any match");
+      fetchPlayer();
+      setTimeout(() => {
+        setLoadingPlayer(false);
+      }, 2000);
+      return;
     }
     const randomPlayer =
       filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
@@ -147,7 +152,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
     const clean = cleanName(randomPlayer);
     setPlayer(clean);
-    // setLoadingPlayer(false);
+    setLoadingPlayer(false);
   };
 
   const fetchPlayer = async (): Promise<void> => {
@@ -185,11 +190,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
           const player = { id: playerObject.id, name: playerObject.name };
           playerVault.push(player);
         });
-
-        setLoadingPlayer(false);
+        console.log("api ok");
       } else {
-        setLoadingPlayer(false);
-        setPlayer(null);
         setApiError(true);
         throw new Error("Could not fetch player");
       }
