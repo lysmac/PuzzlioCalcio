@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { clubIds, keyboardButton, keyboardButtons } from "./data";
+import { competitions, keyboardButton, keyboardButtons } from "./data";
 
 interface Player {
   id: number;
@@ -31,6 +31,8 @@ interface PlayerContextValue {
   setNumberOfLetters: React.Dispatch<React.SetStateAction<string>>;
   loadingPlayer: boolean;
   apiError: boolean;
+  league: string;
+  setLeague: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -53,6 +55,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   setNumberOfLetters: () => {},
   loadingPlayer: true,
   apiError: false,
+  league: "",
+  setLeague: () => {},
 });
 
 export interface ProviderProps {
@@ -66,16 +70,25 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [isGameWon, setIsGameWon] = useState(false);
 
   //Settings
+
+  // Number of letters
   const initialNumberOfLetters =
     localStorage.getItem("numberOfLetters") || "4-6";
   const [numberOfLetters, setNumberOfLetters] = useState(
     initialNumberOfLetters
   );
-
   useEffect(() => {
     localStorage.setItem("numberOfLetters", numberOfLetters);
     console.log("Number of letters: " + numberOfLetters);
   }, [numberOfLetters]);
+
+  // League
+  const initialLeague = localStorage.getItem("league") || "All leagues";
+  const [league, setLeague] = useState(initialLeague);
+  useEffect(() => {
+    localStorage.setItem("league", league);
+    console.log("League: " + league);
+  }, [league]);
 
   // Hardcoded for now, will be changed later with the new game function
   const [guessAmount, setGuessAmount] = useState(5);
@@ -107,14 +120,25 @@ export default function PlayerProvider({ children }: ProviderProps) {
     setLoadingPlayer(true);
     setPlayer("");
     try {
-      // Pick a random competition from the clubIds array
-      const randomCompetition =
-        clubIds[Math.floor(Math.random() * clubIds.length)];
-
+      let selectedLeague;
+      // Pick a random league from the competitions array
+      if (league === "All leagues") {
+        selectedLeague =
+          competitions[Math.floor(Math.random() * competitions.length)];
+      } else {
+        // Use the selected league to find the league in the competitions array
+        selectedLeague = competitions.find(
+          (competition) => competition.name === league
+        );
+        // If the league is not found, throw an error (Does not work without error handling)
+        if (!selectedLeague) {
+          throw new Error(`Could not find league: ${league}`);
+        }
+      }
       // Pick a random club from the clubs array of the random competition
       const randomClub =
-        randomCompetition.clubs[
-          Math.floor(Math.random() * randomCompetition.clubs.length)
+        selectedLeague.clubs[
+          Math.floor(Math.random() * selectedLeague.clubs.length)
         ];
       console.log(randomClub);
 
@@ -124,7 +148,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-        console.log(playersData.players);
         const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
         const filteredPlayers = playersData.players.filter((player: Player) => {
           const splitName = player.name.split(" ");
@@ -133,13 +156,11 @@ export default function PlayerProvider({ children }: ProviderProps) {
           }
           const lastName = player.name.split(" ").slice(-1)[0];
           const nameLength = lastName.length;
-          console.log("Name length:" + nameLength);
           return nameLength >= minLength && nameLength <= maxLength;
         });
         if (filteredPlayers.length === 0) {
           return fetchPlayer();
         }
-
         // Pick a random player from the filtered players
         const randomPlayer =
           filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
@@ -150,7 +171,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setLoadingPlayer(false);
         setPlayer(null);
         setApiError(true);
-        throw new Error("Could not fetch players");
+        throw new Error("Could not fetch player");
       }
     } catch (error) {
       console.log(error);
@@ -251,6 +272,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setNumberOfLetters,
         loadingPlayer,
         apiError,
+        league,
+        setLeague,
       }}
     >
       {children}

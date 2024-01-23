@@ -8,15 +8,21 @@ import { useContext } from "react";
 import { PlayerContext } from "../../../PlayerContext";
 import { ThemeContext } from "../../../ThemeContext";
 
-export default function SelectLetters() {
+export default function SelectLeague() {
   const { theme } = useContext(ThemeContext);
-  const { numberOfLetters, setNumberOfLetters } = useContext(PlayerContext);
+  const { league, setLeague } = useContext(PlayerContext);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setNumberOfLetters(event.target.value);
+    setLeague(event.target.value);
   };
-
-  const letterOptions = ["4-6", "7-8", "9-10"];
+  const leagueOptions = [
+    "All leagues",
+    "Premier League",
+    "LaLiga",
+    "Bundesliga",
+    "Serie A",
+    "Ligue 1",
+  ];
 
   const color = theme === "dark" ? "#EDF1FD" : "#120A2E";
 
@@ -38,7 +44,7 @@ export default function SelectLetters() {
       }}
     >
       <Select
-        value={numberOfLetters}
+        value={league}
         onChange={handleChange}
         displayEmpty
         className="w-32 h-8"
@@ -58,14 +64,13 @@ export default function SelectLetters() {
           },
         }}
       >
-        {letterOptions.map((option) => (
+        {leagueOptions.map((option) => (
           <MenuItem
             key={option}
             value={option}
             sx={{
               padding: "0px",
               justifyContent: "center",
-
             }}
           >
             {option}

@@ -33,7 +33,7 @@ export const keyboardButtons = [
   { value: "Enter", color: "" },
 ];
 
-export const clubIds = [
+export const competitions = [
   {
     id: "GB1",
     name: "Premier League",
