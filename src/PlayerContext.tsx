@@ -33,6 +33,8 @@ interface PlayerContextValue {
   apiError: boolean;
   league: string;
   setLeague: React.Dispatch<React.SetStateAction<string>>;
+  highScore: number;
+
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -57,6 +59,7 @@ export const PlayerContext = createContext<PlayerContextValue>({
   apiError: false,
   league: "",
   setLeague: () => {},
+  highScore: 0,
 });
 
 export interface ProviderProps {
@@ -69,8 +72,11 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
 
-  //Settings
+  //Highscore
+  const initialHighScore = Number(localStorage.getItem("highScore")) || 0;
+  const [highScore, setHighScore] = useState(initialHighScore);
 
+  //Settings
   // Number of letters
   const initialNumberOfLetters =
     localStorage.getItem("numberOfLetters") || "4-6";
@@ -107,6 +113,11 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const winGame = () => {
     console.log("You won the game!!");
     setIsGameWon(true);
+    setHighScore(prevScore => {
+      const newScore = prevScore + 1;
+      localStorage.setItem("highScore", newScore.toString());
+      return newScore;
+    })
   };
 
   const newGame = () => {
@@ -274,6 +285,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         apiError,
         league,
         setLeague,
+        highScore,
       }}
     >
       {children}
