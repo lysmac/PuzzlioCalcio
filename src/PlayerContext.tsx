@@ -34,7 +34,7 @@ interface PlayerContextValue {
   league: string;
   setLeague: React.Dispatch<React.SetStateAction<string>>;
   highScore: number;
-
+  leagueScores: { [key: string]: number };
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -60,6 +60,7 @@ export const PlayerContext = createContext<PlayerContextValue>({
   league: "",
   setLeague: () => {},
   highScore: 0,
+  leagueScores: {},
 });
 
 export interface ProviderProps {
@@ -75,6 +76,13 @@ export default function PlayerProvider({ children }: ProviderProps) {
   //Highscore
   const initialHighScore = Number(localStorage.getItem("highScore")) || 0;
   const [highScore, setHighScore] = useState(initialHighScore);
+
+  //League statistics
+  const leagueScoresFromStorage = localStorage.getItem("leagueScores");
+  const initialLeagueScores = leagueScoresFromStorage
+    ? JSON.parse(leagueScoresFromStorage)
+    : {};
+  const [leagueScores, setLeagueScores] = useState(initialLeagueScores);
 
   //Settings
   // Number of letters
@@ -113,11 +121,17 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const winGame = () => {
     console.log("You won the game!!");
     setIsGameWon(true);
-    setHighScore(prevScore => {
+    setHighScore((prevScore) => {
       const newScore = prevScore + 1;
       localStorage.setItem("highScore", newScore.toString());
       return newScore;
-    })
+    });
+    setLeagueScores((prevScores: { [key: string]: number }) => {
+      const newScores = { ...prevScores };
+      newScores[league] = (newScores[league] || 0) + 1;
+      localStorage.setItem("leagueScores", JSON.stringify(newScores));
+      return newScores;
+    });
   };
 
   const newGame = () => {
@@ -286,6 +300,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         league,
         setLeague,
         highScore,
+        leagueScores,
       }}
     >
       {children}
