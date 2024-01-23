@@ -116,16 +116,15 @@ export default function PlayerProvider({ children }: ProviderProps) {
         selectedLeague =
           competitions[Math.floor(Math.random() * competitions.length)];
       } else {
-        // If a league is selected, pick that league
+        // Use the selected league to find the league in the competitions array
         selectedLeague = competitions.find(
           (competition) => competition.name === league
         );
-        // If the league is not found, throw an error
+        // If the league is not found, throw an error (Does not work without error handling)
         if (!selectedLeague) {
           throw new Error(`Could not find league: ${league}`);
         }
       }
-
       // Pick a random club from the clubs array of the random competition
       const randomClub =
         selectedLeague.clubs[
@@ -139,7 +138,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-        console.log(playersData.players);
         const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
         const filteredPlayers = playersData.players.filter((player: Player) => {
           const splitName = player.name.split(" ");
