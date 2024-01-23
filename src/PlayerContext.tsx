@@ -127,7 +127,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     randomPlayerGenerator();
   };
 
-  const randomPlayerGenerator = () => {
+  const randomPlayerGenerator = (retryCount = 0) => {
     let playersInSelectedLeague = playerVault;
 
     if (league !== "All leagues" || undefined) {
@@ -152,12 +152,19 @@ export default function PlayerProvider({ children }: ProviderProps) {
       return nameLength >= minLength && nameLength <= maxLength;
     });
     if (filteredPlayers.length === 0) {
+      if (retryCount >= 5) {
+        // Maximum 5 retries
+        console.log("Maximum retries exceeded");
+        setApiError(true);
+
+        return;
+      }
       setLoadingPlayer(true);
       console.log("did not find any match");
       fetchPlayer();
       setTimeout(() => {
         setLoadingPlayer(false);
-        randomPlayerGenerator();
+        randomPlayerGenerator(retryCount + 1); // Increment retryCount
       }, 2000);
       return;
     }
@@ -217,7 +224,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
         });
         console.log("api ok");
       } else {
-        setApiError(true);
         throw new Error("Could not fetch player");
       }
     } catch (error) {
