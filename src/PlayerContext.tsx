@@ -5,6 +5,7 @@ interface Player {
   id: number;
   name: string;
   cleanedName?: string;
+  league?: string;
 }
 
 interface Guess {
@@ -125,8 +126,19 @@ export default function PlayerProvider({ children }: ProviderProps) {
   };
 
   const randomPlayerGenerator = () => {
-    // Filtrera liga
+    let selectedLeague;
 
+    if (league !== "All leagues") {
+      // Use the selected league to find the league in the competitions array
+      selectedLeague = competitions.find(
+        (competition) => competition.name === league
+      );
+      // If the league is not found, throw an error (Does not work without error handling)
+      if (!selectedLeague) {
+        throw new Error(`Could not find league: ${league}`);
+      }
+    }
+    selectedLeague;
     const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
     const filteredPlayers = playerVault.filter((player: Player) => {
       const splitName = player.name.split(" ");
@@ -189,7 +201,16 @@ export default function PlayerProvider({ children }: ProviderProps) {
         const playersData = await playersResponse.json();
 
         playersData.players.forEach((playerObject) => {
-          const player = { id: playerObject.id, name: playerObject.name };
+          const player = {
+            id: playerObject.id,
+            name: playerObject.name,
+            league: "",
+          };
+          competitions.find((competition) => {
+            if (competition.clubs.includes(randomClub)) {
+              player.league = competition.name;
+            }
+          }, player);
           playerVault.push(player);
         });
         console.log("api ok");
