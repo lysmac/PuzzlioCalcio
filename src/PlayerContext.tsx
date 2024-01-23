@@ -254,8 +254,10 @@ export default function PlayerProvider({ children }: ProviderProps) {
         });
 
         allNames = allNames.map((name) => {
-          return cleanName({ id: 0, name: name });
+          const cleaned = cleanName({ name: name, id: 0 });
+          return cleaned.cleanedName;
         });
+
         allNames = [...new Set(allNames)];
 
         if (allNames.includes(name.toLowerCase())) {
