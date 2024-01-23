@@ -29,6 +29,8 @@ interface PlayerContextValue {
   setKeyboardKeys: React.Dispatch<React.SetStateAction<keyboardButton[]>>;
   numberOfLetters: string;
   setNumberOfLetters: React.Dispatch<React.SetStateAction<string>>;
+  loadingPlayer: boolean;
+  apiError: boolean;
   league: string;
   setLeague: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -51,6 +53,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   setKeyboardKeys: () => {},
   numberOfLetters: "",
   setNumberOfLetters: () => {},
+  loadingPlayer: true,
+  apiError: false,
   league: "",
   setLeague: () => {},
 });
@@ -60,7 +64,7 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<string | null>("lindelof");
+  const [player, setPlayer] = useState<string | null>(null);
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
@@ -97,6 +101,9 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const [keyboardKeys, setKeyboardKeys] = useState(keyboardButtons);
 
+  const [loadingPlayer, setLoadingPlayer] = useState(true);
+  const [apiError, setApiError] = useState(false);
+
   const winGame = () => {
     console.log("You won the game!!");
     setIsGameWon(true);
@@ -106,9 +113,12 @@ export default function PlayerProvider({ children }: ProviderProps) {
     cleanGuesses();
     setKeyboardKeys(keyboardButtons);
     fetchPlayer();
+    setApiError(false);
   };
   const fetchPlayer = async (): Promise<void> => {
     setIsGameWon(false);
+    setLoadingPlayer(true);
+    setPlayer("");
     try {
       let selectedLeague;
       // Pick a random league from the competitions array
@@ -156,7 +166,11 @@ export default function PlayerProvider({ children }: ProviderProps) {
           filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
         const clean = cleanName(randomPlayer);
         setPlayer(clean);
+        setLoadingPlayer(false);
       } else {
+        setLoadingPlayer(false);
+        setPlayer(null);
+        setApiError(true);
         throw new Error("Could not fetch player");
       }
     } catch (error) {
@@ -256,6 +270,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         setKeyboardKeys,
         numberOfLetters,
         setNumberOfLetters,
+        loadingPlayer,
+        apiError,
         league,
         setLeague,
       }}

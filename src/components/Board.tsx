@@ -1,11 +1,19 @@
 import "animate.css";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../PlayerContext";
 import Tile from "./Tile";
+import MenuButton from "./menu/MenuButton";
 
 export default function Board() {
-  const { player, allGuesses, setAllGuesses, guessAmount } =
-    useContext(PlayerContext);
+  const {
+    player,
+    allGuesses,
+    setAllGuesses,
+    guessAmount,
+    loadingPlayer,
+    apiError,
+    newGame,
+  } = useContext(PlayerContext);
 
   const nameArray = player?.toLowerCase().split("");
 
@@ -72,22 +80,83 @@ export default function Board() {
   }, []);
 
   useEffect(() => {
-    const element = document.querySelector("#mainBoard");
-    element?.classList.add("animate__animated", "animate__fadeIn");
-    setTimeout(() => {
-      element?.classList.remove("animate__animated", "animate__fadeIn");
-    }, 1000);
-  }, [player]);
+    const cover = document.querySelector("#cover");
 
+    if (apiError) {
+      cover?.classList.remove("hidden");
+      cover?.classList.add("animate__animated", "animate__fadeIn");
+      setError(true);
+
+      return;
+    }
+    setError(false);
+
+    if (loadingPlayer) {
+      cover?.classList.remove("hidden");
+
+      cover?.classList.add("animate__animated", "animate__fadeIn");
+    }
+    if (!loadingPlayer) {
+      cover?.classList.add("animate__animated", "animate__fadeOut");
+      setTimeout(() => {
+        cover?.classList.remove(
+          "animate__animated",
+          "animate__fadeOut",
+          "animate__fadeIn"
+        );
+        cover?.classList.add("hidden");
+      }, 1000);
+    }
+  }, [loadingPlayer, apiError]);
+
+  const [error, setError] = useState(false);
   return (
     <>
       <div
-        className="justify-center items-center flex gap-1 flex-col"
+        className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80"
         id="mainBoard"
       >
-        {player}
-
-        <div className="flex w-full gap-1 flex-col ">
+        <div
+          id="cover"
+          className=" w-full h-full min-h-60 sm:min-h-72 flex align-middle items-center  bg-primary-bg absolute flex-col justify-center gap-2"
+        >
+          {error ? (
+            <>
+              <p className="text-lg sm:text-2xl font-bold text-white">
+                Something went wrong 🤕
+              </p>
+              <MenuButton value="Try again!" onClick={newGame} />
+            </>
+          ) : (
+            <></>
+          )}
+          {player === null && !error ? (
+            <>
+              <div>
+                <p className="text-2xl font-bold text-white">PUZZLIO CALCIO</p>
+                <span className="text-sm  text-white">
+                  Guess the footballer in as few tries as possible
+                </span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {loadingPlayer && !error && player !== null ? (
+            <div className="flex flex-col gap-6 items-center">
+              <span className="text-2xl font-bold text-white">
+                Searching for player
+              </span>
+              <span className="loader"></span>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div
+          id="tiles"
+          className=" w-full gap-1 flex-col items-center justify-center flex"
+        >
           {allGuesses.map((guess, index) => {
             const results = colorWord(guess.guess);
             return (
@@ -114,8 +183,8 @@ export default function Board() {
             );
           })}
         </div>
-        <div className="flex gap-1"></div>
       </div>
+      {/* {player} */}
     </>
   );
 }
