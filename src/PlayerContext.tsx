@@ -78,11 +78,19 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [highScore, setHighScore] = useState(initialHighScore);
 
   //League statistics
-  const leagueScoresFromStorage = localStorage.getItem("leagueScores");
-  const initialLeagueScores = leagueScoresFromStorage
-    ? JSON.parse(leagueScoresFromStorage)
-    : {};
-  const [leagueScores, setLeagueScores] = useState(initialLeagueScores);
+  const initialLeagueScores = {
+    "Premier League": 0,
+    "LaLiga": 0,
+    "Bundesliga": 0,
+    "Serie A": 0,
+    "Ligue 1": 0,
+  }
+  const [leagueScores, setLeagueScores] = useState(() => {
+    const leagueScoresFromStorage = localStorage.getItem("leagueScores");
+    return leagueScoresFromStorage
+      ? { ...initialLeagueScores, ...JSON.parse(leagueScoresFromStorage) }
+      : initialLeagueScores;
+  });
 
   //Settings
   // Number of letters
