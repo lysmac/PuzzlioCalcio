@@ -126,21 +126,22 @@ export default function PlayerProvider({ children }: ProviderProps) {
   };
 
   const randomPlayerGenerator = () => {
-    let selectedLeague;
+    let playersInSelectedLeague = playerVault;
 
-    if (league !== "All leagues") {
+    if (league !== "All leagues" || undefined) {
+      console.log("specifik liga");
       // Use the selected league to find the league in the competitions array
-      selectedLeague = competitions.find(
-        (competition) => competition.name === league
+      playersInSelectedLeague = playerVault.filter(
+        (player: Player) => player.league === league
       );
       // If the league is not found, throw an error (Does not work without error handling)
-      if (!selectedLeague) {
+      if (!league) {
         throw new Error(`Could not find league: ${league}`);
       }
     }
-    selectedLeague;
+
     const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
-    const filteredPlayers = playerVault.filter((player: Player) => {
+    const filteredPlayers = playersInSelectedLeague.filter((player: Player) => {
       const splitName = player.name.split(" ");
       if (splitName.length === 3) {
         return false;
