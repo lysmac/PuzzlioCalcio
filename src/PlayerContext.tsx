@@ -33,6 +33,7 @@ interface PlayerContextValue {
   apiError: boolean;
   league: string;
   setLeague: React.Dispatch<React.SetStateAction<string>>;
+  fetchPlayer: () => Promise<void>;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -57,6 +58,7 @@ export const PlayerContext = createContext<PlayerContextValue>({
   apiError: false,
   league: "",
   setLeague: () => {},
+  fetchPlayer: () => new Promise(() => {}),
 });
 
 export interface ProviderProps {
@@ -119,7 +121,34 @@ export default function PlayerProvider({ children }: ProviderProps) {
     setPlayer("");
     fetchPlayer();
     setApiError(false);
+    randomPlayer();
   };
+
+  const randomPlayer = () => {
+    // Filtrera liga
+
+    const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
+    const filteredPlayers = playerVault.filter((player: Player) => {
+      const splitName = player.name.split(" ");
+      if (splitName.length === 3) {
+        return false;
+      }
+      const lastName = player.name.split(" ").slice(-1)[0];
+      const nameLength = lastName.length;
+      return nameLength >= minLength && nameLength <= maxLength;
+    });
+    if (filteredPlayers.length === 0) {
+      return console.log("did not find any match"), fetchPlayer();
+    }
+    const randomPlayer =
+      filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
+    console.log(randomPlayer);
+
+    // const clean = cleanName(randomPlayer);
+    // setPlayer(clean);
+    // setLoadingPlayer(false);
+  };
+
   const fetchPlayer = async (): Promise<void> => {
     try {
       let selectedLeague;
@@ -150,33 +179,12 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-        console.log(playersData, "playersData");
 
         playersData.players.forEach((playerObject) => {
           const player = { id: playerObject.id, name: playerObject.name };
           playerVault.push(player);
         });
 
-        console.log(playerVault, "playerVault");
-
-        const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
-        const filteredPlayers = playersData.players.filter((player: Player) => {
-          const splitName = player.name.split(" ");
-          if (splitName.length === 3) {
-            return false;
-          }
-          const lastName = player.name.split(" ").slice(-1)[0];
-          const nameLength = lastName.length;
-          return nameLength >= minLength && nameLength <= maxLength;
-        });
-        if (filteredPlayers.length === 0) {
-          return fetchPlayer();
-        }
-        // Pick a random player from the filtered players
-        const randomPlayer =
-          filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
-        const clean = cleanName(randomPlayer);
-        setPlayer(clean);
         setLoadingPlayer(false);
       } else {
         setLoadingPlayer(false);
@@ -285,6 +293,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         apiError,
         league,
         setLeague,
+        fetchPlayer,
       }}
     >
       {children}
