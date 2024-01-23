@@ -104,6 +104,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [loadingPlayer, setLoadingPlayer] = useState(true);
   const [apiError, setApiError] = useState(false);
 
+  const [playerVault, setPlayerVault] = useState<Player[]>([]);
+
   const winGame = () => {
     console.log("You won the game!!");
     setIsGameWon(true);
@@ -148,6 +150,15 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
+        console.log(playersData, "playersData");
+
+        playersData.players.forEach((playerObject) => {
+          const player = { id: playerObject.id, name: playerObject.name };
+          playerVault.push(player);
+        });
+
+        console.log(playerVault, "playerVault");
+
         const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
         const filteredPlayers = playersData.players.filter((player: Player) => {
           const splitName = player.name.split(" ");
