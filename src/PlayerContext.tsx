@@ -243,7 +243,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
 
-        playersData.players.forEach((playerObject: any) => {
+        playersData.players.forEach((playerObject: Player) => {
           const player = {
             id: playerObject.id,
             name: playerObject.name,
