@@ -14,6 +14,7 @@ export default function Keyboard() {
     isGameWon,
     winGame,
     keyboardKeys,
+    loseGame,
   } = useContext(PlayerContext);
 
   // Rendered keyboard
@@ -48,6 +49,7 @@ export default function Keyboard() {
           } else {
             currentGuess.submitted = true;
             setGuessNumber((prevGuessNumber) => prevGuessNumber + 1);
+            loseGame();
             const validGuessRow = document?.querySelector(
               `#guess-${guessNumber}`
             );

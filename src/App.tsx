@@ -3,19 +3,26 @@ import { PlayerContext } from "./PlayerContext";
 import Board from "./components/Board";
 import Confetti from "./components/Confetti";
 import Header from "./components/Header";
+import PlayerModal from "./components/PlayerModal";
 import Keyboard from "./components/keyboard/Keyboard";
 import "./index.css";
 
 export default function App() {
-  const { isGameWon, fetchPlayer } = useContext(PlayerContext);
+  const { isGameWon, fetchPlayer, isGameOver, setIsGameOver } =
+    useContext(PlayerContext);
 
   useEffect(() => {
     fetchPlayer();
   }, []);
 
+  const handleClose = () => {
+    setIsGameOver(false);
+  };
+
   return (
     <>
       {isGameWon && <Confetti />}
+      {isGameOver && <PlayerModal open={isGameOver} onClose={handleClose} />}
       <header>
         <Header />
       </header>

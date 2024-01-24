@@ -38,6 +38,9 @@ interface PlayerContextValue {
   fetchPlayer: () => Promise<void>;
   highScore: number;
   leagueScores: { [key: string]: number };
+  isGameOver: boolean;
+  setIsGameOver: React.Dispatch<React.SetStateAction<boolean>>;
+  loseGame: () => void;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -65,6 +68,9 @@ export const PlayerContext = createContext<PlayerContextValue>({
   fetchPlayer: () => new Promise(() => {}),
   highScore: 0,
   leagueScores: {},
+  isGameOver: false,
+  setIsGameOver: () => {},
+  loseGame: () => {},
 });
 
 export interface ProviderProps {
@@ -76,6 +82,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   //Highscore
   const initialHighScore = Number(localStorage.getItem("highScore")) || 0;
@@ -138,6 +145,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const winGame = () => {
     console.log("You won the game!!");
     setIsGameWon(true);
+    setIsGameOver(true);
     setHighScore((prevScore) => {
       const newScore = prevScore + 1;
       localStorage.setItem("highScore", newScore.toString());
@@ -151,10 +159,18 @@ export default function PlayerProvider({ children }: ProviderProps) {
     });
   };
 
+  const loseGame = () => {
+    if (guessNumber >= guessAmount - 1) {
+      console.log("You lost the game!!");
+      setIsGameOver(true);
+    }
+  }
+
   const newGame = () => {
     cleanGuesses();
     setKeyboardKeys(keyboardButtons);
     setIsGameWon(false);
+    setIsGameOver(false);
     setPlayer({ id: 0, name: "", cleanedName: "" });
     fetchPlayer();
     setApiError(false);
@@ -368,6 +384,9 @@ export default function PlayerProvider({ children }: ProviderProps) {
         fetchPlayer,
         highScore,
         leagueScores,
+        isGameOver,
+        setIsGameOver,
+        loseGame,
       }}
     >
       {children}
