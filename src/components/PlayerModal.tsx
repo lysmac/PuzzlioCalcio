@@ -10,6 +10,9 @@ interface PlayerModalProps {
 
 export default function PlayerModal({ open, onClose }: PlayerModalProps) {
   const { player } = useContext(PlayerContext);
+  const playerName = player?.name.replace(/ /g, "-").toLowerCase();
+  const playerUrl = `https://www.transfermarkt.co.uk/${playerName}/profil/spieler/${player?.id}`;
+
   return (
     <Modal
       open={open}
@@ -25,12 +28,20 @@ export default function PlayerModal({ open, onClose }: PlayerModalProps) {
               <IoClose size={30} />
             </button>
           </div>
-          <div className="flex flex-col items-center justify-center h-20">
+          <div className="flex flex-col items-center justify-center gap-2">
             <div>
               <p>{player?.name}</p>
               <p>{player?.position}</p>
               <p>{player?.nationality?.join(", ")}</p>
               <p>{player?.club}</p>
+              <a
+                href={playerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold"
+              >
+                Read more about the player
+              </a>
             </div>
           </div>
           <div className="flex justify-center items-center py-1">
