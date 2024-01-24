@@ -4,6 +4,8 @@ import { competitions, keyboardButton, keyboardButtons } from "./data";
 interface Player {
   id: number;
   name: string;
+  cleanedName?: string;
+  league?: string;
 }
 
 interface Guess {
@@ -14,7 +16,7 @@ interface Guess {
 interface PlayerContextValue {
   searchPlayer: (name: string) => Promise<boolean>;
   newGame: () => void;
-  player: string | null;
+  player: Player | null;
   allGuesses: Guess[];
   setAllGuesses: React.Dispatch<React.SetStateAction<Guess[]>>;
   guessAmount: number;
@@ -33,6 +35,7 @@ interface PlayerContextValue {
   apiError: boolean;
   league: string;
   setLeague: React.Dispatch<React.SetStateAction<string>>;
+  fetchPlayer: () => Promise<void>;
   highScore: number;
   leagueScores: { [key: string]: number };
 }
@@ -59,6 +62,7 @@ export const PlayerContext = createContext<PlayerContextValue>({
   apiError: false,
   league: "",
   setLeague: () => {},
+  fetchPlayer: () => new Promise(() => {}),
   highScore: 0,
   leagueScores: {},
 });
@@ -68,7 +72,7 @@ export interface ProviderProps {
 }
 
 export default function PlayerProvider({ children }: ProviderProps) {
-  const [player, setPlayer] = useState<string | null>(null);
+  const [player, setPlayer] = useState<Player | null>(null);
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
@@ -110,6 +114,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [league, setLeague] = useState(initialLeague);
   useEffect(() => {
     localStorage.setItem("league", league);
+    fetchPlayer();
+
     console.log("League: " + league);
   }, [league]);
 
@@ -126,6 +132,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const [loadingPlayer, setLoadingPlayer] = useState(true);
   const [apiError, setApiError] = useState(false);
+
+  const [playerVault] = useState<Player[]>([]);
 
   const winGame = () => {
     console.log("You won the game!!");
@@ -146,13 +154,65 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const newGame = () => {
     cleanGuesses();
     setKeyboardKeys(keyboardButtons);
+    setIsGameWon(false);
+    setPlayer({ id: 0, name: "", cleanedName: "" });
     fetchPlayer();
     setApiError(false);
+    randomPlayerGenerator();
   };
+
+  const randomPlayerGenerator = (retryCount = 0) => {
+    let playersInSelectedLeague = playerVault;
+
+    if (league !== "All leagues" || undefined) {
+      // Use the selected league to find the league in the competitions array
+      playersInSelectedLeague = playerVault.filter(
+        (player: Player) => player.league === league
+      );
+      // If the league is not found, throw an error (Does not work without error handling)
+      if (!league) {
+        throw new Error(`Could not find league: ${league}`);
+      }
+    }
+
+    const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
+    const filteredPlayers = playersInSelectedLeague.filter((player: Player) => {
+      const splitName = player.name.split(" ");
+      if (splitName.length === 3) {
+        return false;
+      }
+      const lastName = player.name.split(" ").slice(-1)[0];
+      const nameLength = lastName.length;
+      return nameLength >= minLength && nameLength <= maxLength;
+    });
+    if (filteredPlayers.length === 0) {
+      if (retryCount >= 5) {
+        // Maximum 5 retries
+        console.log("Maximum retries exceeded");
+        setApiError(true);
+
+        return;
+      }
+      setLoadingPlayer(true);
+      console.log("did not find any match");
+      fetchPlayer();
+      setTimeout(() => {
+        setLoadingPlayer(false);
+        randomPlayerGenerator(retryCount + 1); // Increment retryCount
+      }, 2000);
+      return;
+    }
+    const randomPlayer =
+      filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
+    console.log(randomPlayer, "random player");
+    console.log(filteredPlayers, "filtered players");
+    console.log(playerVault, "player vault");
+    const clean = cleanName(randomPlayer);
+    setPlayer(clean);
+    setLoadingPlayer(false);
+  };
+
   const fetchPlayer = async (): Promise<void> => {
-    setIsGameWon(false);
-    setLoadingPlayer(true);
-    setPlayer("");
     try {
       let selectedLeague;
       // Pick a random league from the competitions array
@@ -182,29 +242,22 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-        const [minLength, maxLength] = numberOfLetters.split("-").map(Number);
-        const filteredPlayers = playersData.players.filter((player: Player) => {
-          const splitName = player.name.split(" ");
-          if (splitName.length === 3) {
-            return false;
-          }
-          const lastName = player.name.split(" ").slice(-1)[0];
-          const nameLength = lastName.length;
-          return nameLength >= minLength && nameLength <= maxLength;
+
+        playersData.players.forEach((playerObject: any) => {
+          const player = {
+            id: playerObject.id,
+            name: playerObject.name,
+            league: "",
+          };
+          competitions.find((competition) => {
+            if (competition.clubs.includes(randomClub)) {
+              player.league = competition.name;
+            }
+          }, player);
+          playerVault.push(player);
         });
-        if (filteredPlayers.length === 0) {
-          return fetchPlayer();
-        }
-        // Pick a random player from the filtered players
-        const randomPlayer =
-          filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
-        const clean = cleanName(randomPlayer);
-        setPlayer(clean);
-        setLoadingPlayer(false);
+        console.log("api ok");
       } else {
-        setLoadingPlayer(false);
-        setPlayer(null);
-        setApiError(true);
         throw new Error("Could not fetch player");
       }
     } catch (error) {
@@ -240,7 +293,9 @@ export default function PlayerProvider({ children }: ProviderProps) {
       .replace(/[^a-z\s]/g, "") // Keep only a-z and spaces
       .replace(/\s+/g, " ")
       .trim();
-    return cleanedName;
+
+    const completePlayer = { ...player, cleanedName: cleanedName };
+    return completePlayer;
   };
 
   const searchPlayer = async (name: string) => {
@@ -264,8 +319,10 @@ export default function PlayerProvider({ children }: ProviderProps) {
         });
 
         allNames = allNames.map((name) => {
-          return cleanName({ id: 0, name: name });
+          const cleaned = cleanName({ name: name, id: 0 });
+          return cleaned.cleanedName;
         });
+
         allNames = [...new Set(allNames)];
 
         if (allNames.includes(name.toLowerCase())) {
@@ -308,6 +365,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         apiError,
         league,
         setLeague,
+        fetchPlayer,
         highScore,
         leagueScores,
       }}

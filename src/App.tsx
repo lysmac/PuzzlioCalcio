@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { PlayerContext } from "./PlayerContext";
 import Board from "./components/Board";
 import Confetti from "./components/Confetti";
@@ -7,7 +7,11 @@ import Keyboard from "./components/keyboard/Keyboard";
 import "./index.css";
 
 export default function App() {
-  const { isGameWon } = useContext(PlayerContext);
+  const { isGameWon, fetchPlayer } = useContext(PlayerContext);
+
+  useEffect(() => {
+    fetchPlayer();
+  }, []);
 
   return (
     <>
