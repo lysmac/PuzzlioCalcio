@@ -1,6 +1,6 @@
 interface MenuButtonProps {
   value: string;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
 }
 
