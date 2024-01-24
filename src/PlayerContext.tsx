@@ -6,6 +6,9 @@ interface Player {
   name: string;
   cleanedName?: string;
   league?: string;
+  position?: string;
+  nationality?: [];
+  club?: string;
 }
 
 interface Guess {
@@ -113,7 +116,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
   );
   useEffect(() => {
     localStorage.setItem("numberOfLetters", numberOfLetters);
-    console.log("Number of letters: " + numberOfLetters);
   }, [numberOfLetters]);
 
   // League
@@ -122,8 +124,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
   useEffect(() => {
     localStorage.setItem("league", league);
     fetchPlayer();
-
-    console.log("League: " + league);
   }, [league]);
 
   // Hardcoded for now, will be changed later with the new game function
@@ -250,7 +250,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
         selectedLeague.clubs[
           Math.floor(Math.random() * selectedLeague.clubs.length)
         ];
-      console.log(randomClub);
+        console.log(randomClub) 
 
       // Fetch the players from the random club
       const playersResponse = await fetch(
@@ -258,12 +258,15 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-
+        console.log(playersData, "players data")
         playersData.players.forEach((playerObject: Player) => {
           const player = {
             id: playerObject.id,
             name: playerObject.name,
             league: "",
+            position: playerObject.position,
+            nationality: playerObject.nationality,
+            club: randomClub.name,
           };
           competitions.find((competition) => {
             if (competition.clubs.includes(randomClub)) {
