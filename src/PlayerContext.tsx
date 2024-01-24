@@ -36,6 +36,8 @@ interface PlayerContextValue {
   league: string;
   setLeague: React.Dispatch<React.SetStateAction<string>>;
   fetchPlayer: () => Promise<void>;
+  highScore: number;
+  leagueScores: { [key: string]: number };
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -61,6 +63,8 @@ export const PlayerContext = createContext<PlayerContextValue>({
   league: "",
   setLeague: () => {},
   fetchPlayer: () => new Promise(() => {}),
+  highScore: 0,
+  leagueScores: {},
 });
 
 export interface ProviderProps {
@@ -73,8 +77,27 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
 
-  //Settings
+  //Highscore
+  const initialHighScore = Number(localStorage.getItem("highScore")) || 0;
+  const [highScore, setHighScore] = useState(initialHighScore);
 
+  //League statistics
+  const initialLeagueScores = {
+    "All leagues": 0,
+    "Premier League": 0,
+    "LaLiga": 0,
+    "Bundesliga": 0,
+    "Serie A": 0,
+    "Ligue 1": 0,
+  }
+  const [leagueScores, setLeagueScores] = useState(() => {
+    const leagueScoresFromStorage = localStorage.getItem("leagueScores");
+    return leagueScoresFromStorage
+      ? { ...initialLeagueScores, ...JSON.parse(leagueScoresFromStorage) }
+      : initialLeagueScores;
+  });
+
+  //Settings
   // Number of letters
   const initialNumberOfLetters =
     localStorage.getItem("numberOfLetters") || "4-6";
@@ -115,6 +138,17 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const winGame = () => {
     console.log("You won the game!!");
     setIsGameWon(true);
+    setHighScore((prevScore) => {
+      const newScore = prevScore + 1;
+      localStorage.setItem("highScore", newScore.toString());
+      return newScore;
+    });
+    setLeagueScores((prevScores: { [key: string]: number }) => {
+      const newScores = { ...prevScores };
+      newScores[league] = (newScores[league] || 0) + 1;
+      localStorage.setItem("leagueScores", JSON.stringify(newScores));
+      return newScores;
+    });
   };
 
   const newGame = () => {
@@ -209,7 +243,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
 
-        playersData.players.forEach((playerObject: any) => {
+        playersData.players.forEach((playerObject: Player) => {
           const player = {
             id: playerObject.id,
             name: playerObject.name,
@@ -332,6 +366,8 @@ export default function PlayerProvider({ children }: ProviderProps) {
         league,
         setLeague,
         fetchPlayer,
+        highScore,
+        leagueScores,
       }}
     >
       {children}
