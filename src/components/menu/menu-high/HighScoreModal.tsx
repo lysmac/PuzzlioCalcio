@@ -36,7 +36,7 @@ export default function HighScoreModal({ open, onClose }: HighScoreModalProps) {
               <div className="flex flex-col gap-1">
                 {Object.entries(leagueScores).map(([league, score]) => (
                   <div key={league} className="flex items-center gap-2">
-                  <img src={leagueFlags[league]} alt={`${league} flag`} />
+                    {league !== "All leagues" && <img src={leagueFlags[league]} alt={`${league} flag`} />}
                   <p>
                     {league}: {score}
                   </p>

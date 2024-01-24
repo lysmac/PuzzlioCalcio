@@ -79,6 +79,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   //League statistics
   const initialLeagueScores = {
+    "All leagues": 0,
     "Premier League": 0,
     "LaLiga": 0,
     "Bundesliga": 0,
