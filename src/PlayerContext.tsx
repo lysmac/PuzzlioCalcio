@@ -110,7 +110,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [loadingPlayer, setLoadingPlayer] = useState(true);
   const [apiError, setApiError] = useState(false);
 
-  const [playerVault, setPlayerVault] = useState<Player[]>([]);
+  const [playerVault] = useState<Player[]>([]);
 
   const winGame = () => {
     console.log("You won the game!!");
@@ -209,7 +209,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
 
-        playersData.players.forEach((playerObject) => {
+        playersData.players.forEach((playerObject: any) => {
           const player = {
             id: playerObject.id,
             name: playerObject.name,
