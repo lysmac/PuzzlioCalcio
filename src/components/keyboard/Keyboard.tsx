@@ -91,9 +91,13 @@ export default function Keyboard() {
         currentGuess.guess = currentGuess.guess.slice(0, -1);
       } else {
         // Add the new value to the current guess
-
-        if (player && currentGuess.guess.length < player?.cleanedName?.length) {
-          currentGuess.guess += value;
+        if (player?.cleanedName) {
+          if (
+            player &&
+            currentGuess.guess.length < player?.cleanedName?.length
+          ) {
+            currentGuess.guess += value;
+          }
         }
       }
 
