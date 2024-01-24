@@ -35,7 +35,12 @@ export default function SettingsModal({ open, onClose }: SettingsModalProps) {
         <div className="flex flex-col justify-center">
           <div className="flex flex-row justify-center items-center relative p-1">
             <p className="text-lg font-bold">Settings</p>
-            <button onClick={handleClose} className="absolute right-1">
+            <button
+              onClick={handleClose}
+              className="absolute right-1"
+              type="button"
+              title="Close settings modal"
+            >
               <IoClose size={30} />
             </button>
           </div>

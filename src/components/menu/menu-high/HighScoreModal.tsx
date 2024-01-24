@@ -34,7 +34,12 @@ export default function HighScoreModal({ open, onClose }: HighScoreModalProps) {
         <div className="flex flex-col justify-center">
           <div className="flex flex-row justify-center items-center relative p-1">
             <p className="text-lg font-bold">Highscore</p>
-            <button onClick={handleClose} className="absolute right-1">
+            <button
+              onClick={handleClose}
+              className="absolute right-1"
+              type="button"
+              title="Close highscore modal"
+            >
               <IoClose size={30} />
             </button>
           </div>
