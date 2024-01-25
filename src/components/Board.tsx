@@ -161,9 +161,7 @@ export default function Board() {
         <div id="clues" className=" flex justify-around w-full items-center">
           <div className="gap-2 flex">
             {player?.nationality?.map((nation) => {
-              console.log(nation, "sending this in");
               const code = flagGenerator(nation).toLowerCase();
-              console.log(code, "this i got from the function");
 
               return (
                 <div className="text-2xl " title={nation}>
