@@ -160,7 +160,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const loseGame = () => {
     if (guessNumber >= guessAmount - 1) {
-      console.log("You lost the game!!");
       setIsGameOver(true);
     }
   };
@@ -272,7 +271,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
         throw new Error("Could not fetch player");
       }
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
         console.log(error.message);
       }

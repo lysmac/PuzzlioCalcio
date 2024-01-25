@@ -66,7 +66,6 @@ export default function Keyboard() {
             }, 1000);
           }
         } else {
-          console.log("Not a valid name");
           guessRow?.classList.add("animate__animated", "animate__headShake");
           setTimeout(() => {
             guessRow?.classList.remove(

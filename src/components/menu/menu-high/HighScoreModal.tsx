@@ -27,8 +27,10 @@ export default function HighScoreModal({ open, onClose }: HighScoreModalProps) {
       onClose={handleClose}
       aria-labelledby="HighScore modal"
       aria-describedby="HighScore modal"
-      hideBackdrop
       className={`animate__animated ${animationClass} animate__faster`}
+      slotProps={{
+        backdrop: { style: { backgroundColor: "rgba(0, 0, 0, 0.4)" } },
+      }}
     >
       <div className="absolute bg-primary-bg top-40 left-1/2 transform -translate-x-1/2 border border-primary-contrast w-80 sm:w-96">
         <div className="flex flex-col justify-center">
@@ -43,13 +45,11 @@ export default function HighScoreModal({ open, onClose }: HighScoreModalProps) {
               <IoClose size={30} />
             </button>
           </div>
-          <div className="flex flex-col items-center gap-8 w-80 m-auto px-3 py-1">
-            <div className="flex">
+          <div className="flex flex-col items-center gap-3 w-80 m-auto px-3 py-1">
+            <div className="flex flex-col gap-3">
               <p>Number of wins: {highScore}</p>
-            </div>
-            <div className="flex flex-col">
-              <p>League statistics</p>
               <div className="flex flex-col gap-1">
+                <p className="font-bold">League statistics</p>
                 {Object.entries(leagueScores).map(([league, score]) => (
                   <div key={league} className="flex items-center gap-2">
                     {league !== "All leagues" && (

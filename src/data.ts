@@ -456,9 +456,9 @@ export const competitions = [
 ];
 
 export const leagueFlags: { [key: string]: string } = {
-  "Premier League": "../public/flags/England.svg",
-  "LaLiga": "../public/flags/Spain.svg",
-  "Bundesliga": "../public/flags/Germany.svg",
-  "Serie A": "../public/flags/Italy.svg",
-  "Ligue 1": "../public/flags/France.svg",
+  "Premier League": "../flags/England.svg",
+  LaLiga: "../flags/Spain.svg",
+  Bundesliga: "../flags/Germany.svg",
+  "Serie A": "../flags/Italy.svg",
+  "Ligue 1": "../flags/France.svg",
 };
