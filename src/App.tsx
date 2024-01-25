@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { PlayerContext } from "./PlayerContext";
 import Board from "./components/Board";
 import Confetti from "./components/Confetti";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import PlayerModal from "./components/PlayerModal";
 import Keyboard from "./components/keyboard/Keyboard";
@@ -30,7 +31,9 @@ export default function App() {
         <Board />
         <Keyboard />
       </main>
-      <footer>footer test</footer>
+      <footer>
+        <Footer />
+      </footer>
     </>
   );
 }
