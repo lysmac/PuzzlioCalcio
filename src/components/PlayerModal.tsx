@@ -1,5 +1,5 @@
 import { Modal } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { PlayerContext } from "../PlayerContext";
 
@@ -12,13 +12,24 @@ export default function PlayerModal({ open, onClose }: PlayerModalProps) {
   const { player, isGameWon } = useContext(PlayerContext);
   const playerName = player?.name.replace(/ /g, "-").toLowerCase();
   const playerUrl = `https://www.transfermarkt.co.uk/${playerName}/profil/spieler/${player?.id}`;
+  const [animationClass, setAnimationClass] = useState("animate__fadeIn");
+
+  const handleClose = () => {
+    setAnimationClass("animate__fadeOut");
+
+    setTimeout(() => {
+      onClose();
+      setAnimationClass("animate__fadeIn");
+    }, 500);
+  };
 
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       aria-labelledby="Player modal"
       aria-describedby="Player modal"
+      className={`animate__animated ${animationClass} animate__faster`}
       slotProps={{
         backdrop: { style: { backgroundColor: "rgba(0, 0, 0, 0.4)" } },
       }}

@@ -28,8 +28,10 @@ export default function SettingsModal({ open, onClose }: SettingsModalProps) {
       onClose={handleClose}
       aria-labelledby="Settings modal"
       aria-describedby="Settings modal"
-      hideBackdrop
       className={`animate__animated ${animationClass} animate__faster`}
+      slotProps={{
+        backdrop: { style: { backgroundColor: "rgba(0, 0, 0, 0.4)" } },
+      }}
     >
       <div className="absolute bg-primary-bg top-40 left-1/2 transform -translate-x-1/2 border border-primary-contrast w-80 sm:w-96">
         <div className="flex flex-col justify-center">
