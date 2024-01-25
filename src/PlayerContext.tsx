@@ -235,7 +235,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-        console.log(playersData.players, "playersData.players");
         playersData.players.forEach((playerObject: Player) => {
           const player = {
             id: playerObject.id,
@@ -251,7 +250,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
           }, player);
           playerVault.push(player);
         });
-        console.log("api ok");
       } else {
         throw new Error("Could not fetch player");
       }

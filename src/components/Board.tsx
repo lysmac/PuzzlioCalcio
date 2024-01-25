@@ -110,6 +110,46 @@ export default function Board() {
     }
   }, [loadingPlayer, apiError]);
 
+  function flagGenerator(nation: string) {
+    const code = getCountryCode(nation);
+    let flag;
+    if (code) {
+      flag = getEmojiFlag(code);
+    }
+
+    if (!flag) {
+      switch (nation) {
+        case "England":
+          flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
+          break;
+        case "Scotland":
+          flag = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
+          break;
+        case "Wales":
+          flag = "🏴󠁧󠁢󠁷󠁬󠁳󠁿";
+          break;
+        case "Northern Ireland":
+          flag = "🏴󠁧󠁢󠁮󠁩󠁲󠁿";
+          break;
+        case "Cote d'Ivoire":
+          flag = "🇨🇮";
+          break;
+        case "Korea, South":
+          flag = "🇰🇷";
+          break;
+        case "The Gambia":
+          flag = "🇬🇲";
+          break;
+        case "DR Congo":
+          flag = "🇨🇩";
+          break;
+        default:
+          flag = "🏳️";
+      }
+    }
+    return flag;
+  }
+
   const [error, setError] = useState(false);
   return (
     <>
@@ -120,31 +160,7 @@ export default function Board() {
         <div id="clues" className=" flex justify-around w-full items-center">
           <div className="gap-2 flex">
             {player?.nationality?.map((nation) => {
-              const code = getCountryCode(nation);
-
-              let flag;
-              if (code) {
-                flag = getEmojiFlag(code);
-              }
-
-              if (!flag) {
-                switch (nation) {
-                  case "England":
-                    flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
-                    break;
-                  case "Scotland":
-                    flag = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
-                    break;
-                  case "Wales":
-                    flag = "🏴󠁧󠁢󠁷󠁬󠁳󠁿";
-                    break;
-                  case "Northern Ireland":
-                    flag = "🏴󠁧󠁢󠁮󠁩󠁲󠁿";
-                    break;
-                  default:
-                    flag = "🏳️";
-                }
-              }
+              const flag = flagGenerator(nation);
 
               return (
                 <div className="text-3xl" title={nation}>
