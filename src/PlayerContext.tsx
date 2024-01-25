@@ -8,6 +8,7 @@ interface Player {
   league?: string;
   position?: string;
   nationality?: string[];
+  club?: string;
 }
 
 interface Guess {
@@ -40,6 +41,9 @@ interface PlayerContextValue {
   fetchPlayer: () => Promise<void>;
   highScore: number;
   leagueScores: { [key: string]: number };
+  isGameOver: boolean;
+  setIsGameOver: React.Dispatch<React.SetStateAction<boolean>>;
+  loseGame: () => void;
 }
 
 export const PlayerContext = createContext<PlayerContextValue>({
@@ -67,6 +71,9 @@ export const PlayerContext = createContext<PlayerContextValue>({
   fetchPlayer: () => new Promise(() => {}),
   highScore: 0,
   leagueScores: {},
+  isGameOver: false,
+  setIsGameOver: () => {},
+  loseGame: () => {},
 });
 
 export interface ProviderProps {
@@ -78,6 +85,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [allGuesses, setAllGuesses] = useState<Guess[]>([]);
   const [keyboardInput, setKeyboardInput] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   //Highscore
   const initialHighScore = Number(localStorage.getItem("highScore")) || 0;
@@ -136,6 +144,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
 
   const winGame = () => {
     setIsGameWon(true);
+    setIsGameOver(true);
     setHighScore((prevScore) => {
       const newScore = prevScore + 1;
       localStorage.setItem("highScore", newScore.toString());
@@ -149,10 +158,18 @@ export default function PlayerProvider({ children }: ProviderProps) {
     });
   };
 
+  const loseGame = () => {
+    if (guessNumber >= guessAmount - 1) {
+      console.log("You lost the game!!");
+      setIsGameOver(true);
+    }
+  };
+
   const newGame = () => {
     cleanGuesses();
     setKeyboardKeys(keyboardButtons);
     setIsGameWon(false);
+    setIsGameOver(false);
     setPlayer({ id: 0, name: "", cleanedName: "" });
     fetchPlayer();
     setApiError(false);
@@ -242,6 +259,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
             league: "",
             position: playerObject.position,
             nationality: playerObject.nationality,
+            club: randomClub.name,
           };
           competitions.find((competition) => {
             if (competition.clubs.includes(randomClub)) {
@@ -361,6 +379,9 @@ export default function PlayerProvider({ children }: ProviderProps) {
         fetchPlayer,
         highScore,
         leagueScores,
+        isGameOver,
+        setIsGameOver,
+        loseGame,
       }}
     >
       {children}

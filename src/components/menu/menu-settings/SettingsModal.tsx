@@ -59,10 +59,6 @@ export default function SettingsModal({ open, onClose }: SettingsModalProps) {
               <p className="font-bold">Select league</p>
               <SelectLeague />
             </div>
-            <div className="flex flex-row justify-between">
-              <p className="font-bold">Placement of delete</p>
-              <p>Toggle for delete</p>
-            </div>
             <div className="flex justify-center items-center py-1">
               <button onClick={handleClose} className="font-bold">
                 Close
