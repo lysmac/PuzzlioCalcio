@@ -1,4 +1,8 @@
-export default function Logo() {
+interface LogoProps {
+  className?: string;
+}
+
+export default function Logo({ className="w-32 sm:w-40" }: LogoProps) {
   const cls1 = "fill-current text-pc-green"; // This applies the 'pc-green' color
   const cls2 = "fill-none";
   const cls3 = "fill-current primary-text";
@@ -11,7 +15,7 @@ export default function Logo() {
       viewBox="0 0 114.56 77.24"
       role="img"
       aria-labelledby="Logo, the name puzzlio calcio and a man kicking a football"
-      className="w-32 sm:w-40"
+      className={className}
     >
       <title>Puzzlio Calcio Logo</title>
       <desc>
