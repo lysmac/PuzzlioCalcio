@@ -6,6 +6,8 @@ interface Player {
   name: string;
   cleanedName?: string;
   league?: string;
+  position?: string;
+  nationality?: string[];
 }
 
 interface Guess {
@@ -85,11 +87,11 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const initialLeagueScores = {
     "All leagues": 0,
     "Premier League": 0,
-    "LaLiga": 0,
-    "Bundesliga": 0,
+    LaLiga: 0,
+    Bundesliga: 0,
     "Serie A": 0,
     "Ligue 1": 0,
-  }
+  };
   const [leagueScores, setLeagueScores] = useState(() => {
     const leagueScoresFromStorage = localStorage.getItem("leagueScores");
     return leagueScoresFromStorage
@@ -106,7 +108,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
   );
   useEffect(() => {
     localStorage.setItem("numberOfLetters", numberOfLetters);
-    console.log("Number of letters: " + numberOfLetters);
   }, [numberOfLetters]);
 
   // League
@@ -115,8 +116,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
   useEffect(() => {
     localStorage.setItem("league", league);
     fetchPlayer();
-
-    console.log("League: " + league);
   }, [league]);
 
   // Hardcoded for now, will be changed later with the new game function
@@ -136,7 +135,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
   const [playerVault] = useState<Player[]>([]);
 
   const winGame = () => {
-    console.log("You won the game!!");
     setIsGameWon(true);
     setHighScore((prevScore) => {
       const newScore = prevScore + 1;
@@ -188,13 +186,11 @@ export default function PlayerProvider({ children }: ProviderProps) {
     if (filteredPlayers.length === 0) {
       if (retryCount >= 5) {
         // Maximum 5 retries
-        console.log("Maximum retries exceeded");
         setApiError(true);
 
         return;
       }
       setLoadingPlayer(true);
-      console.log("did not find any match");
       fetchPlayer();
       setTimeout(() => {
         setLoadingPlayer(false);
@@ -204,9 +200,7 @@ export default function PlayerProvider({ children }: ProviderProps) {
     }
     const randomPlayer =
       filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
-    console.log(randomPlayer, "random player");
-    console.log(filteredPlayers, "filtered players");
-    console.log(playerVault, "player vault");
+
     const clean = cleanName(randomPlayer);
     setPlayer(clean);
     setLoadingPlayer(false);
@@ -234,7 +228,6 @@ export default function PlayerProvider({ children }: ProviderProps) {
         selectedLeague.clubs[
           Math.floor(Math.random() * selectedLeague.clubs.length)
         ];
-      console.log(randomClub);
 
       // Fetch the players from the random club
       const playersResponse = await fetch(
@@ -242,12 +235,14 @@ export default function PlayerProvider({ children }: ProviderProps) {
       );
       if (playersResponse.ok) {
         const playersData = await playersResponse.json();
-
+        console.log(playersData.players, "playersData.players");
         playersData.players.forEach((playerObject: Player) => {
           const player = {
             id: playerObject.id,
             name: playerObject.name,
             league: "",
+            position: playerObject.position,
+            nationality: playerObject.nationality,
           };
           competitions.find((competition) => {
             if (competition.clubs.includes(randomClub)) {

@@ -113,9 +113,13 @@ export default function Board() {
   return (
     <>
       <div
-        className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80"
+        className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80 border-2"
         id="mainBoard"
       >
+        <div id="clues" className=" border-2 border-red-500">
+          Nationality: {player?.nationality?.map((nation) => nation + ", ")}
+          Position: {player?.position}
+        </div>
         <div
           id="cover"
           className=" w-full h-full min-h-60 sm:min-h-72 flex align-middle items-center  bg-primary-bg absolute flex-col justify-center gap-2"
