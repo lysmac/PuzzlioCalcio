@@ -3,7 +3,7 @@ import Logo from "./Logo";
 
 export default function Footer() {
   return (
-    <div className="mt-20 p-5 bg-primary-bg border-t border-primary-contrast flex flex-row justify-around items-center gap-10">
+    <div className="mt-20 p-5 bg-primary-bg border-t border-primary-contrast flex flex-row justify-around sm:justify-center sm:gap-40">
       <Logo className="w-20" />
       <div className="flex flex-col">
         <p className="font-bold text-primary-text">Developers</p>
@@ -17,10 +17,7 @@ export default function Footer() {
           >
             <FaGithub color="primary-contrast" size={20} />
           </a>
-          <a
-            href="mailto:example@something.com"
-            className="flex items-center gap-2"
-          >
+          <a href="mailto:calle@lysmask.se" className="flex items-center gap-2">
             <FaEnvelope color="primary-contrast" size={20} />
           </a>
         </div>
@@ -35,7 +32,7 @@ export default function Footer() {
             <FaGithub color="primary-contrast" size={20} />
           </a>
           <a
-            href="mailto:example@something.com"
+            href="mailto:djulicedvin@gmail.com"
             className="flex items-center gap-2"
           >
             <FaEnvelope color="primary-contrast" size={20} />
