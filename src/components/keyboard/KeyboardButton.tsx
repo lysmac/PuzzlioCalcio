@@ -16,7 +16,7 @@ export default function KeyboardButton({
   // The buttonClass variable is used to set the width and height of the button
   const buttonClass = ` ${
     size === "letter"
-      ? "w-7 h-7 xs:w-[2.2rem] xs:h-[2.2rem] sm:w-12 sm:h-12 "
+      ? "w-7 h-7 xs:w-[2.18rem] xs:h-[2.18rem] sm:w-12 sm:h-12 "
       : "w-14 sm:w-16 sm:h-12 "
   } flex-grow`;
 
