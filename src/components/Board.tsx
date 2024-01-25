@@ -1,5 +1,5 @@
 import "animate.css";
-import { getCountryCode, getEmojiFlag } from "countries-list";
+import { getCountryCode } from "countries-list";
 import { useContext, useEffect, useState } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 import { PlayerContext } from "../PlayerContext";
@@ -7,6 +7,7 @@ import Rules from "./Rules";
 import RulesModal from "./RulesModal";
 import Tile from "./Tile";
 import MenuButton from "./menu/MenuButton";
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 export default function Board() {
   const {
@@ -114,43 +115,42 @@ export default function Board() {
   }, [loadingPlayer, apiError]);
 
   function flagGenerator(nation: string) {
-    const code = getCountryCode(nation);
-    let flag;
-    if (code) {
-      flag = getEmojiFlag(code);
+    const contryCode = getCountryCode(nation);
+    let code = "";
+    if (contryCode) {
+      code = contryCode;
     }
-
-    if (!flag) {
+    if (code === "") {
       switch (nation) {
         case "England":
-          flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
+          code = "gb-eng";
           break;
         case "Scotland":
-          flag = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
+          code = "gb-sct";
           break;
         case "Wales":
-          flag = "🏴󠁧󠁢󠁷󠁬󠁳󠁿";
+          code = "gb-wls";
           break;
         case "Northern Ireland":
-          flag = "🏴󠁧󠁢󠁮󠁩󠁲󠁿";
+          code = "gb-nir";
           break;
         case "Cote d'Ivoire":
-          flag = "🇨🇮";
+          code = "ci";
           break;
         case "Korea, South":
-          flag = "🇰🇷";
+          code = "kr";
           break;
         case "The Gambia":
-          flag = "🇬🇲";
+          code = "gm";
           break;
         case "DR Congo":
-          flag = "🇨🇩";
+          code = "cd";
           break;
         default:
-          flag = "🏳️";
+          code = "";
       }
     }
-    return flag;
+    return code;
   }
 
   const [error, setError] = useState(false);
@@ -178,11 +178,11 @@ export default function Board() {
         <div id="clues" className=" flex justify-around w-full items-center">
           <div className="gap-2 flex">
             {player?.nationality?.map((nation) => {
-              const flag = flagGenerator(nation);
+              const code = flagGenerator(nation).toLowerCase();
 
               return (
-                <div className="text-3xl" title={nation}>
-                  {flag}
+                <div className="text-2xl " title={nation}>
+                  <span className={`fi fi-${code}`}></span>{" "}
                 </div>
               );
             })}
