@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { PlayerContext } from "../../PlayerContext";
+import { PlayerContext } from "../../contexts/PlayerContext";
 import MenuButton from "./MenuButton";
 import HighScoreModal from "./menu-high/HighScoreModal";
 import SettingsModal from "./menu-settings/SettingsModal";

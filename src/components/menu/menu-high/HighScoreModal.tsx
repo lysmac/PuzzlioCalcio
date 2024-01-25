@@ -1,7 +1,7 @@
 import { Modal } from "@mui/material";
 import { useContext, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { PlayerContext } from "../../../PlayerContext";
+import { PlayerContext } from "../../../contexts/PlayerContext";
 import { leagueFlags } from "../../../data";
 
 interface HighScoreModalProps {

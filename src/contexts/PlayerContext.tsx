@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { competitions, keyboardButton, keyboardButtons } from "./data";
+import { competitions, keyboardButton, keyboardButtons } from "../data";
 
 interface Player {
   id: number;

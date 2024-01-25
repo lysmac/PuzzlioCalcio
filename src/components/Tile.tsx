@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { PlayerContext } from "../PlayerContext";
+import { PlayerContext } from "../contexts/PlayerContext";
 
 export default function Tile({
   letter,

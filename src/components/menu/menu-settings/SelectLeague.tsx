@@ -5,8 +5,8 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useContext } from "react";
-import { PlayerContext } from "../../../PlayerContext";
-import { ThemeContext } from "../../../ThemeContext";
+import { PlayerContext } from "../../../contexts/PlayerContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 
 export default function SelectLeague() {
   const { theme } = useContext(ThemeContext);

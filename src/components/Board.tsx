@@ -2,7 +2,7 @@ import "animate.css";
 import { getCountryCode } from "countries-list";
 import { useContext, useEffect, useState } from "react";
 import { FaInfoCircle } from "react-icons/fa";
-import { PlayerContext } from "../PlayerContext";
+import { PlayerContext } from "../contexts/PlayerContext";
 import Rules from "./Rules";
 import RulesModal from "./RulesModal";
 import Tile from "./Tile";

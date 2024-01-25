@@ -5,8 +5,8 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useContext } from "react";
-import { PlayerContext } from "../../../PlayerContext";
-import { ThemeContext } from "../../../ThemeContext";
+import { PlayerContext } from "../../../contexts/PlayerContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 
 export default function SelectLetters() {
   const { theme } = useContext(ThemeContext);
@@ -65,7 +65,6 @@ export default function SelectLetters() {
             sx={{
               padding: "0px",
               justifyContent: "center",
-
             }}
           >
             {option}

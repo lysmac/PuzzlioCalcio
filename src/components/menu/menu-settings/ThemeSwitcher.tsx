@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Theme, ThemeContext } from "../../../ThemeContext";
+import { Theme, ThemeContext } from "../../../contexts/ThemeContext";
 import "./ThemeSwitcher.css";
 
 interface ThemeLabel {
