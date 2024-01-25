@@ -13,19 +13,19 @@ export default function Rules() {
         </div>
         <div className="w-80 flex flex-col gap-0.5">
           <p>
-            <span className="font-bold bg-pc-green">Green tile</span> = correct
+            <span className="font-bold text-black bg-pc-green">Green tile</span> = correct
             letter in correct position
           </p>
           <p>
-            <span className="font-bold bg-pc-yellow">Yellow tile</span> =
+            <span className="font-bold text-black bg-pc-yellow">Yellow tile</span> =
             correct letter in wrong position
           </p>
           <p>
-            <span className="font-bold bg-white">White tile</span> = wrong
+            <span className="font-bold text-black bg-white">White tile</span> = wrong
             letter
           </p>
           <p>
-            <span className="font-bold bg-gray-400">Grey key</span> = wrong
+            <span className="font-bold text-black bg-gray-400">Grey key</span> = wrong
             letter
           </p>
         </div>
