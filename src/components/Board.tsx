@@ -1,4 +1,5 @@
 import "animate.css";
+import { getCountryCode, getEmojiFlag } from "countries-list";
 import { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../PlayerContext";
 import Rules from "./Rules";
@@ -110,13 +111,67 @@ export default function Board() {
     }
   }, [loadingPlayer, apiError]);
 
+  function flagGenerator(nation: string) {
+    const code = getCountryCode(nation);
+    let flag;
+    if (code) {
+      flag = getEmojiFlag(code);
+    }
+
+    if (!flag) {
+      switch (nation) {
+        case "England":
+          flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
+          break;
+        case "Scotland":
+          flag = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
+          break;
+        case "Wales":
+          flag = "🏴󠁧󠁢󠁷󠁬󠁳󠁿";
+          break;
+        case "Northern Ireland":
+          flag = "🏴󠁧󠁢󠁮󠁩󠁲󠁿";
+          break;
+        case "Cote d'Ivoire":
+          flag = "🇨🇮";
+          break;
+        case "Korea, South":
+          flag = "🇰🇷";
+          break;
+        case "The Gambia":
+          flag = "🇬🇲";
+          break;
+        case "DR Congo":
+          flag = "🇨🇩";
+          break;
+        default:
+          flag = "🏳️";
+      }
+    }
+    return flag;
+  }
+
   const [error, setError] = useState(false);
   return (
     <>
       <div
-        className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80"
+        className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80 "
         id="mainBoard"
       >
+        <div id="clues" className=" flex justify-around w-full items-center">
+          <div className="gap-2 flex">
+            {player?.nationality?.map((nation) => {
+              const flag = flagGenerator(nation);
+
+              return (
+                <div className="text-3xl" title={nation}>
+                  {flag}
+                </div>
+              );
+            })}
+          </div>
+          <div className="font-bold">{player?.position}</div>
+        </div>
         <div
           id="cover"
           className=" w-full h-full min-h-60 sm:min-h-72 flex align-middle items-center  bg-primary-bg absolute flex-col justify-center gap-2"
@@ -180,7 +235,6 @@ export default function Board() {
           })}
         </div>
       </div>
-      {player?.cleanedName}
     </>
   );
 }
