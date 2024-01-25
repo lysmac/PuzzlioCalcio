@@ -19,6 +19,9 @@ export default function PlayerModal({ open, onClose }: PlayerModalProps) {
       onClose={onClose}
       aria-labelledby="Player modal"
       aria-describedby="Player modal"
+      slotProps={{
+        backdrop: { style: { backgroundColor: "rgba(0, 0, 0, 0.4)" } },
+      }}
     >
       <div className="absolute bg-primary-bg top-16 left-1/2 transform -translate-x-1/2 border border-primary-contrast w-80 sm:w-96">
         <div className="flex flex-col justify-center">
@@ -34,7 +37,7 @@ export default function PlayerModal({ open, onClose }: PlayerModalProps) {
             <div>
               <p>The answer was:</p>
             </div>
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-row gap-3">
               <p>{player?.name}</p>
               <p>{player?.club}</p>
             </div>
