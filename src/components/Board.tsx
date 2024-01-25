@@ -181,7 +181,7 @@ export default function Board() {
               const code = flagGenerator(nation).toLowerCase();
 
               return (
-                <div className="text-2xl " title={nation}>
+                <div className="text-2xl " title={nation} key={nation}>
                   <span className={`fi fi-${code}`}></span>{" "}
                 </div>
               );
