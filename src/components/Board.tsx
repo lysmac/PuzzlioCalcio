@@ -1,4 +1,5 @@
 import "animate.css";
+import { getCountryCode, getEmojiFlag } from "countries-list";
 import { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../PlayerContext";
 import Tile from "./Tile";
@@ -113,12 +114,46 @@ export default function Board() {
   return (
     <>
       <div
-        className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80 border-2"
+        className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80 "
         id="mainBoard"
       >
-        <div id="clues" className=" border-2 border-red-500">
-          Nationality: {player?.nationality?.map((nation) => nation + ", ")}
-          Position: {player?.position}
+        <div id="clues" className=" flex justify-around w-full items-center">
+          <div className="gap-2 flex">
+            {player?.nationality?.map((nation) => {
+              const code = getCountryCode(nation);
+
+              let flag;
+              if (code) {
+                flag = getEmojiFlag(code);
+              }
+
+              if (!flag) {
+                switch (nation) {
+                  case "England":
+                    flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
+                    break;
+                  case "Scotland":
+                    flag = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
+                    break;
+                  case "Wales":
+                    flag = "🏴󠁧󠁢󠁷󠁬󠁳󠁿";
+                    break;
+                  case "Northern Ireland":
+                    flag = "🏴󠁧󠁢󠁮󠁩󠁲󠁿";
+                    break;
+                  default:
+                    flag = "🏳️";
+                }
+              }
+
+              return (
+                <div className="text-3xl" title={nation}>
+                  {flag}
+                </div>
+              );
+            })}
+          </div>
+          <div className="font-bold">{player?.position}</div>
         </div>
         <div
           id="cover"
@@ -188,7 +223,6 @@ export default function Board() {
           })}
         </div>
       </div>
-      {player?.cleanedName}
     </>
   );
 }
