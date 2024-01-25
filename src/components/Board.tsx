@@ -1,8 +1,10 @@
 import "animate.css";
 import { getCountryCode, getEmojiFlag } from "countries-list";
 import { useContext, useEffect, useState } from "react";
+import { FaInfoCircle } from "react-icons/fa";
 import { PlayerContext } from "../PlayerContext";
 import Rules from "./Rules";
+import RulesModal from "./RulesModal";
 import Tile from "./Tile";
 import MenuButton from "./menu/MenuButton";
 
@@ -152,12 +154,27 @@ export default function Board() {
   }
 
   const [error, setError] = useState(false);
+  const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
   return (
     <>
       <div
         className="relative justify-center items-center flex gap-1 flex-col min-h-60 min-w-60 sm:min-h-80 sm:min-w-80 "
         id="mainBoard"
       >
+        {player && (
+          <div className="flex justify-end w-full">
+            <FaInfoCircle
+              color="primary-contrast"
+              size={20}
+              onClick={() => setIsRulesModalOpen(true)}
+              className="cursor-pointer"
+            />
+            <RulesModal
+              open={isRulesModalOpen}
+              onClose={() => setIsRulesModalOpen(false)}
+            />
+          </div>
+        )}
         <div id="clues" className=" flex justify-around w-full items-center">
           <div className="gap-2 flex">
             {player?.nationality?.map((nation) => {
