@@ -15,7 +15,9 @@ export default function KeyboardButton({
 }: KeyboardButtonProps) {
   // The buttonClass variable is used to set the width and height of the button
   const buttonClass = ` ${
-    size === "letter" ? "w-7 h-7 sm:w-12 sm:h-12 " : "w-14 sm:w-16 sm:h-12 "
+    size === "letter"
+      ? "w-7 h-7 xs:w-[2.18rem] xs:h-[2.18rem] sm:w-12 sm:h-12 "
+      : "w-14 sm:w-16 sm:h-12 "
   } flex-grow`;
 
   const background = (place: string) => {

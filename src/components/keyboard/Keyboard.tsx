@@ -128,9 +128,9 @@ export default function Keyboard() {
   }); // Add guessNumber to the dependency array
 
   return (
-    <div className="flex flex-col my-2.5 gap-1">
+    <div className="flex flex-col my-2.5 gap-1 xs:gap-0.5 sm:gap-1">
       {/* First row of buttons */}
-      <div className="flex gap-1">
+      <div className="flex gap-1 xs:gap-0.5 sm:gap-1">
         {keyboardKeys.slice(0, 10).map((button) => (
           <KeyboardButton
             key={button.value}
@@ -146,7 +146,7 @@ export default function Keyboard() {
         ))}
       </div>
       {/* Second row of buttons */}
-      <div className="flex gap-1">
+      <div className="flex gap-1 xs:gap-0.5 sm:gap-1">
         {keyboardKeys.slice(10, 19).map((button) => (
           <KeyboardButton
             key={button.value}
@@ -162,7 +162,7 @@ export default function Keyboard() {
         ))}
       </div>
       {/* Third row of buttons */}
-      <div className="flex gap-1">
+      <div className="flex gap-1 xs:gap-0.5 sm:gap-1">
         {keyboardKeys.slice(19, 28).map((button) => (
           <KeyboardButton
             key={button.value}
