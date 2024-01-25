@@ -212,9 +212,7 @@ export default function Board() {
           )}
           {loadingPlayer && !error && player !== null ? (
             <div className="flex flex-col gap-6 items-center">
-              <span className="text-2xl font-bold text-white">
-                Searching for player
-              </span>
+              <span className="text-2xl font-bold ">Searching for player</span>
               <span className="loader"></span>
             </div>
           ) : (
