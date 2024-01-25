@@ -49,7 +49,7 @@ export default function Tile({
   }, [letter, place]);
   return (
     <div
-      className={` uppercase aspect-square w-8 sm:min-w-12  sm:text-3xl flex items-center justify-center font-bold text-2xl font-mono text-lt-text ${background(
+      className={` uppercase aspect-square w-8 h-8 sm:min-w-12 sm:min-h-12 sm:text-3xl flex items-center justify-center font-bold text-2xl font-mono text-lt-text ${background(
         place || ""
       )}`}
     >

@@ -1,4 +1,6 @@
 import { Modal } from "@mui/material";
+import "animate.css";
+import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import SelectLeague from "./SelectLeague";
 import SelectLetters from "./SelectLetters";
@@ -10,19 +12,35 @@ interface SettingsModalProps {
 }
 
 export default function SettingsModal({ open, onClose }: SettingsModalProps) {
+  const [animationClass, setAnimationClass] = useState("animate__fadeIn");
+
+  const handleClose = () => {
+    setAnimationClass("animate__fadeOut");
+
+    setTimeout(() => {
+      onClose();
+      setAnimationClass("animate__fadeIn");
+    }, 500);
+  };
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       aria-labelledby="Settings modal"
       aria-describedby="Settings modal"
       hideBackdrop
+      className={`animate__animated ${animationClass} animate__faster`}
     >
       <div className="absolute bg-primary-bg top-40 left-1/2 transform -translate-x-1/2 border border-primary-contrast w-80 sm:w-96">
         <div className="flex flex-col justify-center">
           <div className="flex flex-row justify-center items-center relative p-1">
             <p className="text-lg font-bold">Settings</p>
-            <button onClick={onClose} className="absolute right-1">
+            <button
+              onClick={handleClose}
+              className="absolute right-1"
+              type="button"
+              title="Close settings modal"
+            >
               <IoClose size={30} />
             </button>
           </div>
@@ -46,7 +64,7 @@ export default function SettingsModal({ open, onClose }: SettingsModalProps) {
               <p>Toggle for delete</p>
             </div>
             <div className="flex justify-center items-center py-1">
-              <button onClick={onClose} className="font-bold">
+              <button onClick={handleClose} className="font-bold">
                 Close
               </button>
             </div>

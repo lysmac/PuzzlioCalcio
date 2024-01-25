@@ -19,11 +19,16 @@ export default function Menu() {
   }),
     [player, loadingPlayer];
 
+  function newGameBlur(event: React.MouseEvent<HTMLButtonElement>) {
+    newGame();
+    event.currentTarget.blur();
+  }
+
   return (
     <div className="flex flex-row gap-4">
       <MenuButton
         value="New game"
-        onClick={newGame}
+        onClick={newGameBlur}
         disabled={disableNewGame}
       />
       <MenuButton
