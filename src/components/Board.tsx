@@ -1,6 +1,7 @@
 import "animate.css";
 import { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../PlayerContext";
+import Rules from "./Rules";
 import Tile from "./Tile";
 import MenuButton from "./menu/MenuButton";
 
@@ -132,12 +133,7 @@ export default function Board() {
           )}
           {player === null && !error ? (
             <>
-              <div>
-                <p className="text-2xl font-bold text-white">PUZZLIO CALCIO</p>
-                <span className="text-sm  text-white">
-                  Guess the footballer in as few tries as possible
-                </span>
-              </div>
+              <Rules />
             </>
           ) : (
             <></>
