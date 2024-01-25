@@ -36,19 +36,13 @@ export default function ThemeSwitcher({
       gazzettaLight: "right-to-left",
       lightGazzetta: "left-to-right",
     };
-  
-    console.log("value:", value);
-    console.log("theme:", theme);
-  
+
     const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
     const newAnimation = animations[theme + capitalizedValue] || null;
-  
-    console.log("newAnimation:", newAnimation);
-  
+
     setAnimation(newAnimation);
     toggleTheme(value as Theme);
   };
-  
 
   const positionClass = {
     light: "left-position",
