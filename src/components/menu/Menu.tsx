@@ -24,6 +24,15 @@ export default function Menu() {
     event.currentTarget.blur();
   }
 
+  function openSettingsModal(event: React.MouseEvent<HTMLButtonElement>) {
+    setIsSettingsModalOpen(true);
+    event.currentTarget.blur();
+  }
+  function openHighScoreModal(event: React.MouseEvent<HTMLButtonElement>) {
+    setIsHighScoreModalOpen(true);
+    event.currentTarget.blur();
+  }
+
   return (
     <div className="flex flex-row gap-4">
       <MenuButton
@@ -31,14 +40,8 @@ export default function Menu() {
         onClick={newGameBlur}
         disabled={disableNewGame}
       />
-      <MenuButton
-        value="Settings"
-        onClick={() => setIsSettingsModalOpen(true)}
-      />
-      <MenuButton
-        value="Highscore"
-        onClick={() => setIsHighScoreModalOpen(true)}
-      />
+      <MenuButton value="Settings" onClick={openSettingsModal} />
+      <MenuButton value="Highscore" onClick={openHighScoreModal} />
       <SettingsModal
         open={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
