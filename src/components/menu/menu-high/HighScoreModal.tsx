@@ -47,7 +47,7 @@ export default function HighScoreModal({ open, onClose }: HighScoreModalProps) {
           </div>
           <div className="flex flex-col items-center gap-3 w-80 m-auto px-3 py-1">
             <div className="flex flex-col gap-3">
-                <p>Number of wins: {highScore}</p>
+              <p>Number of wins: {highScore}</p>
               <div className="flex flex-col gap-1">
                 <p className="font-bold">League statistics</p>
                 {Object.entries(leagueScores).map(([league, score]) => (
