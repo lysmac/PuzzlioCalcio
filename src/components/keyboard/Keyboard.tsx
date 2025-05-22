@@ -10,7 +10,6 @@ export default function Keyboard() {
     setAllGuesses,
     allGuesses,
     player,
-    searchPlayer,
     isGameWon,
     winGame,
     keyboardKeys,
