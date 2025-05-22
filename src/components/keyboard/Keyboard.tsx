@@ -30,7 +30,10 @@ export default function Keyboard() {
       }
 
       const checkPlayerName = async () => {
-        const validPlayerName = await searchPlayer(currentGuess.guess);
+        // Now bypasses fotmob api check due to API changes. Can now guess on anything as a work around
+        // const validPlayerName = await searchPlayer(currentGuess.guess);
+        const validPlayerName = currentGuess.guess;
+
         const guessRow = document?.querySelector(`#guess-${guessNumber}`);
 
         if (validPlayerName) {
